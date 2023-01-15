@@ -577,30 +577,38 @@ class Circuit():
         elements (dict):        dict of circuit elements. Where
                                 the key is the uid (unique id).
         """
+
         elements = dict()
-        if isinstance(netlist, str):
-            netlist = netlist.split("\n")
-        inside_ctl_section=False
+        ctlsec = False
         hierarchy = collections.deque()
         hierarchy.append("root")
+
+        # regex_nreq      = re.compile("^$|^\.end$|^\s*\*")
+        regex_nreq        = re.compile("^$|^\.end$")
+        reqex_subckt_s    = re.compile("^.subckt*") 
+        reqex_subckt_e    = re.compile("^.ends.*") 
+        reqex_control_s   = re.compile("^.control") 
+        reqex_control_e   = re.compile("^.endc") 
+
         for i,line in enumerate(netlist):
-            line = line.strip()
-            if not re.match("^$|^\.end$|^\s*\*", line):
-            # if not re.match("^$|^\.end$", line): # Keep comments
-                if re.match("^.subckt*", line):
+
+            if not re.match(regex_nreq, line):
+
+                if re.match(reqex_subckt_s, line):
                     hierarchy.append(line.split(" ")[1])
-                if re.match("^.control", line) or inside_ctl_section:
-                    inside_ctl_section = True
-                    if re.match("^.endc", line):
-                        inside_ctl_section = False
+
+                if re.match(reqex_control_s, line) or ctlsec:
+                    ctlsec = True
+                    if re.match(reqex_control_e, line):
+                        ctlsec = False
+
                 else:
                     elemtype = identify_linetype(line)
-                    uid = (hashlib.md5((str(i)+line).encode())).hexdigest()
+                    uid = get_uid(line, i)
                     location = "/".join(hierarchy)
-                    element =  ELEMENTMAP[elemtype]
-                    instance = element(line, location, i, uid)
-                    elements[uid] = instance
-                if re.match("^.ends.*", line):
+                    element = ELEMENTMAP[elemtype]
+                    elements[uid] = element(line, location, i, uid)
+                if re.match(reqex_subckt_e, line):
                     hierarchy.pop()
         return elements
 
@@ -634,7 +642,7 @@ class Circuit():
         else:
             n = 0
         for i, uid_parsed in enumerate(parsed):
-            uid = (hashlib.md5((str(i)+line).encode())).hexdigest()
+            uid = get_uid(line, i)
             parsed[uid_parsed].n = n + i
             self.circuit[uid] = parsed[uid_parsed]
 
@@ -671,35 +679,24 @@ class Circuit():
         return filter(self.circuit, filt, uids)
 
 
-    def apply(self, func, filt, **kwargs):
+    def apply(self, func, uids, **kwargs):
         """ Apply function to matching circuit elements.
 
         Required inputs:
         ----------------
-        func (func):                function to apply to matching elements.
-        filt (tuple, list , dict):  pairs of key to circuit element dict
-                                    and regex to match in that key.
-                                    See also self.filter for more info.
-
-        Returns
-        ----------------
-        n (int):                    number of modified circuit elements
+        func (func):         Function to apply.
+        uids (list):         List of circuit element.
 
 
         Description
         ----------------
-        Filter the circuit representation for matching elements.
-        Then apply func to all those elements.
         If func modifies the the object it will alter the internal
         circuit representation also!
         kwargs are passed along to func.
         """
-        matches = self.filter(filt)
-        if matches:
-            for uid in matches:
-                element = self.circuit[uid]
-                self.circuit[uid] = func(element, **kwargs)
-        return len(matches)
+        for uid in uids:
+            element = self.circuit[uid]
+            self.circuit[uid] = func(element, **kwargs)
 
 
     def touches(self, expr):
@@ -707,21 +704,14 @@ class Circuit():
 
         Required inputs:
         ----------------
-        expr (str): net name expression to match
-
+        expr (str):        net name expression to match
 
         Returns
         ----------------
         uids (list):        List of uid's that matches the
                             criteria.
         """
-        uids = []
-        for k in self.circuit:
-            ports = self.circuit[k].ports
-            for p in ports:
-                if re.fullmatch(expr, ports[p]):
-                    uids.append(k)
-        return uids
+        return touches(self.circuit, expr)
 
 
     def count_nets(self):
@@ -732,18 +722,55 @@ class Circuit():
         nets(dict): dictionary with net, count pairs.
 
         """
-        nets = {}
-        for k,v in self.circuit.items():
-            pdict = v.ports
-            if pdict:
-                for node in pdict:
-                    net = pdict[node]
-                    if net in nets:
-                        nets[net] += 1
-                    else:
-                        nets[net] = 1
-        return nets
+        return count_nets(self.circuit, expr)
 
+
+def touches(circuit, expr):
+    """ Find circuit elements that touch a net.
+
+    Required inputs:
+    ----------------
+    circuit (Circuit): Circuit object to analyze.
+    expr (str):        net name expression to match
+
+
+    Returns
+    ----------------
+    uids (list):        List of uid's that matches the
+                        criteria.
+    """
+    uids = []
+    for k in circuit:
+        ports = circuit[k].ports
+        for p in ports:
+            if re.fullmatch(expr, ports[p]):
+                uids.append(k)
+    return uids
+
+
+def count_nets(circuit):
+    """ Count the number of port connections to any net.
+
+    Required inputs:
+    ----------------
+    circuit (Circuit): Circuit object to analyze.
+
+    Returns
+    ----------------
+    nets(dict): dictionary with net, count pairs.
+
+    """
+    nets = {}
+    for k,v in circuit.items():
+        pdict = v.ports
+        if pdict:
+            for node in pdict:
+                net = pdict[node]
+                if net in nets:
+                    nets[net] += 1
+                else:
+                    nets[net] = 1
+    return nets
 
 
 def filter(circuit, filt, uids=[]):
@@ -776,7 +803,6 @@ def filter(circuit, filt, uids=[]):
             if re.fullmatch(val, str(getattr(circuit[uid], key))):
                 uids.append(uid)
     return uids
-
 
 
 def unpack_args(args):
@@ -941,8 +967,8 @@ def clean_netlist(netlist):
         else:
             netlist_f.append(line.lower())
 
-    netlist = "\n".join(netlist_f)
-    return netlist
+    # netlist = "\n".join(netlist_f)
+    return [x.strip() for x in netlist_f]
 
 
 def identify_linetype(line):
@@ -997,3 +1023,19 @@ def remove_enclosed_space(string):
             else:
                 parsed.append(c)
     return "".join(parsed)
+
+
+def get_uid(s, i):
+    """ Create a uid. 
+
+    Required inputs:
+    ----------------
+    s (str):   A string.
+    i (str):   A number.
+
+    Returns
+    ----------------
+    uid (str): uid (unique identifier)
+    """
+    s = (str(i) + s).encode()
+    return hashlib.md5(s).hexdigest()
