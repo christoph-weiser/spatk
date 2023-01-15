@@ -6,5 +6,5 @@ setup(
    description='Module for handling and analyzing spice netlists',
    author='Christoph Weiser',
    packages=['spatk'],
-   install_requires=['numpy']
+   install_requires=[]
 )
