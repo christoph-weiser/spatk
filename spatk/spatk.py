@@ -491,7 +491,7 @@ ELEMENTMAP = {"*":  Comment,
 #--------------------------------------------------------------------------------
 
 class Circuit():
-    """ Circuit represents a spice netlist.
+    """ Circuit represents a SPICE netlist.
 
     Required inputs:
     ----------------
@@ -506,19 +506,8 @@ class Circuit():
     Description
     ----------------
     Netlist is a high-level object of any ordinary spice netlist.
-    The object allows however to filter the netlist elements by their type
-    arguments and ports.
-
-        name:           When read from file filename, otherwise this can be
-                        used a identifier and will be writen to the first line
-                        of the netlist object.
-
-        parsed_circuit: This variable holds a string with the original netlist
-
-        circuit:        A list of all the netlist elements in a dict fashion
-                        with "instance", "type",  "ports",  "args" keys.
-
-        netlist:        A spice netlist generated from the "circuit" list/dict.
+    It contains each circuit element as a parsed and understood element
+    with its specific configuration, parameters and ports..
     """
 
     def __init__(self, netlist=None, is_filename=True):
@@ -535,7 +524,7 @@ class Circuit():
 
         self.parsed_circuit = self.parse(self._netlist)
         self.circuit = copy.deepcopy(self.parsed_circuit)
-        self.synthesize()
+        self._synthesize()
 
 
     def __str__(self):
@@ -566,12 +555,12 @@ class Circuit():
     @property
     def netlist(self):
         """ Simulation ready circuit netlist """
-        self.synthesize()
+        self._synthesize()
         return "".join(self._netlist)
 
 
     def reset(self):
-        """ Reset the circuit to the first parsed circuit. """
+        """ Reset the circuit to the initially parsed circuit. """
         self.circuit = copy.deepcopy(self.parsed_circuit)
 
 
@@ -586,7 +575,7 @@ class Circuit():
         Returns
         ----------------
         elements (dict):        dict of circuit elements. Where
-                                the key is the uid.
+                                the key is the uid (unique id).
         """
         elements = dict()
         if isinstance(netlist, str):
@@ -616,15 +605,13 @@ class Circuit():
         return elements
 
 
-    def synthesize(self):
+    def _synthesize(self):
         """ Create a netlist from a circuit representation.
 
         Description
         ----------------
         Reverse of parse(). It generates a netlist from a list from
         the circuit object.
-        Synthesize will update the object internal netlist when called.
-
         """
         netlist = [ "* {}\n\n".format(self.name) ]
         for uid in self.circuit:
@@ -633,7 +620,7 @@ class Circuit():
 
 
     def append(self, line):
-        """ Append an element to the circuit dict.
+        """ Append an element to the Circuit.
 
         Required inputs:
         ----------------
@@ -664,27 +651,24 @@ class Circuit():
             ofile.write(self.netlist)
 
 
-    def filter(self, filt):
+    def filter(self, filt, uids=[]):
         """ Filter circuit elements by regex.
 
         Required inputs:
         ----------------
         filt (tuple):       Pair of property and regex
 
+        Required inputs:
+        ----------------
+        uids (list):        List of preselected circuit element
+                            uids (unique id's).
+
         Returns
         ----------------
-        matches (list):     List of uid's that matches the
-                            criteria.
-
+        uids (list):     List of uid's that matches the
+                         criteria.
         """
-        key = filt[0]
-        val = filt[1]
-        uids = []
-        for uid in self.circuit:
-            if key in self.circuit[uid].__dir__():
-                if re.fullmatch(val, str(getattr(self.circuit[uid], key))):
-                    uids.append(uid)
-        return uids
+        return filter(self.circuit, filt, uids)
 
 
     def apply(self, func, filt, **kwargs):
@@ -759,6 +743,40 @@ class Circuit():
                     else:
                         nets[net] = 1
         return nets
+
+
+
+def filter(circuit, filt, uids=[]):
+    """ Filter circuit elements by regex.
+
+    Required inputs:
+    ----------------
+    circuit (Circuit):  Circuit object to filter.
+    filt (tuple):       Pair of property and regex
+
+
+    Required inputs:
+    ----------------
+    uids (list):        List of preselected circuit element
+                        uids (unique id's).
+
+    Returns
+    ----------------
+    matches (list):     List of uid's that matches the
+                        criteria.
+    """
+    key = filt[0]; val = filt[1]
+    if uids:
+        iterable = uids
+    else:
+        iterable = circuit
+    uids = []
+    for uid in iterable:
+        if key in circuit[uid].__dir__():
+            if re.fullmatch(val, str(getattr(circuit[uid], key))):
+                uids.append(uid)
+    return uids
+
 
 
 def unpack_args(args):
