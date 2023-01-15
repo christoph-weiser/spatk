@@ -216,6 +216,7 @@ class Param(Statement):
     def __init__(self, *args):
         super(Param, self).__init__(*args)
         self.type = "param"
+        self.value = None
 
     @property
     def parvalue(self):
@@ -227,11 +228,11 @@ class Param(Statement):
         self.elements[1] = "{}={}".format(s[0], arg) 
 
     @property
-    def name(self):
+    def parname(self):
         return self.elements[1].split("=", 1)[0]
 
-    @name.setter
-    def name(self, arg):
+    @parname.setter
+    def parname(self, arg):
         s = self.elements[1].split("=", 1)
         self.elements[1] = "{}={}".format(arg, s[1]) 
 
