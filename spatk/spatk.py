@@ -135,7 +135,50 @@ class Comment(Default):
 class Statement(Default):
     def __init__(self, *args):
         super(Statement, self).__init__(*args)
+        self.elements = self.line.split(" ")
         self.type = "statement"
+
+
+class Model(Statement):
+    def __init__(self, *args):
+        super(Model, self).__init__(*args)
+        self.type = "model"
+
+
+class Include(Statement):
+    def __init__(self, *args):
+        super(Include, self).__init__(*args)
+        self.type = "include"
+
+
+class Library(Statement):
+    def __init__(self, *args):
+        super(Library, self).__init__(*args)
+        self.type = "library"
+
+
+class Option(Statement):
+    def __init__(self, *args):
+        super(Option, self).__init__(*args)
+        self.type = "option"
+
+
+class Function(Statement):
+    def __init__(self, *args):
+        super(Function, self).__init__(*args)
+        self.subtype = "function"
+
+
+class Param(Statement):
+    def __init__(self, *args):
+        super(Param, self).__init__(*args)
+        self.subtype = "param"
+
+
+class Global(Statement):
+    def __init__(self, *args):
+        super(Global, self).__init__(*args)
+        self.subtype = "global"
 
 
 class Xspice(Default):
@@ -419,10 +462,10 @@ class Icsw(Component_2T):
         self.type = "icsw"
 
 
-class Subcircuit(Component):
+class Subckt(Component):
     def __init__(self, *args):
-        super(Subcircuit, self).__init__(*args)
-        self.type = "subcircuit"
+        super(Subckt, self).__init__(*args)
+        self.type = "subckt"
 
     def __str__(self):
         return " ".join(self.elements)
@@ -454,36 +497,43 @@ class Mesfet(Component_3T):
 # Element Mapping
 #--------------------------------------------------------------------------------
 
-ELEMENTMAP = {"*":  Comment,
-              ".":  Statement,
-              "A":  Xspice,
-              "B":  Behavioral_source,
-              "C":  Capacitor,
-              "D":  Diode,
-              "E":  Vcvs,
-              "F":  Cccs,
-              "G":  Vccs,
-              "H":  Ccvs,
-              "I":  Isource,
-              "J":  Jfet,
-              "K":  None,
-              "L":  Inductor,
-              "M":  Mosfet,
-              "N":  Numerical_device_gss,
-              "O":  Lossy_transmission_line,
-              "P":  None,
-              "Q":  Bjt,
-              "R":  Resistor,
-              "S":  Vcsw,
-              "T":  Lossless_transmission_line,
-              "U":  Uniformely_distributed_rc_line,
-              "V":  Vsource,
-              "W":  Icsw,
-              "X":  Subcircuit,
-              "XC": Capacitor,
-              "XM": Mosfet,
-              "Y":  Single_lossy_transmission_line,
-              "Z":  Mesfet}
+ELEMENTMAP = {"*":          Comment,
+              ".":          Statement,
+              "model":      Model,
+              "include":    Include,
+              "library":    Library,
+              "option":     Option,
+              "function":   Function,
+              "param":      Param,
+              "global":     Global,
+              "A":          Xspice,
+              "B":          Behavioral_source,
+              "C":          Capacitor,
+              "D":          Diode,
+              "E":          Vcvs,
+              "F":          Cccs,
+              "G":          Vccs,
+              "H":          Ccvs,
+              "I":          Isource,
+              "J":          Jfet,
+              "K":          None,
+              "L":          Inductor,
+              "M":          Mosfet,
+              "N":          Numerical_device_gss,
+              "O":          Lossy_transmission_line,
+              "P":          None,
+              "Q":          Bjt,
+              "R":          Resistor,
+              "S":          Vcsw,
+              "T":          Lossless_transmission_line,
+              "U":          Uniformely_distributed_rc_line,
+              "V":          Vsource,
+              "W":          Icsw,
+              "X":          Subckt,
+              "XC":         Capacitor,
+              "XM":         Mosfet,
+              "Y":          Single_lossy_transmission_line,
+              "Z":          Mesfet}
 
 
 #--------------------------------------------------------------------------------
@@ -984,12 +1034,32 @@ def identify_linetype(line):
     letter_2 = line[1].upper()
     if (letter_1 == "X" and letter_2 in ["M", "C"]):
         elemtype = letter_1 + letter_2
+    elif (letter_1 == "."):
+        elemtype = process_statement(line)
     else:
         elemtype = letter_1
     if not elemtype in ELEMENTMAP.keys():
         raise Exception("Linetype not understood by parser")
     else:
         return elemtype
+
+
+def process_statement(line):
+    identifier = line.split(" ")[0]
+    if identifier in   [".inc", ".include"]:
+        return "include"
+    elif identifier in [".lib", ".library"]:
+        return "library"
+    elif identifier in [".model"]:
+        return "model"
+    elif identifier in [".option"]:
+        return "option"
+    elif identifier in [".func", ".function"]:
+        return "function"
+    elif identifier in [".global"]:
+        return "global"
+    else:
+        return "."
 
 
 def remove_enclosed_space(string):
