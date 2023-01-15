@@ -676,9 +676,6 @@ class Circuit():
         self.circuit = copy.deepcopy(self.parsed_circuit)
 
 
-    # TODO: param statements with single .param and multiple 
-    #       definitions needs to be handled and seperated during
-    #       parsing of the netlist.
     def parse(self, netlist):
         """ Parse the string netlist into a circuit representation.
 
