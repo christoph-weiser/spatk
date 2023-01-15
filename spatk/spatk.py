@@ -122,6 +122,18 @@ class Component_4T(Component):
              " ".join(self.args)]
         return " ".join(l)
 
+
+class Statement(Default):
+    def __init__(self, *args):
+        super(Statement, self).__init__(*args)
+        self.elements = self.line.split(" ")
+        self.type = "statement"
+
+    def __str__(self):
+        return " ".join(self.elements)
+
+
+
 #----------------------------------------------------------------------
 # Element Classes
 #----------------------------------------------------------------------
@@ -130,13 +142,6 @@ class Comment(Default):
     def __init__(self, *args):
         super(Comment, self).__init__(*args)
         self.type = "comment"
-
-
-class Statement(Default):
-    def __init__(self, *args):
-        super(Statement, self).__init__(*args)
-        self.elements = self.line.split(" ")
-        self.type = "statement"
 
 
 class Model(Statement):
@@ -150,11 +155,49 @@ class Include(Statement):
         super(Include, self).__init__(*args)
         self.type = "include"
 
+    @property
+    def filename(self):
+        return self.elements[1]
+
+    @filename.setter
+    def filename(self, arg):
+        self.elements[1] = arg
+        
 
 class Library(Statement):
     def __init__(self, *args):
         super(Library, self).__init__(*args)
         self.type = "library"
+        if len(self.elements) == 2:
+            self._hasfilename = False
+        else:
+            self._hasfilename = True
+
+    @property
+    def filename(self):
+        if self._hasfilename:
+            return self.elements[1]
+        else:
+            return None
+
+    @filename.setter
+    def filename(self, arg):
+        if self._hasfilename:
+            self.elements[1] = arg
+
+    @property
+    def libname(self):
+        if self._hasfilename:
+            return self.elements[2]
+        else:
+            return self.elements[1]
+
+    @libname.setter
+    def libname(self, arg):
+        if self._hasfilename:
+            self.elements[2] = arg
+        else:
+            self.elements[1] = arg
 
 
 class Option(Statement):
@@ -166,19 +209,37 @@ class Option(Statement):
 class Function(Statement):
     def __init__(self, *args):
         super(Function, self).__init__(*args)
-        self.subtype = "function"
+        self.type = "function"
 
 
 class Param(Statement):
     def __init__(self, *args):
         super(Param, self).__init__(*args)
-        self.subtype = "param"
+        self.type = "param"
+
+    @property
+    def parvalue(self):
+        return self.elements[1].split("=", 1)[1]
+
+    @parvalue.setter
+    def parvalue(self, arg):
+        s = self.elements[1].split("=", 1)
+        self.elements[1] = "{}={}".format(s[0], arg) 
+
+    @property
+    def name(self):
+        return self.elements[1].split("=", 1)[0]
+
+    @name.setter
+    def name(self, arg):
+        s = self.elements[1].split("=", 1)
+        self.elements[1] = "{}={}".format(arg, s[1]) 
 
 
 class Global(Statement):
     def __init__(self, *args):
         super(Global, self).__init__(*args)
-        self.subtype = "global"
+        self.type = "global"
 
 
 class Xspice(Default):
@@ -614,6 +675,9 @@ class Circuit():
         self.circuit = copy.deepcopy(self.parsed_circuit)
 
 
+    # TODO: param statements with single .param and multiple 
+    #       definitions needs to be handled and seperated during
+    #       parsing of the netlist.
     def parse(self, netlist):
         """ Parse the string netlist into a circuit representation.
 
@@ -1058,6 +1122,8 @@ def process_statement(line):
         return "function"
     elif identifier in [".global"]:
         return "global"
+    elif identifier in [".par", ".param"]:
+        return "param"
     else:
         return "."
 
