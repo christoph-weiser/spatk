@@ -1,4 +1,4 @@
-# SPATK - A spice netlist toolkit.
+# SPATK - Spice Analysis Toolkit.
 # Copyright (C) 2023 Christoph Weiser
 #
 # This program is free software: you can redistribute it and/or modify
@@ -704,7 +704,8 @@ class Circuit():
         reqex_control_s   = re.compile("^.control") 
         reqex_control_e   = re.compile("^.endc") 
 
-        for i,line in enumerate(netlist):
+        n = 0
+        for line in netlist:
 
             if not re.match(regex_nreq, line):
 
@@ -718,12 +719,21 @@ class Circuit():
 
                 else:
                     elemtype = identify_linetype(line)
-                    uid = get_uid(line, i)
                     location = "/".join(hierarchy)
-                    element = ELEMENTMAP[elemtype]
-                    elements[uid] = element(line, location, i, uid)
+
+                    if elemtype == "param":
+                        lines = dissect_param(line)
+                        for line in lines:
+                            uid = get_uid(line, n)
+                            element = ELEMENTMAP[elemtype]
+                            elements[uid] = element(line, location, n, uid)
+                    else:
+                        uid = get_uid(line, n)
+                        element = ELEMENTMAP[elemtype]
+                        elements[uid] = element(line, location, n, uid)
                 if re.match(reqex_subckt_e, line):
                     hierarchy.pop()
+            n = n + 1;
         return elements
 
 
@@ -837,6 +847,16 @@ class Circuit():
 
         """
         return count_nets(self.circuit, expr)
+
+
+def dissect_param(line):
+    elements = line.split(" ")
+    lines = []
+    for i, elem in enumerate(elements):
+        if "=" in elem: 
+            lines.append(".param {}".format(elem))
+    return lines
+
 
 
 def touches(circuit, expr):
@@ -1071,18 +1091,21 @@ def clean_netlist(netlist):
     netlist_d = [remove_enclosed_space(line) for line in netlist_c]
 
     # Remove space around assignments
-    netlist_e = [re.sub(" {1,}= {1,}", "=", line) for line in netlist_d]
+    netlist_e = [re.sub(" {,}= {,}", "=", line) for line in netlist_d]
+
+    # Remove space after comma
+    netlist_f = [re.sub(", {1,}", ",", line) for line in netlist_e]
 
     # Lowercase all letters unless .include statement
-    netlist_f = []
-    for line in netlist_e:
+    netlist_g = []
+    for line in netlist_f:
         if re.match("^.include.*", line):
-            netlist_f.append(line)
+            netlist_g.append(line)
         else:
-            netlist_f.append(line.lower())
+            netlist_g.append(line.lower())
 
     # netlist = "\n".join(netlist_f)
-    return [x.strip() for x in netlist_f]
+    return [x.strip() for x in netlist_g]
 
 
 def identify_linetype(line):

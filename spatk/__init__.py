@@ -1,4 +1,4 @@
-# SPATK - A spice netlist toolkit.
+# SPATK - A Spice Analysis Toolkit.
 # Copyright (C) 2023 Christoph Weiser
 #
 # This program is free software: you can redistribute it and/or modify
