@@ -781,12 +781,13 @@ class Circuit():
             ofile.write(self.netlist)
 
 
-    def filter(self, filt, uids=[]):
+    def filter(self, key, val, uids=[]):
         """ Filter circuit elements by regex.
 
         Required inputs:
         ----------------
-        filt (tuple):       Pair of property and regex
+        key (str):          property to filter
+        val (str):          regex for filter
 
         Required inputs:
         ----------------
@@ -795,10 +796,10 @@ class Circuit():
 
         Returns
         ----------------
-        uids (list):     List of uid's that matches the
-                         criteria.
+        uids (list):        List of uid's that matches the
+                            criteria.
         """
-        return filter(self.circuit, filt, uids)
+        return filter(self.circuit, key, val, uids)
 
 
     def apply(self, func, uids, **kwargs):
@@ -905,13 +906,14 @@ def count_nets(circuit):
     return nets
 
 
-def filter(circuit, filt, uids=[]):
+def filter(circuit, key, val, uids=[]):
     """ Filter circuit elements by regex.
 
     Required inputs:
     ----------------
     circuit (Circuit):  Circuit object to filter.
-    filt (tuple):       Pair of property and regex
+    key (str):          property to filter
+    val (str):          regex for filter
 
 
     Required inputs:
@@ -924,7 +926,6 @@ def filter(circuit, filt, uids=[]):
     matches (list):     List of uid's that matches the
                         criteria.
     """
-    key = filt[0]; val = filt[1]
     if uids:
         iterable = uids
     else:
