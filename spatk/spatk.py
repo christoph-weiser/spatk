@@ -124,10 +124,11 @@ class Component_4T(Component):
 
 
 class Statement(Default):
+    elemtype = "statement"
     def __init__(self, *args):
         super(Statement, self).__init__(*args)
         self.elements = self.line.split(" ")
-        self.type = "statement"
+        self.type = self.elemtype
 
     def __str__(self):
         return " ".join(self.elements)
@@ -139,21 +140,24 @@ class Statement(Default):
 #----------------------------------------------------------------------
 
 class Comment(Default):
+    elemtype = "comment"
     def __init__(self, *args):
         super(Comment, self).__init__(*args)
-        self.type = "comment"
+        self.type = self.elemtype
 
 
 class Model(Statement):
+    elemtype = "model"
     def __init__(self, *args):
         super(Model, self).__init__(*args)
-        self.type = "model"
+        self.type = self.elemtype
 
 
 class Include(Statement):
+    elemtype = "include"
     def __init__(self, *args):
         super(Include, self).__init__(*args)
-        self.type = "include"
+        self.type = self.elemtype
 
     @property
     def filename(self):
@@ -165,9 +169,10 @@ class Include(Statement):
         
 
 class Library(Statement):
+    elemtype = "library"
     def __init__(self, *args):
         super(Library, self).__init__(*args)
-        self.type = "library"
+        self.type = self.elemtype
         if len(self.elements) == 2:
             self._hasfilename = False
         else:
@@ -201,21 +206,24 @@ class Library(Statement):
 
 
 class Option(Statement):
+    elemtype = "option"
     def __init__(self, *args):
         super(Option, self).__init__(*args)
-        self.type = "option"
+        self.type = self.elemtype
 
 
 class Function(Statement):
+    elemtype = "function"
     def __init__(self, *args):
         super(Function, self).__init__(*args)
-        self.type = "function"
+        self.type = self.elemtype
 
 
 class Param(Statement):
+    elemtype = "param"
     def __init__(self, *args):
         super(Param, self).__init__(*args)
-        self.type = "param"
+        self.type = self.elemtype
         self.value = None
 
     @property
@@ -238,28 +246,32 @@ class Param(Statement):
 
 
 class Global(Statement):
+    elemtype = "global"
     def __init__(self, *args):
         super(Global, self).__init__(*args)
-        self.type = "global"
+        self.type = self.elemtype
 
 
 class Xspice(Default):
+    elemtype = "xspice"
     def __init__(self, *args):
         super(Xspice, self).__init__(*args)
-        self.type = "xspice"
+        self.type = self.elemtype
 
 
 class Behavioral_source(Default):
+    elemtype = "behavioral"
     def __init__(self, *args):
         super(Behavioral_source, self).__init__(*args)
-        self.type = "behavioral source"
+        self.type = self.elemtype
 
 
 class Capacitor(Component_2T):
+    elemtype = "capacitor"
     def __init__(self, *args):
         super(Capacitor, self).__init__(*args)
         self.parse(self.elements)
-        self.type = "capacitor"
+        self.type = self.elemtype
 
     @property
     def capacitance(self):
@@ -271,10 +283,11 @@ class Capacitor(Component_2T):
 
 
 class Diode(Component_2T):
+    elemtype = "diode"
     def __init__(self, *args):
         super(Diode, self).__init__(*args)
         self.parse(self.elements)
-        self.type = "diode"
+        self.type = self.elemtype
 
     @property
     def model(self):
@@ -286,17 +299,19 @@ class Diode(Component_2T):
 
 
 class Vcvs(Component_4T):
+    elemtype = "vcvs"
     def __init__(self, *args):
         super(Vcvs, self).__init__(*args)
         self.parse(self.elements)
-        self.type = "vcvs"
+        self.type = self.elemtype
 
 
 class Cccs(Component_2T):
+    elemtype = "cccs"
     def __init__(self, *args):
         super(Cccs, self).__init__(*args)
         self.parse(self.elements)
-        self.type = "Cccs"
+        self.type = self.elemtype
         self.value = self.elements[4]
 
     @property
@@ -309,17 +324,20 @@ class Cccs(Component_2T):
 
 
 class Vccs(Component_4T):
+    elemtype = "vccs"
     def __init__(self, *args):
         super(Vccs, self).__init__(*args)
         self.parse(self.elements)
-        self.type = "vccs"
+        self.type = self.elemtype
 
 
 class Ccvs(Component_2T):
+
+    elemtype = "ccvs"
     def __init__(self, *args):
         super(Ccvs, self).__init__(*args)
         self.parse(self.elements)
-        self.type = "ccvs"
+        self.type = self.elemtype
         self.value = self.elements[4]
 
     @property
@@ -332,10 +350,11 @@ class Ccvs(Component_2T):
 
 
 class Isource(Component_2T):
+    elemtype = "isource"
     def __init__(self, *args):
         super(Isource, self).__init__(*args)
         self.parse(self.elements)
-        self.type = "isource"
+        self.type = self.elemtype
 
     @property
     def current(self):
@@ -348,10 +367,11 @@ class Isource(Component_2T):
 
 
 class Jfet(Component_3T):
+    elemtype = "jfet"
     def __init__(self, *args):
         super(Jfet, self).__init__(*args)
         self.parse(self.elements)
-        self.type = "jfet"
+        self.type = self.elemtype
 
     @property
     def model(self):
@@ -363,10 +383,11 @@ class Jfet(Component_3T):
 
 
 class Inductor(Component_2T):
+    elemtype = "inductor"
     def __init__(self, *args):
         super(Inductor, self).__init__(*args)
         self.parse(self.elements)
-        self.type = "inductor"
+        self.type = self.elemtype
 
     @property
     def inductance(self):
@@ -379,10 +400,11 @@ class Inductor(Component_2T):
 
 
 class Mosfet(Component_4T):
+    elemtype = "mosfet"
     def __init__(self, *args):
         super(Mosfet, self).__init__(*args)
         self.parse(self.elements)
-        self.type = "mosfet"
+        self.type = self.elemtype
 
     @property
     def model(self):
@@ -394,22 +416,25 @@ class Mosfet(Component_4T):
 
 
 class Numerical_device_gss(Default):
+    elemtype = "numerical_device_gss"
     def __init__(self, *args):
         super(Numerical_device_gss, self).__init__(*args)
-        self.type = "numerical device gss"
+        self.type = self.elemtype
 
 
 class Lossy_transmission_line(Component_4T):
+    elemtype = "lossy_transmission_line"
     def __init__(self, *args):
         super(Lossy_transmission_line, self).__init__(*args)
         self.parse(self.elements)
-        self.type = "lossy transmission line"
+        self.type = self.elemtype
 
 
 class Bjt(Component):
+    elemtype = "bjt"
     def __init__(self, *args):
         super(Bjt, self).__init__(*args)
-        self.type = "bjt"
+        self.type = self.elemtype
 
         for i, elem in enumerate(self.elements):
             if "=" in elem:
@@ -466,10 +491,11 @@ class Bjt(Component):
 
 
 class Resistor(Component_2T):
+    elemtype = "resistor"
     def __init__(self, *args):
         super(Resistor, self).__init__(*args)
         self.parse(self.elements)
-        self.type = "resistor"
+        self.type = self.elemtype
 
     @property
     def resistance(self):
@@ -482,31 +508,35 @@ class Resistor(Component_2T):
 
 
 class Vcsw(Component_4T):
+    elemtype = "vcsw"
     def __init__(self, *args):
         super(Vcsw, self).__init__(*args)
         self.parse(self.elements)
-        self.type = "vcsw"
+        self.type = self.elemtype
 
 
 class Lossless_transmission_line(Component_4T):
+    elemtype = "lossless_transmission_line"
     def __init__(self, *args):
         super(Lossless_transmission_line, self).__init__(*args)
         self.parse(self.elements)
-        self.type = "lossless transmission line"
+        self.type = self.elemtype
 
 
 class Uniformely_distributed_rc_line(Component_3T):
+    elemtype = "uniformely_distributed_rc_line"
     def __init__(self, *args):
         super(Uniformely_distributed_rc_line, self).__init__(*args)
         self.parse(self.elements)
-        self.type = "uniformely distributed rc line"
+        self.type = self.elemtype
 
 
 class Vsource(Component_2T):
+    elemtype = "vsource"
     def __init__(self, *args):
         super(Vsource, self).__init__(*args)
         self.parse(self.elements)
-        self.type = "vsource"
+        self.type = self.elemtype
 
     @property
     def voltage(self):
@@ -518,33 +548,37 @@ class Vsource(Component_2T):
 
 
 class Icsw(Component_2T):
+    elemtype = "icsw"
     def __init__(self, *args):
         super(Icsw, self).__init__(*args)
         self.parse(self.elements)
-        self.type = "icsw"
+        self.type = self.elemtype
 
 
 class Subckt(Component):
+    elemtype = "subckt"
     def __init__(self, *args):
         super(Subckt, self).__init__(*args)
-        self.type = "subckt"
+        self.type = self.elemtype
 
     def __str__(self):
         return " ".join(self.elements)
 
 
 class Single_lossy_transmission_line(Component_4T):
+    elemtype = "single_lossy_transmission_line"
     def __init__(self, *args):
         super(Single_lossy_transmission_line, self).__init__(*args)
         self.parse(self.elements)
-        self.type = "single lossy transmission line"
+        self.type = self.elemtype
 
 
 class Mesfet(Component_3T):
+    elemtype = "mesfet"
     def __init__(self, *args):
         super(Mesfet, self).__init__(*args)
         self.parse(self.elements)
-        self.type = "mesfet"
+        self.type = self.elemtype
 
     @property
     def model(self):
@@ -602,7 +636,7 @@ ELEMENTMAP = {"*":          Comment,
 # Circuit Class
 #--------------------------------------------------------------------------------
 
-class Circuit():
+class Circuit:
     """ Circuit represents a SPICE netlist.
 
     Required inputs:
@@ -637,6 +671,18 @@ class Circuit():
         self.parsed_circuit = self.parse(self._netlist)
         self.circuit = copy.deepcopy(self.parsed_circuit)
         self._synthesize()
+
+        for elem in ELEMENTMAP.values():
+            if elem:
+                setattr(self, elem.elemtype,  self._attr(elem))
+
+
+    def _attr(self, elemtype):
+        values = []
+        for uid in self.circuit:
+            if isinstance(self.circuit[uid], elemtype):
+                values.append(self.circuit[uid])
+        return values
 
 
     def __str__(self):
@@ -695,7 +741,6 @@ class Circuit():
         hierarchy = collections.deque()
         hierarchy.append("root")
 
-        # regex_nreq      = re.compile("^$|^\.end$|^\s*\*")
         regex_nreq        = re.compile("^$|^\.end$")
         reqex_subckt_s    = re.compile("^.subckt*") 
         reqex_subckt_e    = re.compile("^.ends.*") 
