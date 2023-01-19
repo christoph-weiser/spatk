@@ -634,7 +634,9 @@ class Circuit:
                 self._netlist = read_netlist(netlist)
             else:
                 self.name = "Netlist"
-                self._netlist = netlist
+                self._netlist = clean_netlist(netlist)
+
+
         else:
             self.name = "Netlist"
             self._netlist = []
@@ -1119,7 +1121,6 @@ def clean_netlist(netlist):
         else:
             netlist_g.append(line.lower())
 
-    # netlist = "\n".join(netlist_f)
     return [x.strip() for x in netlist_g]
 
 
