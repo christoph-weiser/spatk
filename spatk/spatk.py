@@ -1077,6 +1077,16 @@ def clean_netlist(netlist):
     makes sense.
     """
 
+    # regex_ignore      = re.compile("^\+\s*$|^\s{,}$") # keeps space
+    regex_ignore        = re.compile("^\+\s*$|^\s{,}$|^\*.*$")
+    regex_eolcomment    = re.compile("\$.*")
+    regex_contline      = re.compile("^\+")
+    regex_contlin_ws    = re.compile("^\+\s{,}")
+    regex_space         = re.compile("\t| {1,}")
+    regex_assign_space  = re.compile(" {,}= {,}")
+    regex_comma_space   = re.compile(", {1,}")
+    regex_include       = re.compile("^.include.*")
+
     if isinstance(netlist, str):
         netlist = netlist.split("\n")
 
@@ -1086,37 +1096,36 @@ def clean_netlist(netlist):
     # and comments.
     netlist_a0 = []
     for line in netlist:
-        if not re.match("^\+\s*$|^\s{,}$|^\*.*$",line):
-        # if not re.match("^\+\s*$|^\s{,}$",line): # Keep comments
+        if not re.match(regex_ignore, line):
             netlist_a0.append(line)
 
     # Remove end of line comments
-    netlist_a = [re.sub("\$.*", "", line) for line in netlist_a0]
+    netlist_a = [re.sub(regex_eolcomment, "", line) for line in netlist_a0]
 
     # Combine split lines back to one
     netlist_b = []
     for line in netlist_a:
-        if re.match("^\+",line):
-            netlist_b[-1] = netlist_b[-1] + re.sub("^\+\s{,}", " ", line)
+        if re.match(regex_contline, line):
+            netlist_b[-1] = netlist_b[-1] + re.sub(regex_contlin_ws, " ", line)
         else:
             netlist_b.append(line)
 
     # Unify Whitespace
-    netlist_c = [re.sub("\t| {1,}", " ", line) for line in netlist_b]
+    netlist_c = [re.sub(regex_space, " ", line) for line in netlist_b]
 
     # Remove whitespace inside expression
     netlist_d = [remove_enclosed_space(line) for line in netlist_c]
 
     # Remove space around assignments
-    netlist_e = [re.sub(" {,}= {,}", "=", line) for line in netlist_d]
+    netlist_e = [re.sub(regex_assign_space, "=", line) for line in netlist_d]
 
     # Remove space after comma
-    netlist_f = [re.sub(", {1,}", ",", line) for line in netlist_e]
+    netlist_f = [re.sub(regex_comma_space, ",", line) for line in netlist_e]
 
     # Lowercase all letters unless .include statement
     netlist_g = []
     for line in netlist_f:
-        if re.match("^.include.*", line):
+        if re.match(regex_include, line):
             netlist_g.append(line)
         else:
             netlist_g.append(line.lower())
