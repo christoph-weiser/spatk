@@ -31,7 +31,6 @@ class Default():
         self.uid = uid
         self.n = n
         self.instance = None
-        self.type = (__class__.__name__).lower()
         self.ports = dict()
         self._value = None
 
@@ -40,6 +39,10 @@ class Default():
 
     def parse(self, line):
         pass
+
+    @property
+    def type(self):
+        return (self.__class__.__name__).lower()
 
     @property
     def value(self):
@@ -56,6 +59,9 @@ class Component(Default):
         self.elements = self.line.split(" ")
         self.instance = self.elements[0]
 
+    def __str__(self):
+        return " ".join(self.elements)
+
 
 class Component_2T(Component):
     def __init__(self, *args):
@@ -69,11 +75,12 @@ class Component_2T(Component):
         self.args  = elements[4:]
 
     def __str__(self):
-        l = [self.instance,
-             self.ports["n1"],
+        l = [self.instance, 
+             self.ports["n1"], 
              self.ports["n2"],
-             self.value,
-             " ".join(self.args)]
+             self.value]
+        if self.args:
+            l.append(" ".join(self.args))
         return " ".join(l)
 
 
@@ -94,8 +101,9 @@ class Component_3T(Component):
              self.ports["n1"],
              self.ports["n2"],
              self.ports["n3"],
-             self.value,
-             " ".join(self.args)]
+             self.value]
+        if self.args:
+            l.append(" ".join(self.args))
         return " ".join(l)
 
 
@@ -118,8 +126,9 @@ class Component_4T(Component):
              self.ports["n2"],
              self.ports["n3"],
              self.ports["n4"],
-             self.value,
-             " ".join(self.args)]
+             self.value]
+        if self.args:
+            l.append(" ".join(self.args))
         return " ".join(l)
 
 
@@ -207,7 +216,6 @@ class Function(Statement):
 class Param(Statement):
     def __init__(self, *args):
         super(Param, self).__init__(*args)
-        # self.value = None
 
     @property
     def value(self):
@@ -281,15 +289,31 @@ class Cccs(Component_2T):
     def __init__(self, *args):
         super(Cccs, self).__init__(*args)
         self.parse(self.elements)
-        self.value = self.elements[4]
 
     @property
     def vname(self):
-        return self.self.elements[3]
+        return self.elements[3]
 
     @vname.setter
     def vname(self, arg):
         self.elements[3] = arg
+
+    def parse(self, elements):
+        self.ports = {"n1": elements[1],
+                      "n2": elements[2]}
+        self.vname = elements[3]
+        self.value = elements[4]
+        self.args  = elements[5:]
+
+    def __str__(self):
+        l = [self.instance, 
+             self.ports["n1"], 
+             self.ports["n2"],
+             self.vname,
+             self.value]
+        if self.args:
+            l.append(" ".join(self.args))
+        return " ".join(l)
 
 
 class Vccs(Component_4T):
@@ -303,15 +327,31 @@ class Ccvs(Component_2T):
     def __init__(self, *args):
         super(Ccvs, self).__init__(*args)
         self.parse(self.elements)
-        self.value = self.elements[4]
 
     @property
     def vname(self):
-        return self.self.elements[3]
+        return self.elements[3]
 
     @vname.setter
     def vname(self, arg):
         self.elements[3] = arg
+
+    def parse(self, elements):
+        self.ports = {"n1": elements[1],
+                      "n2": elements[2]}
+        self.vname = elements[3]
+        self.value = elements[4]
+        self.args  = elements[5:]
+
+    def __str__(self):
+        l = [self.instance, 
+             self.ports["n1"], 
+             self.ports["n2"],
+             self.vname,
+             self.value]
+        if self.args:
+            l.append(" ".join(self.args))
+        return " ".join(l)
 
 
 class Isource(Component_2T):
@@ -390,11 +430,12 @@ class Bjt(Component):
         for i, elem in enumerate(self.elements):
             if "=" in elem:
                 break
-        if i == 5:
+        if i == 4:
             self.subs_terminal = False
-        elif i == 6:
+        elif i == 5:
             self.subs_terminal = True
         else:
+            print(i)
             raise Exception("Error could not identify BJT device")
         self.parse(self.elements)
 
@@ -429,15 +470,15 @@ class Bjt(Component):
                  self.ports["n2"],
                  self.ports["n3"],
                  self.ports["n4"],
-                 self.value,
-                 " ".join(self.args)]
+                 self.value]
         else:
             l = [self.instance,
                  self.ports["n1"],
                  self.ports["n2"],
                  self.ports["n3"],
-                 self.value,
-                 " ".join(self.args)]
+                 self.value]
+        if self.args:
+            l.append(" ".join(self.args))
         return " ".join(l)
 
 
@@ -453,7 +494,6 @@ class Resistor(Component_2T):
     @resistance.setter
     def resistance(self, arg):
         self.value = arg
-
 
 
 class Vcsw(Component_4T):
@@ -498,8 +538,6 @@ class Subckt(Component):
     def __init__(self, *args):
         super(Subckt, self).__init__(*args)
 
-    def __str__(self):
-        return " ".join(self.elements)
 
 
 class Single_lossy_transmission_line(Component_4T):
