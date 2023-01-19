@@ -33,13 +33,21 @@ class Default():
         self.instance = None
         self.type = (__class__.__name__).lower()
         self.ports = dict()
-        self.value = None
+        self._value = None
 
     def __str__(self):
         return self.line
 
     def parse(self, line):
         pass
+
+    @property
+    def value(self):
+        return self._value
+
+    @value.setter
+    def value(self, arg):
+        self._value = arg
 
 
 class Component(Default):
@@ -199,23 +207,23 @@ class Function(Statement):
 class Param(Statement):
     def __init__(self, *args):
         super(Param, self).__init__(*args)
-        self.value = None
+        # self.value = None
 
     @property
-    def parvalue(self):
+    def value(self):
         return self.elements[1].split("=", 1)[1]
 
-    @parvalue.setter
-    def parvalue(self, arg):
+    @value.setter
+    def value(self, arg):
         s = self.elements[1].split("=", 1)
         self.elements[1] = "{}={}".format(s[0], arg) 
 
     @property
-    def parname(self):
+    def name(self):
         return self.elements[1].split("=", 1)[0]
 
-    @parname.setter
-    def parname(self, arg):
+    @name.setter
+    def name(self, arg):
         s = self.elements[1].split("=", 1)
         self.elements[1] = "{}={}".format(arg, s[1]) 
 
@@ -599,17 +607,8 @@ class Circuit:
 
         for elem in ELEMENTMAP.values():
             if elem:
-                # setattr(self, "{}s".format(elem.elemtype), self._attr(elem))
                 elemname = (elem.__name__).lower()
                 setattr(self, "{}s".format(elemname), self._attr(elem))
-
-
-    def _attr(self, elemtype):
-        values = []
-        for uid in self.circuit:
-            if isinstance(self.circuit[uid], elemtype):
-                values.append(self.circuit[uid])
-        return values
 
 
     def __str__(self):
@@ -635,6 +634,14 @@ class Circuit:
 
     def __iter__(self):
         return iter(self.circuit.keys())
+
+
+    def _attr(self, elemtype):
+        values = []
+        for uid in self.circuit:
+            if isinstance(self.circuit[uid], elemtype):
+                values.append(self.circuit[uid])
+        return values
 
 
     @property
@@ -827,7 +834,6 @@ def dissect_param(line):
         if "=" in elem: 
             lines.append(".param {}".format(elem))
     return lines
-
 
 
 def touches(circuit, expr):
