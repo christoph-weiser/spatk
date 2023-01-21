@@ -317,7 +317,7 @@ class Diode(Component_2T):
         self.value = arg
 
 
-class Vcvs(Component_4T):
+class Vcvs(Component_2T):
     def __init__(self, *args):
         super(Vcvs, self).__init__(*args)
 
@@ -362,7 +362,7 @@ class Cccs(Component_2T):
         self._args._args = arg
 
 
-class Vccs(Component_4T):
+class Vccs(Component_2T):
     def __init__(self, *args):
         super(Vccs, self).__init__(*args)
 
