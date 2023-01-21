@@ -658,3 +658,57 @@ def test_module_mesfet():
 
 
 
+def test_circuit_init_list():
+    netlist = ["C1 neta netb 1e-12",
+               "R1 neta netb 1e3",
+               "R2 neta netc 10e3"]
+
+    cir  = sp.Circuit(netlist, is_filename=False)
+
+
+    netlist = [x.lower() for x in netlist]
+    netlist = [ "* Netlist\n" ] + netlist + [""]
+    net_in = "\n".join(netlist)
+
+    net_out = str(cir) 
+    assert(net_in == net_out)
+
+
+def test_circuit_init_str():
+    netlist = ["C1 neta netb 1e-12",
+               "R1 neta netb 1e3",
+               "R2 neta netc 10e3"]
+
+    netlist = "\n".join(netlist)
+
+    cir  = sp.Circuit(netlist, is_filename=False)
+
+
+    net_in = "* Netlist\n\n" + netlist.lower() + "\n"
+
+    net_out = str(cir) 
+
+    print(net_in)
+    print(net_out)
+    assert(net_in == net_out)
+
+
+
+# def test_circuit_add():
+#     netlist = ["C1 neta netb 1e-12"]
+#     cir = sp.Circuit(netlist, is_filename=False)
+
+#     netlist = ["R1 neta netb 1e3"]
+#     cir + netlist 
+
+    # netlist = [x.lower() for x in netlist]
+    # netlist = [ "* Netlist\n" ] + netlist + [""]
+    # net_in = "\n".join(netlist)
+
+    # net_out = str(cir) 
+    # assert(net_in == net_out)
+
+
+
+
+
