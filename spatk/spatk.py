@@ -481,12 +481,14 @@ class Bjt(Component):
 
         for i, elem in enumerate(self.elements):
             if "=" in elem:
+                i = i-1
                 break
         if i == 4:
             self.subs_terminal = False
         elif i == 5:
             self.subs_terminal = True
         else:
+            print(self.elements, i)
             raise Exception("Error could not identify BJT device")
         self.parse(self.elements)
 
