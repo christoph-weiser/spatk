@@ -72,6 +72,10 @@ class Component(Default):
     def __str__(self):
         return " ".join(self.elements)
 
+    def _assign_ports(self, elements):
+        return {"n"+str(i): p for i,p in enumerate(elements)}
+
+
 
 class Component_2T(Component):
     def __init__(self, *args):
@@ -81,15 +85,13 @@ class Component_2T(Component):
             setattr(self, "{}".format(k), self._args._args[k])
 
     def parse(self, elements):
-        self.ports = {"n1": elements[1],
-                      "n2": elements[2]}
+        self.ports = self._assign_ports(elements[1:3])
         self.value = elements[3]
         self._args = Args(elements[4:])
 
     def __str__(self):
-        l = [self.instance, 
-             self.ports["n1"], 
-             self.ports["n2"],
+        l = [self.instance,
+             *self.ports.values(),
              self.value]
         if self.args:
             l.append(str(self._args))
@@ -112,17 +114,13 @@ class Component_3T(Component):
             setattr(self, "{}".format(k), self._args._args[k])
 
     def parse(self, elements):
-        self.ports = {"n1": elements[1],
-                      "n2": elements[2],
-                      "n3": elements[3]}
+        self.ports = self._assign_ports(elements[1:4])
         self.value = elements[4]
         self._args = Args(elements[5:])
 
     def __str__(self):
         l = [self.instance,
-             self.ports["n1"],
-             self.ports["n2"],
-             self.ports["n3"],
+             *self.ports.values(),
              self.value]
         if self.args:
             l.append(str(self._args))
@@ -145,19 +143,13 @@ class Component_4T(Component):
             setattr(self, "{}".format(k), self._args._args[k])
 
     def parse(self, elements):
-        self.ports = {"n1": elements[1],
-                      "n2": elements[2],
-                      "n3": elements[3],
-                      "n4": elements[4]}
+        self.ports = self._assign_ports(elements[1:5])
         self.value = elements[5]
         self._args = Args(elements[6:])
 
     def __str__(self):
         l = [self.instance,
-             self.ports["n1"],
-             self.ports["n2"],
-             self.ports["n3"],
-             self.ports["n4"],
+             *self.ports.values(),
              self.value]
         if self.args:
             l.append(str(self._args))
@@ -190,6 +182,8 @@ class Comment(Default):
         super(Comment, self).__init__(*args)
 
 
+# TODO: a model has a well defined structure that
+#       can be parsed more detailed.
 class Model(Statement):
     def __init__(self, *args):
         super(Model, self).__init__(*args)
@@ -337,16 +331,14 @@ class Cccs(Component_2T):
         self.elements[3] = arg
 
     def parse(self, elements):
-        self.ports = {"n1": elements[1],
-                      "n2": elements[2]}
+        self.ports = self._assign_ports(elements[1:3])
         self.vname = elements[3]
         self.value = elements[4]
         self._args = Args(elements[5:])
 
     def __str__(self):
-        l = [self.instance, 
-             self.ports["n1"], 
-             self.ports["n2"],
+        l = [self.instance,
+             *self.ports.values(),
              self.vname,
              self.value]
         if self.args:
@@ -384,16 +376,14 @@ class Ccvs(Component_2T):
         self.elements[3] = arg
 
     def parse(self, elements):
-        self.ports = {"n1": elements[1],
-                      "n2": elements[2]}
+        self.ports = self._assign_ports(elements[1:3])
         self.vname = elements[3]
         self.value = elements[4]
         self._args = Args(elements[5:])
 
     def __str__(self):
-        l = [self.instance, 
-             self.ports["n1"], 
-             self.ports["n2"],
+        l = [self.instance,
+             *self.ports.values(),
              self.vname,
              self.value]
         if self.args:
@@ -502,34 +492,18 @@ class Bjt(Component):
 
     def parse(self, elements):
         if self.subs_terminal:
-            self.ports = {"n1": elements[1],
-                          "n2": elements[2],
-                          "n3": elements[3],
-                          "n4": elements[4]}
+            self.ports = self._assign_ports(elements[1:5])
             self.value = elements[5]
             self.args  = elements[6:]
         else:
-            self.ports = {"n1": elements[1],
-                          "n2": elements[2],
-                          "n3": elements[3]}
+            self.ports = self._assign_ports(elements[1:4])
             self.value = elements[4]
             self.args  = elements[5:]
 
-
     def __str__(self):
-        if self.subs_terminal:
-            l = [self.instance,
-                 self.ports["n1"],
-                 self.ports["n2"],
-                 self.ports["n3"],
-                 self.ports["n4"],
-                 self.value]
-        else:
-            l = [self.instance,
-                 self.ports["n1"],
-                 self.ports["n2"],
-                 self.ports["n3"],
-                 self.value]
+        l = [self.instance,
+             *self.ports.values(),
+             self.value]
         if self.args:
             l.append(" ".join(self.args))
         return " ".join(l)
