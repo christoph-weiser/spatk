@@ -24,6 +24,16 @@ import collections
 # Generic Element Classes
 #----------------------------------------------------------------------
 
+class Args:
+    def __init__(self, args):
+        self._args = unpack_args(args)
+        for k in self._args.keys():
+            setattr(self, "{}".format(k), self._args[k])
+
+    def __str__(self):
+        return " ".join(repack_args(self._args))
+
+
 class Default():
     def __init__(self, line, location, n, uid):
         self.line = line
@@ -67,12 +77,14 @@ class Component_2T(Component):
     def __init__(self, *args):
         super(Component_2T, self).__init__(*args)
         self.parse(self.elements)
+        for k in self._args._args.keys():
+            setattr(self, "{}".format(k), self._args._args[k])
 
     def parse(self, elements):
         self.ports = {"n1": elements[1],
                       "n2": elements[2]}
         self.value = elements[3]
-        self.args  = elements[4:]
+        self._args = Args(elements[4:])
 
     def __str__(self):
         l = [self.instance, 
@@ -80,21 +92,31 @@ class Component_2T(Component):
              self.ports["n2"],
              self.value]
         if self.args:
-            l.append(" ".join(self.args))
+            l.append(str(self._args))
         return " ".join(l)
+
+    @property
+    def args(self):
+        return self._args._args
+
+    @args.setter
+    def args(self, arg):
+        self._args._args = arg
 
 
 class Component_3T(Component):
     def __init__(self, *args):
         super(Component_3T, self).__init__(*args)
         self.parse(self.elements)
+        for k in self._args._args.keys():
+            setattr(self, "{}".format(k), self._args._args[k])
 
     def parse(self, elements):
         self.ports = {"n1": elements[1],
                       "n2": elements[2],
                       "n3": elements[3]}
         self.value = elements[4]
-        self.args  = elements[5:]
+        self._args = Args(elements[5:])
 
     def __str__(self):
         l = [self.instance,
@@ -103,14 +125,24 @@ class Component_3T(Component):
              self.ports["n3"],
              self.value]
         if self.args:
-            l.append(" ".join(self.args))
+            l.append(str(self._args))
         return " ".join(l)
+
+    @property
+    def args(self):
+        return self._args._args
+
+    @args.setter
+    def args(self, arg):
+        self._args._args = arg
 
 
 class Component_4T(Component):
     def __init__(self, *args):
         super(Component_4T, self).__init__(*args)
         self.parse(self.elements)
+        for k in self._args._args.keys():
+            setattr(self, "{}".format(k), self._args._args[k])
 
     def parse(self, elements):
         self.ports = {"n1": elements[1],
@@ -118,7 +150,7 @@ class Component_4T(Component):
                       "n3": elements[3],
                       "n4": elements[4]}
         self.value = elements[5]
-        self.args  = elements[6:]
+        self._args = Args(elements[6:])
 
     def __str__(self):
         l = [self.instance,
@@ -128,8 +160,16 @@ class Component_4T(Component):
              self.ports["n4"],
              self.value]
         if self.args:
-            l.append(" ".join(self.args))
+            l.append(str(self._args))
         return " ".join(l)
+
+    @property
+    def args(self):
+        return self._args._args
+
+    @args.setter
+    def args(self, arg):
+        self._args._args = arg
 
 
 class Statement(Default):
@@ -254,7 +294,6 @@ class Behavioral_source(Default):
 class Capacitor(Component_2T):
     def __init__(self, *args):
         super(Capacitor, self).__init__(*args)
-        self.parse(self.elements)
 
     @property
     def capacitance(self):
@@ -268,7 +307,6 @@ class Capacitor(Component_2T):
 class Diode(Component_2T):
     def __init__(self, *args):
         super(Diode, self).__init__(*args)
-        self.parse(self.elements)
 
     @property
     def model(self):
@@ -282,13 +320,13 @@ class Diode(Component_2T):
 class Vcvs(Component_4T):
     def __init__(self, *args):
         super(Vcvs, self).__init__(*args)
-        self.parse(self.elements)
 
 
 class Cccs(Component_2T):
     def __init__(self, *args):
         super(Cccs, self).__init__(*args)
-        self.parse(self.elements)
+        for k in self._args._args.keys():
+            setattr(self, "{}".format(k), self._args._args[k])
 
     @property
     def vname(self):
@@ -303,7 +341,7 @@ class Cccs(Component_2T):
                       "n2": elements[2]}
         self.vname = elements[3]
         self.value = elements[4]
-        self.args  = elements[5:]
+        self._args = Args(elements[5:])
 
     def __str__(self):
         l = [self.instance, 
@@ -315,11 +353,18 @@ class Cccs(Component_2T):
             l.append(" ".join(self.args))
         return " ".join(l)
 
+    @property
+    def args(self):
+        return self._args._args
+
+    @args.setter
+    def args(self, arg):
+        self._args._args = arg
+
 
 class Vccs(Component_4T):
     def __init__(self, *args):
         super(Vccs, self).__init__(*args)
-        self.parse(self.elements)
 
 
 class Ccvs(Component_2T):
@@ -327,6 +372,8 @@ class Ccvs(Component_2T):
     def __init__(self, *args):
         super(Ccvs, self).__init__(*args)
         self.parse(self.elements)
+        for k in self._args._args.keys():
+            setattr(self, "{}".format(k), self._args._args[k])
 
     @property
     def vname(self):
@@ -341,7 +388,7 @@ class Ccvs(Component_2T):
                       "n2": elements[2]}
         self.vname = elements[3]
         self.value = elements[4]
-        self.args  = elements[5:]
+        self._args = Args(elements[5:])
 
     def __str__(self):
         l = [self.instance, 
@@ -353,11 +400,17 @@ class Ccvs(Component_2T):
             l.append(" ".join(self.args))
         return " ".join(l)
 
+    @property
+    def args(self):
+        return self._args._args
+
+    @args.setter
+    def args(self, arg):
+        self._args._args = arg
 
 class Isource(Component_2T):
     def __init__(self, *args):
         super(Isource, self).__init__(*args)
-        self.parse(self.elements)
 
     @property
     def current(self):
@@ -372,7 +425,6 @@ class Isource(Component_2T):
 class Jfet(Component_3T):
     def __init__(self, *args):
         super(Jfet, self).__init__(*args)
-        self.parse(self.elements)
 
     @property
     def model(self):
@@ -386,7 +438,6 @@ class Jfet(Component_3T):
 class Inductor(Component_2T):
     def __init__(self, *args):
         super(Inductor, self).__init__(*args)
-        self.parse(self.elements)
 
     @property
     def inductance(self):
@@ -398,10 +449,10 @@ class Inductor(Component_2T):
 
 
 
+
 class Mosfet(Component_4T):
     def __init__(self, *args):
         super(Mosfet, self).__init__(*args)
-        self.parse(self.elements)
 
     @property
     def model(self):
@@ -412,6 +463,8 @@ class Mosfet(Component_4T):
         self.value = arg
 
 
+
+
 class Numerical_device_gss(Default):
     def __init__(self, *args):
         super(Numerical_device_gss, self).__init__(*args)
@@ -420,7 +473,6 @@ class Numerical_device_gss(Default):
 class Lossy_transmission_line(Component_4T):
     def __init__(self, *args):
         super(Lossy_transmission_line, self).__init__(*args)
-        self.parse(self.elements)
 
 
 class Bjt(Component):
@@ -435,7 +487,6 @@ class Bjt(Component):
         elif i == 5:
             self.subs_terminal = True
         else:
-            print(i)
             raise Exception("Error could not identify BJT device")
         self.parse(self.elements)
 
@@ -485,7 +536,6 @@ class Bjt(Component):
 class Resistor(Component_2T):
     def __init__(self, *args):
         super(Resistor, self).__init__(*args)
-        self.parse(self.elements)
 
     @property
     def resistance(self):
@@ -499,25 +549,21 @@ class Resistor(Component_2T):
 class Vcsw(Component_4T):
     def __init__(self, *args):
         super(Vcsw, self).__init__(*args)
-        self.parse(self.elements)
 
 
 class Lossless_transmission_line(Component_4T):
     def __init__(self, *args):
         super(Lossless_transmission_line, self).__init__(*args)
-        self.parse(self.elements)
 
 
 class Uniformely_distributed_rc_line(Component_3T):
     def __init__(self, *args):
         super(Uniformely_distributed_rc_line, self).__init__(*args)
-        self.parse(self.elements)
 
 
 class Vsource(Component_2T):
     def __init__(self, *args):
         super(Vsource, self).__init__(*args)
-        self.parse(self.elements)
 
     @property
     def voltage(self):
@@ -531,7 +577,6 @@ class Vsource(Component_2T):
 class Icsw(Component_2T):
     def __init__(self, *args):
         super(Icsw, self).__init__(*args)
-        self.parse(self.elements)
 
 
 class Subckt(Component):
@@ -543,13 +588,11 @@ class Subckt(Component):
 class Single_lossy_transmission_line(Component_4T):
     def __init__(self, *args):
         super(Single_lossy_transmission_line, self).__init__(*args)
-        self.parse(self.elements)
 
 
 class Mesfet(Component_3T):
     def __init__(self, *args):
         super(Mesfet, self).__init__(*args)
-        self.parse(self.elements)
 
     @property
     def model(self):
