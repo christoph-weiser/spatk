@@ -878,7 +878,7 @@ class Circuit:
         nets(dict): dictionary with net, count pairs.
 
         """
-        return count_nets(self.circuit, expr)
+        return count_nets(self.circuit)
 
 
 def dissect_param(line):
