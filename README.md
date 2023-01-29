@@ -2,8 +2,7 @@
 
 Tools for handling and analyzing Spice netlist
 
-* Provides easy pythonic interface to netlist manipulation
-* Parses Complete SKY130 and GF180MCU PDK.
+* Provides an easy interface to netlist manipulation
 * Uses Python standard library only.
 * Easy to Extend. 
 
@@ -22,13 +21,13 @@ import spatk
 
 cir = spatk.Circuit("mynetlist.spice")
 
-devs = cir.filter("type", "mosfet")
-
-for k in devs:
-    print(cir[k].type, cir[k].model)
+for mos in cir.mosfets:
+    print(mos.model, mos.w)
 ``` 
 
+**output**:
+-----------
 ```
-mosfet pmos_3p3
-mosfet nmos_3p3
+pmos_3p3 1u
+nmos_3p3 1u
 ```
