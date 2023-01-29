@@ -25,8 +25,6 @@ for mos in cir.mosfets:
     print(mos.model, mos.w)
 ``` 
 
-**output**:
------------
 ```
 pmos_3p3 1u
 nmos_3p3 1u
