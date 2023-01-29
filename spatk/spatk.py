@@ -76,7 +76,6 @@ class Component(Default):
         return {"n"+str(i): p for i,p in enumerate(elements)}
 
 
-
 class Component_2T(Component):
     def __init__(self, *args):
         super(Component_2T, self).__init__(*args)
@@ -200,7 +199,7 @@ class Include(Statement):
     @filename.setter
     def filename(self, arg):
         self.elements[1] = arg
-        
+
 
 class Library(Statement):
     def __init__(self, *args):
@@ -258,7 +257,7 @@ class Param(Statement):
     @value.setter
     def value(self, arg):
         s = self.elements[1].split("=", 1)
-        self.elements[1] = "{}={}".format(s[0], arg) 
+        self.elements[1] = "{}={}".format(s[0], arg)
 
     @property
     def name(self):
@@ -267,7 +266,7 @@ class Param(Statement):
     @name.setter
     def name(self, arg):
         s = self.elements[1].split("=", 1)
-        self.elements[1] = "{}={}".format(arg, s[1]) 
+        self.elements[1] = "{}={}".format(arg, s[1])
 
 
 class Global(Statement):
@@ -438,8 +437,6 @@ class Inductor(Component_2T):
         self.value = arg
 
 
-
-
 class Mosfet(Component_4T):
     def __init__(self, *args):
         super(Mosfet, self).__init__(*args)
@@ -451,8 +448,6 @@ class Mosfet(Component_4T):
     @model.setter
     def model(self, arg):
         self.value = arg
-
-
 
 
 class Numerical_device_gss(Default):
@@ -735,10 +730,10 @@ class Circuit:
         hierarchy.append("root")
 
         regex_nreq        = re.compile("^$|^\.end$")
-        reqex_subckt_s    = re.compile("^.subckt*") 
-        reqex_subckt_e    = re.compile("^.ends.*") 
-        reqex_control_s   = re.compile("^.control") 
-        reqex_control_e   = re.compile("^.endc") 
+        reqex_subckt_s    = re.compile("^.subckt*")
+        reqex_subckt_e    = re.compile("^.ends.*")
+        reqex_control_s   = re.compile("^.control")
+        reqex_control_e   = re.compile("^.endc")
 
         n = 0
         for line in netlist:
@@ -890,7 +885,7 @@ def dissect_param(line):
     elements = line.split(" ")
     lines = []
     for i, elem in enumerate(elements):
-        if "=" in elem: 
+        if "=" in elem:
             lines.append(".param {}".format(elem))
     return lines
 
@@ -1229,7 +1224,7 @@ def remove_enclosed_space(string):
 
 
 def get_uid(s, i):
-    """ Create a uid. 
+    """ Create a uid.
 
     Required inputs:
     ----------------
