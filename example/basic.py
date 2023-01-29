@@ -1,6 +1,5 @@
 import spatk
 
-
 netlist = [ "* mynetlist.spice",
             "C1 vdd vss 1n",
             "R1 net1 net2 1k",
