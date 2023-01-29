@@ -17,6 +17,7 @@
 import pytest
 import spatk as sp
 
+
 def test_module_default():
     line = "A Default Line"
     loc  = "root"
@@ -72,7 +73,7 @@ def test_module_component_2t():
     assert(mod.value == "1e3")
     assert(str(mod) == line)
     assert(mod.elements == ["R1", "neta", "netb", "1e3"])
-    assert(list(mod.ports.items()) == [("n1", "neta"), ("n2", "netb")])
+    assert(list(mod.ports.items()) == [("n0", "neta"), ("n1", "netb")])
 
 
 def test_module_component_3t():
@@ -92,8 +93,7 @@ def test_module_component_3t():
     assert(mod.value == "model_3t")
     assert(str(mod) == line)
     assert(mod.elements == ["X1", "neta", "netb", "netc", "model_3t"])
-
-    assert(list(mod.ports.items()) == [("n1", "neta"), ("n2", "netb"), ("n3", "netc")])
+    assert(list(mod.ports.items()) == [("n0", "neta"), ("n1", "netb"), ("n2", "netc")])
 
 
 def test_module_component_4t():
@@ -114,7 +114,7 @@ def test_module_component_4t():
     assert(str(mod) == line)
     assert(mod.elements == ["X1", "neta", "netb", "netc", "netd", "model_4t"])
 
-    assert(list(mod.ports.items()) == [("n1", "neta"), ("n2", "netb"), ("n3", "netc"), ("n4", "netd")])
+    assert(list(mod.ports.items()) == [("n0", "neta"), ("n1", "netb"), ("n2", "netc"), ("n3", "netd")])
 
 
 def test_module_statement():
@@ -322,7 +322,7 @@ def test_module_capacitor():
     assert(mod.value == "10e-12")
     assert(str(mod) == line)
     assert(mod.elements == ["C1", "neta", "netb", "10e-12"])
-    assert(list(mod.ports.items()) == [("n1", "neta"), ("n2", "netb")])
+    assert(list(mod.ports.items()) == [("n0", "neta"), ("n1", "netb")])
     assert(mod.capacitance == "10e-12")
 
     mod.capacitance = "1e-12"
@@ -346,7 +346,7 @@ def test_module_diode():
     assert(mod.value == "dmod")
     assert(str(mod) == line)
     assert(mod.elements == ["D1", "neta", "netb", "dmod"])
-    assert(list(mod.ports.items()) == [("n1", "neta"), ("n2", "netb")])
+    assert(list(mod.ports.items()) == [("n0", "neta"), ("n1", "netb")])
     assert(mod.model == "dmod")
 
     mod.model = "dmod_test"
@@ -374,7 +374,7 @@ def test_module_cccs():
     assert(mod.value == "1")
     assert(str(mod) == line)
     assert(mod.elements == ["F1", "neta", "netb", "vname", "1"])
-    assert(list(mod.ports.items()) == [("n1", "neta"), ("n2", "netb")])
+    assert(list(mod.ports.items()) == [("n0", "neta"), ("n1", "netb")])
     assert(mod.vname == "vname")
 
     mod.vname = "vname_test"
@@ -405,7 +405,7 @@ def test_module_ccvs():
     assert(mod.value == "1")
     assert(str(mod) == line)
     assert(mod.elements == ["H1", "neta", "netb", "vname", "1"])
-    assert(list(mod.ports.items()) == [("n1", "neta"), ("n2", "netb")])
+    assert(list(mod.ports.items()) == [("n0", "neta"), ("n1", "netb")])
     assert(mod.vname == "vname")
 
     mod.vname = "vname_test"
@@ -432,7 +432,7 @@ def test_module_isource():
     assert(mod.value == "1e-3")
     assert(str(mod) == line)
     assert(mod.elements == ["I1", "neta", "netb", "1e-3"])
-    assert(list(mod.ports.items()) == [("n1", "neta"), ("n2", "netb")])
+    assert(list(mod.ports.items()) == [("n0", "neta"), ("n1", "netb")])
     assert(mod.current == "1e-3")
 
     mod.current = "1e-9"
@@ -456,7 +456,7 @@ def test_module_jfet():
     assert(mod.value == "jmodel")
     assert(str(mod) == line)
     assert(mod.elements == ["J1", "neta", "netb", "netc", "jmodel"])
-    assert(list(mod.ports.items()) == [("n1", "neta"), ("n2", "netb"), ("n3", "netc")])
+    assert(list(mod.ports.items()) == [("n0", "neta"), ("n1", "netb"), ("n2", "netc")])
     assert(mod.model == "jmodel")
 
     mod.model = "testmod"
@@ -480,7 +480,7 @@ def test_module_inductor():
     assert(mod.value == "1e-6")
     assert(str(mod) == line)
     assert(mod.elements == ["L1", "neta", "netb", "1e-6"])
-    assert(list(mod.ports.items()) == [("n1", "neta"), ("n2", "netb")])
+    assert(list(mod.ports.items()) == [("n0", "neta"), ("n1", "netb")])
     assert(mod.inductance == "1e-6")
 
     mod.inductance = "1e-9"
@@ -503,7 +503,7 @@ def test_module_mosfet():
     assert(mod.value == "mosmodel")
     assert(str(mod) == line)
     assert(mod.elements == ["M1", "neta", "netb", "netc", "netd", "mosmodel"])
-    assert(list(mod.ports.items()) == [("n1", "neta"), ("n2", "netb"), ("n3", "netc"), ("n4", "netd")])
+    assert(list(mod.ports.items()) == [("n0", "neta"), ("n1", "netb"), ("n2", "netc"), ("n3", "netd")])
     assert(mod.model == "mosmodel")
 
     mod.model = "test"
@@ -534,7 +534,7 @@ def test_module_bjt_3t():
     assert(mod.value == "bjtmodel")
     assert(str(mod) == line)
     assert(mod.elements == ["Q1", "neta", "netb", "netc", "bjtmodel"])
-    assert(list(mod.ports.items()) == [("n1", "neta"), ("n2", "netb"), ("n3", "netc") ])
+    assert(list(mod.ports.items()) == [("n0", "neta"), ("n1", "netb"), ("n2", "netc") ])
     assert(mod.model == "bjtmodel")
 
     mod.model = "test"
@@ -558,7 +558,7 @@ def test_module_bjt_4t():
     assert(mod.value == "bjtmodel")
     assert(str(mod) == line)
     assert(mod.elements == ["Q1", "neta", "netb", "netc", "netd", "bjtmodel"])
-    assert(list(mod.ports.items()) == [("n1", "neta"), ("n2", "netb"), ("n3", "netc"), ("n4", "netd") ])
+    assert(list(mod.ports.items()) == [("n0", "neta"), ("n1", "netb"), ("n2", "netc"), ("n3", "netd") ])
     assert(mod.model == "bjtmodel")
 
     mod.model = "test"
@@ -582,7 +582,7 @@ def test_module_resistor():
     assert(mod.value == "1e3")
     assert(str(mod) == line)
     assert(mod.elements == ["R1", "neta", "netb", "1e3"])
-    assert(list(mod.ports.items()) == [("n1", "neta"), ("n2", "netb")])
+    assert(list(mod.ports.items()) == [("n0", "neta"), ("n1", "netb")])
     assert(mod.resistance == "1e3")
 
     mod.resistance = "1e3"
@@ -616,7 +616,7 @@ def test_module_vsource():
     assert(mod.value == "1")
     assert(str(mod) == line)
     assert(mod.elements == ["V1", "neta", "netb", "1"])
-    assert(list(mod.ports.items()) == [("n1", "neta"), ("n2", "netb")])
+    assert(list(mod.ports.items()) == [("n0", "neta"), ("n1", "netb")])
     assert(mod.voltage == "1")
 
     mod.voltage = "10"
@@ -650,7 +650,7 @@ def test_module_mesfet():
     assert(mod.value == "mesmodel")
     assert(str(mod) == line)
     assert(mod.elements == ["Z1", "neta", "netb", "netc", "mesmodel"])
-    assert(list(mod.ports.items()) == [("n1", "neta"), ("n2", "netb"), ("n3", "netc")])
+    assert(list(mod.ports.items()) == [("n0", "neta"), ("n1", "netb"), ("n2", "netc")])
     assert(mod.model == "mesmodel")
 
     mod.model = "test"
@@ -691,24 +691,3 @@ def test_circuit_init_str():
     print(net_in)
     print(net_out)
     assert(net_in == net_out)
-
-
-
-# def test_circuit_add():
-#     netlist = ["C1 neta netb 1e-12"]
-#     cir = sp.Circuit(netlist, is_filename=False)
-
-#     netlist = ["R1 neta netb 1e3"]
-#     cir + netlist 
-
-    # netlist = [x.lower() for x in netlist]
-    # netlist = [ "* Netlist\n" ] + netlist + [""]
-    # net_in = "\n".join(netlist)
-
-    # net_out = str(cir) 
-    # assert(net_in == net_out)
-
-
-
-
-
