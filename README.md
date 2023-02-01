@@ -1,8 +1,8 @@
 # SPATK - Spice Analysis ToolKit
 
-Tools for handling and analyzing Spice netlist
+Tools for handling and analyzing Spice netlists
 
-* Provides an easy interface to netlist manipulation
+* Provides an easy interface to netlist manipulation.
 * Uses Python standard library only.
 * Easy to Extend. 
 
