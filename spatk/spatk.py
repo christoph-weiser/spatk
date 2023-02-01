@@ -882,6 +882,16 @@ class Circuit:
 
 
 def dissect_param(line):
+    """ Seperate combined param lines into multiple.
+
+    Required inputs:
+    ----------------
+    line (str):         parameter statement line.
+
+    Returns
+    ----------------
+    lines (list):       list of seperated parameters.
+    """
     elements = line.split(" ")
     lines = []
     for i, elem in enumerate(elements):
@@ -923,7 +933,6 @@ def count_nets(circuit):
     Returns
     ----------------
     nets(dict): dictionary with net, count pairs.
-
     """
     nets = {}
     for k,v in circuit.items():
