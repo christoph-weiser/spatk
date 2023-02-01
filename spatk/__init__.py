@@ -1,4 +1,4 @@
-# SPATK - A Spice Analysis Toolkit.
+# SPATK - Spice Analysis ToolKit
 # Copyright (C) 2023 Christoph Weiser
 #
 # This program is free software: you can redistribute it and/or modify
