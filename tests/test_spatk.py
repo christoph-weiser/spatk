@@ -17,7 +17,7 @@
 import pytest
 import spatk as sp
 
-cases = { 
+CASES = { 
 
 "default": 
 {
@@ -268,12 +268,97 @@ cases = {
     "ports"     : {"n0": "neta", "n1": "netb", "n2": "netc"},
     "model"     : "jmodel"
 },
-
-
-
-
-
-
+"inductor":
+{
+    "line"       : "L1 neta netb 1e-6",
+    "loc"        : "root",
+    "n"          : 1,
+    "uid"        : "testuid",
+    "mod"        : sp.Inductor,
+    "instance"   : "L1",
+    "type"       : "inductor",
+    "value"      : "1e-6",
+    "ports"      : {"n0": "neta", "n1": "netb"},
+    "inductance" : "1e-6"
+},
+"mosfet":
+{
+    "line"      : "M1 neta netb netc netd mosmodel",
+    "loc"       : "root",
+    "n"         : 1,
+    "uid"       : "testuid",
+    "mod"       : sp.Mosfet,
+    "instance"  : "M1",
+    "type"      : "mosfet",
+    "value"     : "mosmodel",
+    "ports"     : {"n0": "neta", "n1": "netb", "n2": "netc", "n3": "netd"},
+    "model"     : "mosmodel"
+},
+"bjt_3t":
+{
+    "line"      : "Q1 neta netb netc bjtmodel",
+    "loc"       : "root",
+    "n"         : 1,
+    "uid"       : "testuid",
+    "mod"       : sp.Bjt,
+    "instance"  : "Q1",
+    "type"      : "bjt",
+    "value"     : "bjtmodel",
+    "ports"     : {"n0": "neta", "n1": "netb", "n2": "netc"},
+    "model"     : "bjtmodel"
+},
+"bjt_4t":
+{
+    "line"      : "Q1 neta netb netc netd bjtmodel",
+    "loc"       : "root",
+    "n"         : 1,
+    "uid"       : "testuid",
+    "mod"       : sp.Bjt,
+    "instance"  : "Q1",
+    "type"      : "bjt",
+    "value"     : "bjtmodel",
+    "ports"     : {"n0": "neta", "n1": "netb", "n2": "netc", "n3": "netd"},
+    "model"     : "bjtmodel"
+},
+"resistor":
+{
+    "line"       : "R1 neta netb 1e3",
+    "loc"        : "root",
+    "n"          : 1,
+    "uid"        : "testuid",
+    "mod"        : sp.Resistor,
+    "instance"   : "R1",
+    "type"       : "resistor",
+    "value"      : "1e3",
+    "ports"      : {"n0": "neta", "n1": "netb"},
+    "resistance" : "1e3"
+},
+"vsource":
+{
+    "line"      : "V1 neta netb 1",
+    "loc"       : "root",
+    "n"         : 1,
+    "uid"       : "testuid",
+    "mod"       : sp.Vsource,
+    "instance"  : "V1",
+    "type"      : "vsource",
+    "value"     : "1",
+    "ports"     : {"n0": "neta", "n1": "netb"},
+    "voltage"   : "1"
+},
+"mesfet":
+{
+    "line"      : "Z1 neta netb netc mesmodel",
+    "loc"       : "root",
+    "n"         : 1,
+    "uid"       : "testuid",
+    "mod"       : sp.Mesfet,
+    "instance"  : "Z1",
+    "type"      : "mesfet",
+    "value"     : "mesmodel",
+    "ports"     : {"n0": "neta", "n1": "netb", "n2": "netc"},
+    "model"     : "mesmodel"
+},
 }
 
 
@@ -290,9 +375,9 @@ def create_module(case):
 
 def test_modules_common():
 
-    for k in cases.keys():
+    for k in CASES.keys():
 
-        case = cases[k]
+        case = CASES[k]
 
         mod = create_module(case)
 
@@ -315,7 +400,7 @@ def test_modules_common():
 
 
 def test_module_library():
-    case = cases["library"]
+    case = CASES["library"]
     mod = create_module(case)
     assert(mod.libname  == case["libname"])
     assert(mod.filename == case["filename"])
@@ -326,7 +411,7 @@ def test_module_library():
 
 
 def test_module_param():
-    case = cases["param"]
+    case = CASES["param"]
     mod = create_module(case)
     assert(mod.name  == case["name"])
     mod.name = "myname"
@@ -336,7 +421,7 @@ def test_module_param():
 
 
 def test_module_capacitance():
-    case = cases["capacitor"]
+    case = CASES["capacitor"]
     mod = create_module(case)
     assert(mod.capacitance  == case["capacitance"])
     mod.capacitance = "myval"
@@ -344,7 +429,7 @@ def test_module_capacitance():
 
 
 def test_module_diode():
-    case = cases["diode"]
+    case = CASES["diode"]
     mod = create_module(case)
 
     assert(mod.model == case["model"])
@@ -353,7 +438,7 @@ def test_module_diode():
 
 
 def test_module_cccs():
-    case = cases["cccs"]
+    case = CASES["cccs"]
     mod = create_module(case)
 
     assert(mod.vname == case["vname"])
@@ -364,7 +449,7 @@ def test_module_cccs():
 
 
 def test_module_ccvs():
-    case = cases["ccvs"]
+    case = CASES["ccvs"]
     mod = create_module(case)
 
     assert(mod.vname == case["vname"])
@@ -375,7 +460,7 @@ def test_module_ccvs():
 
 
 def test_module_isource():
-    case = cases["isource"]
+    case = CASES["isource"]
     mod = create_module(case)
 
     assert(mod.current == case["current"])
@@ -384,260 +469,156 @@ def test_module_isource():
 
 
 def test_module_jfet():
-    case = cases["jfet"]
+    case = CASES["jfet"]
     mod = create_module(case)
 
     assert(mod.model == case["model"])
-
     mod.model = "testmod"
     assert(mod.model == "testmod")
 
 
-# def test_module_xspice():
-#     pass
+def test_module_inductor():
+    case = CASES["inductor"]
+    mod = create_module(case)
+
+    assert(mod.inductance == case["inductance"])
+    mod.inductance = "myval"
+    assert(mod.inductance == "myval")
 
 
-# def test_module_behavioral_source():
-#     pass
+def test_module_mosfet():
+    case = CASES["mosfet"]
+    mod = create_module(case)
+
+    assert(mod.model == "mosmodel")
+    mod.model = "testmod"
+    assert(mod.model == "testmod")
 
 
-# def test_module_vcvs():
-#     pass
+def test_module_bjt_3t():
+    case = CASES["bjt_3t"]
+    mod = create_module(case)
+
+    assert(mod.model == case["model"])
+    mod.model = "testmod"
+    assert(mod.model == "testmod")
 
 
-# def test_module_vccs():
-#     pass
+def test_module_bjt_4t():
+    case = CASES["bjt_4t"]
+    mod = create_module(case)
+
+    assert(mod.model == case["model"])
+    mod.model = "testmod"
+    assert(mod.model == "testmod")
 
 
+def test_module_resistor():
+    case = CASES["resistor"]
+    mod = create_module(case)
+
+    assert(mod.resistance == case["resistance"])
+    mod.resistance = "myval"
+    assert(mod.resistance == "myval")
 
 
+def test_module_vsource():
+    case = CASES["vsource"]
+    mod = create_module(case)
+
+    assert(mod.voltage == case["voltage"])
+    mod.voltage = "myvar"
+    assert(mod.voltage == "myvar")
 
 
-# def test_module_inductor():
-#     line = "L1 neta netb 1e-6"
-#     loc  = "root"
-#     n    = 1
-#     uid  = "testuid"
-#     mod  = sp.Inductor(line, loc, n, uid)
+def test_module_mesfet():
+    case = CASES["mesfet"]
+    mod = create_module(case)
 
-#     assert(mod.line == line)
-#     assert(mod.location == loc)
-#     assert(mod.uid == uid)
-#     assert(mod.n == n)
-#     assert(mod.instance == "L1")
-#     assert(mod.type == "inductor")
-#     assert(isinstance(mod.ports, dict))
-#     assert(mod.value == "1e-6")
-#     assert(str(mod) == line)
-#     assert(mod.elements == ["L1", "neta", "netb", "1e-6"])
-#     assert(list(mod.ports.items()) == [("n0", "neta"), ("n1", "netb")])
-#     assert(mod.inductance == "1e-6")
-
-#     mod.inductance = "1e-9"
-#     assert(mod.inductance == "1e-9")
-
-# def test_module_mosfet():
-#     line = "M1 neta netb netc netd mosmodel"
-#     loc  = "root"
-#     n    = 1
-#     uid  = "testuid"
-#     mod  = sp.Mosfet(line, loc, n, uid)
-
-#     assert(mod.line == line)
-#     assert(mod.location == loc)
-#     assert(mod.uid == uid)
-#     assert(mod.n == n)
-#     assert(mod.instance == "M1")
-#     assert(mod.type == "mosfet")
-#     assert(isinstance(mod.ports, dict))
-#     assert(mod.value == "mosmodel")
-#     assert(str(mod) == line)
-#     assert(mod.elements == ["M1", "neta", "netb", "netc", "netd", "mosmodel"])
-#     assert(list(mod.ports.items()) == [("n0", "neta"), ("n1", "netb"), ("n2", "netc"), ("n3", "netd")])
-#     assert(mod.model == "mosmodel")
-
-#     mod.model = "test"
-#     assert(mod.model == "test")
+    assert(mod.model == "mesmodel")
+    mod.model = "testmod"
+    assert(mod.model == "testmod")
 
 
-# def test_module_numerical_device_gss():
-#     pass
+def test_module_xspice():
+    pass
 
 
-# def test_module_lossy_transmission_line():
-#     pass
-
-# def test_module_bjt_3t():
-#     line = "Q1 neta netb netc bjtmodel"
-#     loc  = "root"
-#     n    = 1
-#     uid  = "testuid"
-#     mod  = sp.Bjt(line, loc, n, uid)
-
-#     assert(mod.line == line)
-#     assert(mod.location == loc)
-#     assert(mod.uid == uid)
-#     assert(mod.n == n)
-#     assert(mod.instance == "Q1")
-#     assert(mod.type == "bjt")
-#     assert(isinstance(mod.ports, dict))
-#     assert(mod.value == "bjtmodel")
-#     assert(str(mod) == line)
-#     assert(mod.elements == ["Q1", "neta", "netb", "netc", "bjtmodel"])
-#     assert(list(mod.ports.items()) == [("n0", "neta"), ("n1", "netb"), ("n2", "netc") ])
-#     assert(mod.model == "bjtmodel")
-
-#     mod.model = "test"
-#     assert(mod.model == "test")
+def test_module_behavioral_source():
+    pass
 
 
-# def test_module_bjt_4t():
-#     line = "Q1 neta netb netc netd bjtmodel"
-#     loc  = "root"
-#     n    = 1
-#     uid  = "testuid"
-#     mod  = sp.Bjt(line, loc, n, uid)
-
-#     assert(mod.line == line)
-#     assert(mod.location == loc)
-#     assert(mod.uid == uid)
-#     assert(mod.n == n)
-#     assert(mod.instance == "Q1")
-#     assert(mod.type == "bjt")
-#     assert(isinstance(mod.ports, dict))
-#     assert(mod.value == "bjtmodel")
-#     assert(str(mod) == line)
-#     assert(mod.elements == ["Q1", "neta", "netb", "netc", "netd", "bjtmodel"])
-#     assert(list(mod.ports.items()) == [("n0", "neta"), ("n1", "netb"), ("n2", "netc"), ("n3", "netd") ])
-#     assert(mod.model == "bjtmodel")
-
-#     mod.model = "test"
-#     assert(mod.model == "test")
+def test_module_vcvs():
+    pass
 
 
-# def test_module_resistor():
-#     line = "R1 neta netb 1e3"
-#     loc  = "root"
-#     n    = 1
-#     uid  = "testuid"
-#     mod  = sp.Resistor(line, loc, n, uid)
-
-#     assert(mod.line == line)
-#     assert(mod.location == loc)
-#     assert(mod.uid == uid)
-#     assert(mod.n == n)
-#     assert(mod.instance == "R1")
-#     assert(mod.type == "resistor")
-#     assert(isinstance(mod.ports, dict))
-#     assert(mod.value == "1e3")
-#     assert(str(mod) == line)
-#     assert(mod.elements == ["R1", "neta", "netb", "1e3"])
-#     assert(list(mod.ports.items()) == [("n0", "neta"), ("n1", "netb")])
-#     assert(mod.resistance == "1e3")
-
-#     mod.resistance = "1e3"
-#     assert(mod.resistance == "1e3")
+def test_module_vccs():
+    pass
 
 
-# def test_module_vcsw():
-#     pass
-
-# def test_module_lossless_transmission_line():
-#     pass
-
-# def test_module_uniformely_distributed_rc_line():
-#     pass
+def test_module_numerical_device_gss():
+    pass
 
 
-# def test_module_vsource():
-#     line = "V1 neta netb 1"
-#     loc  = "root"
-#     n    = 1
-#     uid  = "testuid"
-#     mod  = sp.Vsource(line, loc, n, uid)
-
-#     assert(mod.line == line)
-#     assert(mod.location == loc)
-#     assert(mod.uid == uid)
-#     assert(mod.n == n)
-#     assert(mod.instance == "V1")
-#     assert(mod.type == "vsource")
-#     assert(isinstance(mod.ports, dict))
-#     assert(mod.value == "1")
-#     assert(str(mod) == line)
-#     assert(mod.elements == ["V1", "neta", "netb", "1"])
-#     assert(list(mod.ports.items()) == [("n0", "neta"), ("n1", "netb")])
-#     assert(mod.voltage == "1")
-
-#     mod.voltage = "10"
-#     assert(mod.voltage == "10")
+def test_module_lossy_transmission_line():
+    pass
 
 
-# def test_module_icsw():
-#     pass
-
-# def test_module_subckt():
-#     pass
-
-# def test_module_single_lossy_transmission_line():
-#     pass
+def test_module_vcsw():
+    pass
 
 
-# def test_module_mesfet():
-#     line = "Z1 neta netb netc mesmodel"
-#     loc  = "root"
-#     n    = 1
-#     uid  = "testuid"
-#     mod  = sp.Mesfet(line, loc, n, uid)
+def test_module_lossless_transmission_line():
+    pass
 
-#     assert(mod.line == line)
-#     assert(mod.location == loc)
-#     assert(mod.uid == uid)
-#     assert(mod.n == n)
-#     assert(mod.instance == "Z1")
-#     assert(mod.type == "mesfet")
-#     assert(isinstance(mod.ports, dict))
-#     assert(mod.value == "mesmodel")
-#     assert(str(mod) == line)
-#     assert(mod.elements == ["Z1", "neta", "netb", "netc", "mesmodel"])
-#     assert(list(mod.ports.items()) == [("n0", "neta"), ("n1", "netb"), ("n2", "netc")])
-#     assert(mod.model == "mesmodel")
 
-#     mod.model = "test"
-#     assert(mod.model == "test")
+def test_module_uniformely_distributed_rc_line():
+    pass
+
+
+def test_module_icsw():
+    pass
+
+
+def test_module_subckt():
+    pass
+
+
+def test_module_single_lossy_transmission_line():
+    pass
 
 
 
-# def test_circuit_init_list():
-#     netlist = ["C1 neta netb 1e-12",
-#                "R1 neta netb 1e3",
-#                "R2 neta netc 10e3"]
+def test_circuit_init_list():
+    netlist = ["C1 neta netb 1e-12",
+               "R1 neta netb 1e3",
+               "R2 neta netc 10e3"]
 
-#     cir  = sp.Circuit(netlist, is_filename=False)
-
-
-#     netlist = [x.lower() for x in netlist]
-#     netlist = [ "* Netlist\n" ] + netlist + [""]
-#     net_in = "\n".join(netlist)
-
-#     net_out = str(cir) 
-#     assert(net_in == net_out)
+    cir  = sp.Circuit(netlist, is_filename=False)
 
 
-# def test_circuit_init_str():
-#     netlist = ["C1 neta netb 1e-12",
-#                "R1 neta netb 1e3",
-#                "R2 neta netc 10e3"]
+    netlist = [x.lower() for x in netlist]
+    netlist = [ "* Netlist\n" ] + netlist + [""]
+    net_in = "\n".join(netlist)
 
-#     netlist = "\n".join(netlist)
-
-#     cir  = sp.Circuit(netlist, is_filename=False)
+    net_out = str(cir) 
+    assert(net_in == net_out)
 
 
-#     net_in = "* Netlist\n\n" + netlist.lower() + "\n"
+def test_circuit_init_str():
+    netlist = ["C1 neta netb 1e-12",
+               "R1 neta netb 1e3",
+               "R2 neta netc 10e3"]
 
-#     net_out = str(cir) 
+    netlist = "\n".join(netlist)
 
-#     print(net_in)
-#     print(net_out)
-#     assert(net_in == net_out)
+    cir  = sp.Circuit(netlist, is_filename=False)
+
+
+    net_in = "* Netlist\n\n" + netlist.lower() + "\n"
+
+    net_out = str(cir) 
+
+    print(net_in)
+    print(net_out)
+    assert(net_in == net_out)
