@@ -729,11 +729,11 @@ class Circuit:
         hierarchy = collections.deque()
         hierarchy.append("root")
 
-        regex_nreq        = re.compile("^$|^\.end$")
-        reqex_subckt_s    = re.compile("^.subckt*")
-        reqex_subckt_e    = re.compile("^.ends.*")
-        reqex_control_s   = re.compile("^.control")
-        reqex_control_e   = re.compile("^.endc")
+        regex_nreq        = re.compile(r"^$|^\.end$")
+        reqex_subckt_s    = re.compile(r"^.subckt*")
+        reqex_subckt_e    = re.compile(r"^.ends.*")
+        reqex_control_s   = re.compile(r"^.control")
+        reqex_control_e   = re.compile(r"^.endc")
 
         n = 0
         for line in netlist:
@@ -1100,15 +1100,15 @@ def clean_netlist(netlist):
     makes sense.
     """
 
-    # regex_ignore      = re.compile("^\+\s*$|^\s{,}$") # keeps space
-    regex_ignore        = re.compile("^\+\s*$|^\s{,}$|^\*.*$")
-    regex_eolcomment    = re.compile("\$.*")
-    regex_contline      = re.compile("^\+")
-    regex_contlin_ws    = re.compile("^\+\s{,}")
-    regex_space         = re.compile("\t| {1,}")
-    regex_assign_space  = re.compile(" {,}= {,}")
-    regex_comma_space   = re.compile(", {1,}")
-    regex_include       = re.compile("^.include.*")
+    # regex_ignore      = re.compile(r"^\+\s*$|^\s{,}$") # keeps space
+    regex_ignore        = re.compile(r"^\+\s*$|^\s{,}$|^\*.*$")
+    regex_eolcomment    = re.compile(r"\$.*")
+    regex_contline      = re.compile(r"^\+")
+    regex_contlin_ws    = re.compile(r"^\+\s{,}")
+    regex_space         = re.compile(r"\t| {1,}")
+    regex_assign_space  = re.compile(r" {,}= {,}")
+    regex_comma_space   = re.compile(r", {1,}")
+    regex_include       = re.compile(r"^.include.*")
 
     if isinstance(netlist, str):
         netlist = netlist.split("\n")
