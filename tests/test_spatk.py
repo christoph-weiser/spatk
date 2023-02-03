@@ -18,7 +18,6 @@ import pytest
 import spatk as sp
 
 CASES = { 
-
 "default": 
 {
     "line"      : "A Default Line",
@@ -362,8 +361,8 @@ CASES = {
 }
 
 
-
 def create_module(case):
+    """ Helper function for create modules. """
     module = case["mod"]
     line = case["line"]
     loc = case["loc"]
@@ -372,9 +371,15 @@ def create_module(case):
     return module(line, loc, n, uid)
 
 
-
 def test_modules_common():
+    """ Test common module properties. 
+    
+    Module classes have common properties which
+    are tested all in the same run.
 
+    These are all adressed in CASES dictionary 
+    defined above.
+    """
     for k in CASES.keys():
 
         case = CASES[k]
@@ -400,6 +405,7 @@ def test_modules_common():
 
 
 def test_module_library():
+    """ Test library module specific properties """
     case = CASES["library"]
     mod = create_module(case)
     assert(mod.libname  == case["libname"])
@@ -411,6 +417,7 @@ def test_module_library():
 
 
 def test_module_param():
+    """ Test param module specific properties """
     case = CASES["param"]
     mod = create_module(case)
     assert(mod.name  == case["name"])
@@ -420,7 +427,8 @@ def test_module_param():
     assert(mod.value == "myvalue")
 
 
-def test_module_capacitance():
+def test_module_capacitor():
+    """ Test capacitor module specific properties """
     case = CASES["capacitor"]
     mod = create_module(case)
     assert(mod.capacitance  == case["capacitance"])
@@ -429,6 +437,7 @@ def test_module_capacitance():
 
 
 def test_module_diode():
+    """ Test diode module specific properties """
     case = CASES["diode"]
     mod = create_module(case)
 
@@ -438,6 +447,7 @@ def test_module_diode():
 
 
 def test_module_cccs():
+    """ Test cccs module specific properties """
     case = CASES["cccs"]
     mod = create_module(case)
 
@@ -449,6 +459,7 @@ def test_module_cccs():
 
 
 def test_module_ccvs():
+    """ Test ccvs module specific properties """
     case = CASES["ccvs"]
     mod = create_module(case)
 
@@ -460,6 +471,7 @@ def test_module_ccvs():
 
 
 def test_module_isource():
+    """ Test isource module specific properties """
     case = CASES["isource"]
     mod = create_module(case)
 
@@ -469,6 +481,7 @@ def test_module_isource():
 
 
 def test_module_jfet():
+    """ Test jfet module specific properties """
     case = CASES["jfet"]
     mod = create_module(case)
 
@@ -478,6 +491,7 @@ def test_module_jfet():
 
 
 def test_module_inductor():
+    """ Test inductor module specific properties """
     case = CASES["inductor"]
     mod = create_module(case)
 
@@ -487,6 +501,7 @@ def test_module_inductor():
 
 
 def test_module_mosfet():
+    """ Test mosfet module specific properties """
     case = CASES["mosfet"]
     mod = create_module(case)
 
@@ -496,6 +511,7 @@ def test_module_mosfet():
 
 
 def test_module_bjt_3t():
+    """ Test bjt_3t module specific properties """
     case = CASES["bjt_3t"]
     mod = create_module(case)
 
@@ -505,6 +521,7 @@ def test_module_bjt_3t():
 
 
 def test_module_bjt_4t():
+    """ Test bjt_4t module specific properties """
     case = CASES["bjt_4t"]
     mod = create_module(case)
 
@@ -514,6 +531,7 @@ def test_module_bjt_4t():
 
 
 def test_module_resistor():
+    """ Test resistor module specific properties """
     case = CASES["resistor"]
     mod = create_module(case)
 
@@ -523,6 +541,7 @@ def test_module_resistor():
 
 
 def test_module_vsource():
+    """ Test vsourse module specific properties """
     case = CASES["vsource"]
     mod = create_module(case)
 
@@ -532,6 +551,7 @@ def test_module_vsource():
 
 
 def test_module_mesfet():
+    """ Test mesfet module specific properties """
     case = CASES["mesfet"]
     mod = create_module(case)
 
@@ -596,7 +616,6 @@ def test_circuit_init_list():
 
     cir  = sp.Circuit(netlist, is_filename=False)
 
-
     netlist = [x.lower() for x in netlist]
     netlist = [ "* Netlist\n" ] + netlist + [""]
     net_in = "\n".join(netlist)
@@ -611,14 +630,45 @@ def test_circuit_init_str():
                "R2 neta netc 10e3"]
 
     netlist = "\n".join(netlist)
-
-    cir  = sp.Circuit(netlist, is_filename=False)
-
-
     net_in = "* Netlist\n\n" + netlist.lower() + "\n"
 
+    cir  = sp.Circuit(netlist, is_filename=False)
     net_out = str(cir) 
 
-    print(net_in)
-    print(net_out)
     assert(net_in == net_out)
+
+
+def test_circuit_init_simple():
+    netlist = "netlists/simple.sp"
+    with open(netlist, "r") as ifile:
+        net_in = "* {}\n\n".format(netlist) + (ifile.read()).lower()
+    cir  = sp.Circuit(netlist)
+    net_out = str(cir) 
+    assert(net_in == net_out)
+
+
+def test_circuit_init_simple():
+    netlist = "netlists/simple.sp"
+    with open(netlist, "r") as ifile:
+        net_in = "* {}\n\n".format(netlist) + (ifile.read()).lower()
+    cir  = sp.Circuit(netlist)
+    net_out = str(cir) 
+    assert(net_in == net_out)
+
+
+def test_circuit_init_complex():
+    netlist = "netlists/complex.sp"
+    with open(netlist, "r") as ifile:
+        net_in = "* {}\n\n".format(netlist) + (ifile.read()).lower()
+    cir  = sp.Circuit(netlist)
+    net_out = str(cir) 
+    assert(net_in == net_out)
+
+
+def test_circuit_hierachy():
+    netlist = "netlists/complex.sp"
+    cir = sp.Circuit(netlist)
+    uid = cir.filter("instance", "r1")[0]
+    assert(cir[uid].location == "root/module")
+    uid = cir.filter("instance", "rs1")[0]
+    assert(cir[uid].location == "root/module/submodule")
