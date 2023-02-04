@@ -28,7 +28,7 @@ class Args:
     def __init__(self, args):
         self._args = unpack_args(args)
         for k in self._args.keys():
-            setattr(self, "{}".format(k), self._args[k])
+            setattr(self, k, self._args[k])
 
     def __str__(self):
         return " ".join(repack_args(self._args))
@@ -81,7 +81,7 @@ class Component_2T(Component):
         super(Component_2T, self).__init__(*args)
         self.parse(self.elements)
         for k in self._args._args.keys():
-            setattr(self, "{}".format(k), self._args._args[k])
+            setattr(self, k, self._args._args[k])
 
     def parse(self, elements):
         self.ports = self._assign_ports(elements[1:3])
@@ -110,7 +110,7 @@ class Component_3T(Component):
         super(Component_3T, self).__init__(*args)
         self.parse(self.elements)
         for k in self._args._args.keys():
-            setattr(self, "{}".format(k), self._args._args[k])
+            setattr(self, k, self._args._args[k])
 
     def parse(self, elements):
         self.ports = self._assign_ports(elements[1:4])
@@ -139,7 +139,7 @@ class Component_4T(Component):
         super(Component_4T, self).__init__(*args)
         self.parse(self.elements)
         for k in self._args._args.keys():
-            setattr(self, "{}".format(k), self._args._args[k])
+            setattr(self, k, self._args._args[k])
 
     def parse(self, elements):
         self.ports = self._assign_ports(elements[1:5])
@@ -319,7 +319,7 @@ class Cccs(Component_2T):
     def __init__(self, *args):
         super(Cccs, self).__init__(*args)
         for k in self._args._args.keys():
-            setattr(self, "{}".format(k), self._args._args[k])
+            setattr(self, k, self._args._args[k])
 
     @property
     def vname(self):
@@ -364,7 +364,7 @@ class Ccvs(Component_2T):
         super(Ccvs, self).__init__(*args)
         self.parse(self.elements)
         for k in self._args._args.keys():
-            setattr(self, "{}".format(k), self._args._args[k])
+            setattr(self, k, self._args._args[k])
 
     @property
     def vname(self):
