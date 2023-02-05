@@ -76,6 +76,15 @@ class Component(Default):
     def _assign_ports(self, elements):
         return {"n"+str(i): p for i,p in enumerate(elements)}
 
+    @property
+    def args(self):
+        return self._args
+
+    @args.setter
+    def args(self, arg):
+        self._args = arg
+
+
 
 class Component_2T(Component):
     def __init__(self, *args):
@@ -95,14 +104,6 @@ class Component_2T(Component):
         if self.args:
             l.append(str(self._args))
         return " ".join(l)
-
-    @property
-    def args(self):
-        return self._args._args
-
-    @args.setter
-    def args(self, arg):
-        self._args._args = arg
 
 
 class Component_3T(Component):
@@ -124,14 +125,6 @@ class Component_3T(Component):
             l.append(str(self._args))
         return " ".join(l)
 
-    @property
-    def args(self):
-        return self._args._args
-
-    @args.setter
-    def args(self, arg):
-        self._args._args = arg
-
 
 class Component_4T(Component):
     def __init__(self, *args):
@@ -151,14 +144,6 @@ class Component_4T(Component):
         if self.args:
             l.append(str(self._args))
         return " ".join(l)
-
-    @property
-    def args(self):
-        return self._args._args
-
-    @args.setter
-    def args(self, arg):
-        self._args._args = arg
 
 
 class Statement(Default):
