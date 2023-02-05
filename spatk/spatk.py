@@ -34,6 +34,10 @@ class Args:
         return " ".join(repack_args(self._args))
 
 
+    def __bool__(self):
+        return bool(self._args)
+
+
 class Default():
     def __init__(self, line, location, n, uid):
         self.line = line
@@ -83,7 +87,6 @@ class Component(Default):
     @args.setter
     def args(self, arg):
         self._args = arg
-
 
 
 class Component_2T(Component):
