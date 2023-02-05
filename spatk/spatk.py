@@ -68,6 +68,7 @@ class Component(Default):
         super(Component, self).__init__(*args)
         self.elements = self.line.split(" ")
         self.instance = self.elements[0]
+        self.parse(self.elements)
 
     def __str__(self):
         return " ".join(self.elements)
@@ -79,7 +80,6 @@ class Component(Default):
 class Component_2T(Component):
     def __init__(self, *args):
         super(Component_2T, self).__init__(*args)
-        self.parse(self.elements)
         for k in self._args._args.keys():
             setattr(self, k, self._args._args[k])
 
@@ -108,7 +108,6 @@ class Component_2T(Component):
 class Component_3T(Component):
     def __init__(self, *args):
         super(Component_3T, self).__init__(*args)
-        self.parse(self.elements)
         for k in self._args._args.keys():
             setattr(self, k, self._args._args[k])
 
@@ -137,7 +136,6 @@ class Component_3T(Component):
 class Component_4T(Component):
     def __init__(self, *args):
         super(Component_4T, self).__init__(*args)
-        self.parse(self.elements)
         for k in self._args._args.keys():
             setattr(self, k, self._args._args[k])
 
@@ -464,19 +462,6 @@ class Bjt(Component):
     def __init__(self, *args):
         super(Bjt, self).__init__(*args)
 
-        for i, elem in enumerate(self.elements):
-            if "=" in elem:
-                i = i-1
-                break
-        if i == 4:
-            self.subs_terminal = False
-        elif i == 5:
-            self.subs_terminal = True
-        else:
-            print(self.elements, i)
-            raise Exception("Error could not identify BJT device")
-        self.parse(self.elements)
-
     @property
     def model(self):
         return self.value
@@ -486,6 +471,16 @@ class Bjt(Component):
         self.value = arg
 
     def parse(self, elements):
+        for i, elem in enumerate(self.elements):
+            if "=" in elem:
+                i = i-1
+                break
+        if i == 4:
+            self.subs_terminal = False
+        elif i == 5:
+            self.subs_terminal = True
+        else:
+            raise Exception("Error could not identify BJT device")
         if self.subs_terminal:
             self.ports = self._assign_ports(elements[1:5])
             self.value = elements[5]
