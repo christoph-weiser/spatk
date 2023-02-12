@@ -8,5 +8,13 @@ netlist = [ "* mynetlist.spice",
 
 cir = spatk.Circuit(netlist, is_filename=False)
 
-for mos in cir.mosfets:
-    print(mos.model, mos.args.w)
+# Looping through all netlist elements by 
+# uid (unique identifier)
+for uid in cir:
+    print(cir[uid])
+
+
+# Filter circuit by property
+uids = cir.filter("type", "mosfet")
+for uid in uids:
+    print(cir[uid])
