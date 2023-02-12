@@ -638,10 +638,16 @@ def test_circuit_init_str():
     assert(net_in == net_out)
 
 
+def input_netlist(filename):
+    """ helper function to create equivalent input netlist """
+    with open(filename, "r") as ifile:
+        net_in = "* {}\n\n".format(filename) + (ifile.read()).lower()
+    return net_in
+
+
 def test_circuit_init_simple():
     netlist = "netlists/simple.sp"
-    with open(netlist, "r") as ifile:
-        net_in = "* {}\n\n".format(netlist) + (ifile.read()).lower()
+    net_in = input_netlist(netlist)
     cir  = sp.Circuit(netlist)
     net_out = str(cir) 
     assert(net_in == net_out)
@@ -649,8 +655,7 @@ def test_circuit_init_simple():
 
 def test_circuit_init_simple():
     netlist = "netlists/simple.sp"
-    with open(netlist, "r") as ifile:
-        net_in = "* {}\n\n".format(netlist) + (ifile.read()).lower()
+    net_in = input_netlist(netlist)
     cir  = sp.Circuit(netlist)
     net_out = str(cir) 
     assert(net_in == net_out)
@@ -658,8 +663,7 @@ def test_circuit_init_simple():
 
 def test_circuit_init_complex():
     netlist = "netlists/complex.sp"
-    with open(netlist, "r") as ifile:
-        net_in = "* {}\n\n".format(netlist) + (ifile.read()).lower()
+    net_in = input_netlist(netlist)
     cir  = sp.Circuit(netlist)
     net_out = str(cir) 
     assert(net_in == net_out)
@@ -672,3 +676,22 @@ def test_circuit_hierachy():
     assert(cir[uid].location == "root/module")
     uid = cir.filter("instance", "rs1")[0]
     assert(cir[uid].location == "root/module/submodule")
+
+
+def test_circuit_get_args():
+    netlist = "netlists/args.sp"
+    cir = sp.Circuit(netlist)
+    for uid in cir:
+        assert(cir[uid].args.l == "1u")
+        assert(cir[uid].args.w == "1u")
+        assert(cir[uid].args.nf == "1")
+
+
+def test_circuit_set_args():
+    netlist = "netlists/args.sp"
+    net_in = input_netlist(netlist)
+    cir = sp.Circuit(netlist)
+    for uid in cir:
+        cir[uid].args.w = "2u"
+    net_in = net_in.replace("w=1u", "w=2u")
+    assert( str(cir) == net_in )
