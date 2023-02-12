@@ -941,6 +941,22 @@ def count_nets(circuit):
     return nets
 
 
+def element_types(circuit):
+    """ Find which elements are contained in a circuit.
+    Required inputs:
+    ----------------
+    circuit (Circuit): Circuit object to analyze.
+
+    Returns
+    ----------------
+    elements (set): set of element types in circuit.
+    """
+    elements = set()
+    for uid in circuit:
+        elements.add(circuit[uid].type)
+    return elements
+
+
 def filter(circuit, key, val, uids=[]):
     """ Filter circuit elements by regex.
 
