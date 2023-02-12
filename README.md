@@ -29,3 +29,12 @@ for mos in cir.mosfets:
 pmos_3p3 1u
 nmos_3p3 1u
 ```
+
+### Installation
+
+Clone the repository into your preferred location and 
+make it available in your Python environment using:
+
+```shell
+pip intall .
+```
