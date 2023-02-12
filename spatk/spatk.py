@@ -25,7 +25,7 @@ import collections
 #----------------------------------------------------------------------
 
 class Args(object):
-    """ Object representing Circuit element arguments 
+    """ Object representing Circuit element arguments
 
     Required inputs:
     ----------------
@@ -39,17 +39,22 @@ class Args(object):
     def __str__(self):
         return " ".join(repack_args(self.__dict__))
 
+
     def __bool__(self):
         return bool(self.__dict__)
+
 
     def __getattribute__(self, name):
         return object.__getattribute__(self, name)
 
+
     def __setattr__(self, name, value):
         self.__dict__[name] = value
 
+
     def __setitem__(self, key, item):
         self.__dict__[key] = item
+
 
     def __getitem__(self, key):
         return self.__dict__[key]
