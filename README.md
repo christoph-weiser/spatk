@@ -22,7 +22,7 @@ import spatk
 cir = spatk.Circuit("mynetlist.spice")
 
 for mos in cir.mosfets:
-    print(mos.model, mos.w)
+    print(mos.model, mos.args.w)
 ``` 
 
 ```
