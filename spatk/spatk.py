@@ -24,18 +24,23 @@ import collections
 # Generic Element Classes
 #----------------------------------------------------------------------
 
-class Args:
+class Args(object):
     def __init__(self, args):
-        self._args = unpack_args(args)
-        for k in self._args.keys():
-            setattr(self, k, self._args[k])
+        data = unpack_args(args)
+        for k in data.keys():
+            setattr(self, k, data[k])
 
     def __str__(self):
-        return " ".join(repack_args(self._args))
-
+        return " ".join(repack_args(self.__dict__))
 
     def __bool__(self):
-        return bool(self._args)
+        return bool(self.__dict__)
+
+    def __getattribute__(self, name):
+        return object.__getattribute__(self, name)
+
+    def __setattr__(self, name, value):
+        self.__dict__[name] = value
 
 
 class Default():
@@ -80,72 +85,67 @@ class Component(Default):
     def _assign_ports(self, elements):
         return {"n"+str(i): p for i,p in enumerate(elements)}
 
+
     @property
     def args(self):
-        return self._args
+        return self.argsdata
 
     @args.setter
     def args(self, arg):
-        self._args = arg
+        self.argsdata = arg
 
 
 class Component_2T(Component):
     def __init__(self, *args):
         super(Component_2T, self).__init__(*args)
-        for k in self._args._args.keys():
-            setattr(self, k, self._args._args[k])
 
     def parse(self, elements):
         self.ports = self._assign_ports(elements[1:3])
         self.value = elements[3]
-        self._args = Args(elements[4:])
+        self.argsdata = Args(elements[4:])
 
     def __str__(self):
         l = [self.instance,
              *self.ports.values(),
              self.value]
         if self.args:
-            l.append(str(self._args))
+            l.append(str(self.argsdata))
         return " ".join(l)
 
 
 class Component_3T(Component):
     def __init__(self, *args):
         super(Component_3T, self).__init__(*args)
-        for k in self._args._args.keys():
-            setattr(self, k, self._args._args[k])
 
     def parse(self, elements):
         self.ports = self._assign_ports(elements[1:4])
         self.value = elements[4]
-        self._args = Args(elements[5:])
+        self.argsdata = Args(elements[5:])
 
     def __str__(self):
         l = [self.instance,
              *self.ports.values(),
              self.value]
         if self.args:
-            l.append(str(self._args))
+            l.append(str(self.argsdata))
         return " ".join(l)
 
 
 class Component_4T(Component):
     def __init__(self, *args):
         super(Component_4T, self).__init__(*args)
-        for k in self._args._args.keys():
-            setattr(self, k, self._args._args[k])
 
     def parse(self, elements):
         self.ports = self._assign_ports(elements[1:5])
         self.value = elements[5]
-        self._args = Args(elements[6:])
+        self.argsdata = Args(elements[6:])
 
     def __str__(self):
         l = [self.instance,
              *self.ports.values(),
              self.value]
         if self.args:
-            l.append(str(self._args))
+            l.append(str(self.argsdata))
         return " ".join(l)
 
 
@@ -304,8 +304,6 @@ class Vcvs(Component_4T):
 class Cccs(Component_2T):
     def __init__(self, *args):
         super(Cccs, self).__init__(*args)
-        for k in self._args._args.keys():
-            setattr(self, k, self._args._args[k])
 
     @property
     def vname(self):
@@ -319,7 +317,7 @@ class Cccs(Component_2T):
         self.ports = self._assign_ports(elements[1:3])
         self.vname = elements[3]
         self.value = elements[4]
-        self._args = Args(elements[5:])
+        self.argsdata = Args(elements[5:])
 
     def __str__(self):
         l = [self.instance,
@@ -332,11 +330,11 @@ class Cccs(Component_2T):
 
     @property
     def args(self):
-        return self._args._args
+        return self.argsdata
 
     @args.setter
     def args(self, arg):
-        self._args._args = arg
+        self.argsdata = arg
 
 
 class Vccs(Component_4T):
@@ -349,8 +347,6 @@ class Ccvs(Component_2T):
     def __init__(self, *args):
         super(Ccvs, self).__init__(*args)
         self.parse(self.elements)
-        for k in self._args._args.keys():
-            setattr(self, k, self._args._args[k])
 
     @property
     def vname(self):
@@ -364,7 +360,7 @@ class Ccvs(Component_2T):
         self.ports = self._assign_ports(elements[1:3])
         self.vname = elements[3]
         self.value = elements[4]
-        self._args = Args(elements[5:])
+        self.argsdata = Args(elements[5:])
 
     def __str__(self):
         l = [self.instance,
@@ -377,11 +373,11 @@ class Ccvs(Component_2T):
 
     @property
     def args(self):
-        return self._args._args
+        return self.argsdata
 
     @args.setter
     def args(self, arg):
-        self._args._args = arg
+        self.argsdata = arg
 
 class Isource(Component_2T):
     def __init__(self, *args):
