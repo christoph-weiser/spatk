@@ -48,6 +48,12 @@ class Args(object):
     def __setattr__(self, name, value):
         self.__dict__[name] = value
 
+    def __setitem__(self, key, item):
+        self.__dict__[key] = item
+
+    def __getitem__(self, key):
+        return self.__dict__[key]
+
 
 class Default():
     """ Default Circuit Element classs
