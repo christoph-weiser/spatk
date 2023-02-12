@@ -687,7 +687,7 @@ def test_circuit_get_args():
         assert(cir[uid].args.nf == "1")
 
 
-def test_circuit_set_args():
+def test_circuit_set_args_prop():
     netlist = "netlists/args.sp"
     net_in = input_netlist(netlist)
     cir = sp.Circuit(netlist)
@@ -695,3 +695,14 @@ def test_circuit_set_args():
         cir[uid].args.w = "2u"
     net_in = net_in.replace("w=1u", "w=2u")
     assert( str(cir) == net_in )
+
+
+def test_circuit_set_args_dict():
+    netlist = "netlists/args.sp"
+    net_in = input_netlist(netlist)
+    cir = sp.Circuit(netlist)
+    for uid in cir:
+        cir[uid].args["w"] = "2u"
+    net_in = net_in.replace("w=1u", "w=2u")
+    assert( str(cir) == net_in )
+
