@@ -29,10 +29,13 @@ class Args(object):
 
     Required inputs:
     ----------------
-    args  (list):     list of arguments.
+    args  (list, dict):     list/dict of arguments.
     """
     def __init__(self, args):
-        data = unpack_args(args)
+        if isinstance(args, list):
+            data = unpack_args(args)
+        elif isinstance(args, dict):
+            data = args
         for k in data.keys():
             setattr(self, k, data[k])
 
@@ -53,6 +56,10 @@ class Args(object):
 
     def __getitem__(self, key):
         return self.__dict__[key]
+
+    @property
+    def content(self):
+        return self.__dict__
 
 
 class Default():
@@ -1061,22 +1068,12 @@ def replace_argument(uid, cir, key, val):
     cir (CircuitSection):   circuit section where the argument
                             has been replaced.
     """
-    args = unpack_args(cir[uid].args)
-    if args[key]:
-        args[key] = val
+    if cir[uid].args[key]:
+        cir[uid].args[key] = val
     else:
-        replacement = {key: val}
-        for k, v in list(args.items()):
-            args[replacement.get(k, k)] = args.pop(k)
-            tmp = dict()
-            for k in args:
-                if k == key:
-                    tmp[k.upper()] = args[k]
-                else:
-                    tmp[k] = args[k]
-            args = tmp
-    args = repack_args(args)
-    cir[uid].args = args
+        content = cir[uid].args.content
+        content[val] = content.pop(key)
+        cir[uid].args = Args(content)
     return cir
 
 
