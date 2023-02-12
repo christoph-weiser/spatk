@@ -875,6 +875,16 @@ class Circuit:
         return count_nets(self.circuit)
 
 
+    def element_types(self):
+        """ Find which elements are contained in a circuit.
+
+        Returns
+        ----------------
+        elements (set): set of element types in circuit.
+        """
+        return element_types(self.circuit)
+
+
 def dissect_param(line):
     """ Seperate combined param lines into multiple.
 
