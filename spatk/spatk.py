@@ -25,6 +25,12 @@ import collections
 #----------------------------------------------------------------------
 
 class Args(object):
+    """ Object representing Circuit element arguments 
+
+    Required inputs:
+    ----------------
+    args  (list):     list of arguments.
+    """
     def __init__(self, args):
         data = unpack_args(args)
         for k in data.keys():
@@ -44,6 +50,16 @@ class Args(object):
 
 
 class Default():
+    """ Default Circuit Element classs
+
+    Required inputs:
+    ----------------
+    line     (str): spice netlist line.
+    location (str): location in the netlist hierachy
+    n        (int): line number in the netlist.
+    uid      (str): unique identifier for this element
+
+    """
     def __init__(self, line, location, n, uid):
         self.line = line
         self.location = location
@@ -73,6 +89,7 @@ class Default():
 
 
 class Component(Default):
+    """ Component Circuit Element Class """
     def __init__(self, *args):
         super(Component, self).__init__(*args)
         self.elements = self.line.split(" ")
@@ -96,6 +113,7 @@ class Component(Default):
 
 
 class Component_2T(Component):
+    """ Component with two terminals """
     def __init__(self, *args):
         super(Component_2T, self).__init__(*args)
 
@@ -114,6 +132,7 @@ class Component_2T(Component):
 
 
 class Component_3T(Component):
+    """ Component with three terminals """
     def __init__(self, *args):
         super(Component_3T, self).__init__(*args)
 
@@ -132,6 +151,7 @@ class Component_3T(Component):
 
 
 class Component_4T(Component):
+    """ Component with four terminals """
     def __init__(self, *args):
         super(Component_4T, self).__init__(*args)
 
@@ -150,6 +170,7 @@ class Component_4T(Component):
 
 
 class Statement(Default):
+    """ Spice statement """
     def __init__(self, *args):
         super(Statement, self).__init__(*args)
         self.elements = self.line.split(" ")
@@ -325,7 +346,7 @@ class Cccs(Component_2T):
              self.vname,
              self.value]
         if self.args:
-            l.append(" ".join(self.args))
+            l.append(str(self.argsdata))
         return " ".join(l)
 
     @property
@@ -368,7 +389,7 @@ class Ccvs(Component_2T):
              self.vname,
              self.value]
         if self.args:
-            l.append(" ".join(self.args))
+            l.append(str(self.argsdata))
         return " ".join(l)
 
     @property
@@ -479,7 +500,7 @@ class Bjt(Component):
              *self.ports.values(),
              self.value]
         if self.args:
-            l.append(" ".join(self.args))
+            l.append(str(self.argsdata))
         return " ".join(l)
 
 
