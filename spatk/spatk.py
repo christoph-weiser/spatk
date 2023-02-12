@@ -39,22 +39,17 @@ class Args(object):
     def __str__(self):
         return " ".join(repack_args(self.__dict__))
 
-
     def __bool__(self):
         return bool(self.__dict__)
-
 
     def __getattribute__(self, name):
         return object.__getattribute__(self, name)
 
-
     def __setattr__(self, name, value):
         self.__dict__[name] = value
 
-
     def __setitem__(self, key, item):
         self.__dict__[key] = item
-
 
     def __getitem__(self, key):
         return self.__dict__[key]
@@ -112,7 +107,6 @@ class Component(Default):
 
     def _assign_ports(self, elements):
         return {"n"+str(i): p for i,p in enumerate(elements)}
-
 
     @property
     def args(self):
@@ -566,7 +560,6 @@ class Subckt(Component):
         super(Subckt, self).__init__(*args)
 
 
-
 class Single_lossy_transmission_line(Component_4T):
     def __init__(self, *args):
         super(Single_lossy_transmission_line, self).__init__(*args)
@@ -585,9 +578,9 @@ class Mesfet(Component_3T):
         self.value = arg
 
 
-#--------------------------------------------------------------------------------
+#----------------------------------------------------------------------
 # Element Mapping
-#--------------------------------------------------------------------------------
+#----------------------------------------------------------------------
 
 ELEMENTMAP = {"*":          Comment,
               ".":          Statement,
@@ -628,9 +621,9 @@ ELEMENTMAP = {"*":          Comment,
               "Z":          Mesfet}
 
 
-#--------------------------------------------------------------------------------
+#----------------------------------------------------------------------
 # Circuit Class
-#--------------------------------------------------------------------------------
+#----------------------------------------------------------------------
 
 class Circuit:
     """ Circuit represents a SPICE netlist.
@@ -651,7 +644,6 @@ class Circuit:
     It contains each circuit element as a parsed and understood element
     with its specific configuration, parameters and ports..
     """
-
     def __init__(self, netlist=None, is_filename=True):
         if netlist:
             if is_filename:
@@ -660,8 +652,6 @@ class Circuit:
             else:
                 self.name = "Netlist"
                 self._netlist = clean_netlist(netlist)
-
-
         else:
             self.name = "Netlist"
             self._netlist = []
@@ -679,27 +669,21 @@ class Circuit:
     def __str__(self):
         return self.netlist
 
-
     def __len__(self):
         return len(self.circuit)
-
 
     def __add__(self, other):
         self.append(other)
         return self.circuit
 
-
     def __setitem__(self, key, item):
         self.circuit[key] = item
-
 
     def __getitem__(self, key):
         return self.circuit[key]
 
-
     def __iter__(self):
         return iter(self.circuit.keys())
-
 
     def _attr(self, elemtype):
         values = []
@@ -799,7 +783,6 @@ class Circuit:
         Required inputs:
         ----------------
         line (str):     spice netlist line
-
         """
         parsed = self.parse(line)
         last = list(self.circuit.keys())[-1]
@@ -1088,18 +1071,20 @@ def read_netlist(filename):
     return clean_netlist(netlist)
 
 
-def clean_netlist(netlist):
+def clean_netlist(netlist, keep_comments=False):
     """ Cleanup a netlist.
 
     Required inputs:
     ----------------
     netlist (str, list):    Netlist as a single string or list of lines.
 
+    Optional inputs:
+    ----------------
+    keep_comments (bool):   Dont remove spice comments during cleanup.
 
     Returns
     ----------------
     netlist (str):          The cleaned netlist
-
 
     Description
     ----------------
@@ -1110,9 +1095,11 @@ def clean_netlist(netlist):
     when changing something that the order is preserved and
     makes sense.
     """
+    if keep_comments:
+        regex_ignore    = re.compile(r"^\+\s*$|^\s{,}$")
+    else:
+        regex_ignore    = re.compile(r"^\+\s*$|^\s{,}$|^\*.*$")
 
-    # regex_ignore      = re.compile(r"^\+\s*$|^\s{,}$") # keeps space
-    regex_ignore        = re.compile(r"^\+\s*$|^\s{,}$|^\*.*$")
     regex_eolcomment    = re.compile(r"\$.*")
     regex_contline      = re.compile(r"^\+")
     regex_contlin_ws    = re.compile(r"^\+\s{,}")
