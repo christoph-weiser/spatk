@@ -25,7 +25,7 @@ import collections
 #----------------------------------------------------------------------
 
 class Args(object):
-    """ Object representing Circuit element arguments
+    """ Object representing Circuit element arguments.
 
     Required inputs:
     ----------------
@@ -63,15 +63,14 @@ class Args(object):
 
 
 class Default():
-    """ Default Circuit Element classs
+    """ Default Circuit Element classs.
 
     Required inputs:
     ----------------
-    line     (str): spice netlist line.
+    line (str):     spice netlist line.
     location (str): location in the netlist hierachy
-    n        (int): line number in the netlist.
-    uid      (str): unique identifier for this element
-
+    n (int):        line number in the netlist.
+    uid (str):      unique identifier for this element
     """
     def __init__(self, line, location, n, uid):
         self.line = line
@@ -102,7 +101,7 @@ class Default():
 
 
 class Component(Default):
-    """ Component Circuit Element Class """
+    """ Generic Component Element Class. """
     def __init__(self, *args):
         super(Component, self).__init__(*args)
         self.elements = self.line.split(" ")
@@ -125,7 +124,7 @@ class Component(Default):
 
 
 class Component_2T(Component):
-    """ Component with two terminals """
+    """ Component with two terminals. """
     def __init__(self, *args):
         super(Component_2T, self).__init__(*args)
 
@@ -144,7 +143,7 @@ class Component_2T(Component):
 
 
 class Component_3T(Component):
-    """ Component with three terminals """
+    """ Component with three terminals. """
     def __init__(self, *args):
         super(Component_3T, self).__init__(*args)
 
@@ -163,7 +162,7 @@ class Component_3T(Component):
 
 
 class Component_4T(Component):
-    """ Component with four terminals """
+    """ Component with four terminals. """
     def __init__(self, *args):
         super(Component_4T, self).__init__(*args)
 
@@ -182,7 +181,7 @@ class Component_4T(Component):
 
 
 class Statement(Default):
-    """ Spice statement """
+    """ Generic Spice statement Class"""
     def __init__(self, *args):
         super(Statement, self).__init__(*args)
         self.elements = self.line.split(" ")
@@ -192,22 +191,23 @@ class Statement(Default):
 
 
 #----------------------------------------------------------------------
-# Element Classes
+# SPICE Element Classes
 #----------------------------------------------------------------------
 
 class Comment(Default):
+    """ Comment. """
     def __init__(self, *args):
         super(Comment, self).__init__(*args)
 
 
-# TODO: a model has a well defined structure that
-#       can be parsed more detailed.
 class Model(Statement):
+    """ .model Statement. """
     def __init__(self, *args):
         super(Model, self).__init__(*args)
 
 
 class Include(Statement):
+    """ .include Statement. """
     def __init__(self, *args):
         super(Include, self).__init__(*args)
 
@@ -221,6 +221,7 @@ class Include(Statement):
 
 
 class Library(Statement):
+    """ .lib Statement. """
     def __init__(self, *args):
         super(Library, self).__init__(*args)
         if len(self.elements) == 2:
@@ -256,16 +257,19 @@ class Library(Statement):
 
 
 class Option(Statement):
+    """ .option Statement. """
     def __init__(self, *args):
         super(Option, self).__init__(*args)
 
 
 class Function(Statement):
+    """ .func Statement. """
     def __init__(self, *args):
         super(Function, self).__init__(*args)
 
 
 class Param(Statement):
+    """ .param Statement. """
     def __init__(self, *args):
         super(Param, self).__init__(*args)
 
@@ -289,21 +293,25 @@ class Param(Statement):
 
 
 class Global(Statement):
+    """ .global Statement. """
     def __init__(self, *args):
         super(Global, self).__init__(*args)
 
 
 class Xspice(Default):
+    """ A - Xspice Element. """
     def __init__(self, *args):
         super(Xspice, self).__init__(*args)
 
 
 class Behavioral_source(Default):
+    """ B - Behavioral Source. """
     def __init__(self, *args):
         super(Behavioral_source, self).__init__(*args)
 
 
 class Capacitor(Component_2T):
+    """ C - Capacitor. """
     def __init__(self, *args):
         super(Capacitor, self).__init__(*args)
 
@@ -317,6 +325,7 @@ class Capacitor(Component_2T):
 
 
 class Diode(Component_2T):
+    """ D - Diode. """
     def __init__(self, *args):
         super(Diode, self).__init__(*args)
 
@@ -330,11 +339,13 @@ class Diode(Component_2T):
 
 
 class Vcvs(Component_4T):
+    """ E - Voltage Controlled Voltage Source. """
     def __init__(self, *args):
         super(Vcvs, self).__init__(*args)
 
 
 class Cccs(Component_2T):
+    """ F - Current Controlled Current Source. """
     def __init__(self, *args):
         super(Cccs, self).__init__(*args)
 
@@ -371,12 +382,13 @@ class Cccs(Component_2T):
 
 
 class Vccs(Component_4T):
+    """ G - Voltage Controlled Current Source. """
     def __init__(self, *args):
         super(Vccs, self).__init__(*args)
 
 
 class Ccvs(Component_2T):
-
+    """ H - Current Controlled Voltage Source. """
     def __init__(self, *args):
         super(Ccvs, self).__init__(*args)
         self.parse(self.elements)
@@ -413,6 +425,7 @@ class Ccvs(Component_2T):
         self.argsdata = arg
 
 class Isource(Component_2T):
+    """ I - Current Source. """
     def __init__(self, *args):
         super(Isource, self).__init__(*args)
 
@@ -427,6 +440,7 @@ class Isource(Component_2T):
 
 
 class Jfet(Component_3T):
+    """ J - JFET Transistor. """
     def __init__(self, *args):
         super(Jfet, self).__init__(*args)
 
@@ -440,6 +454,7 @@ class Jfet(Component_3T):
 
 
 class Inductor(Component_2T):
+    """ L - Inductor. """
     def __init__(self, *args):
         super(Inductor, self).__init__(*args)
 
@@ -453,6 +468,7 @@ class Inductor(Component_2T):
 
 
 class Mosfet(Component_4T):
+    """ M - Mosfet Transistor. """
     def __init__(self, *args):
         super(Mosfet, self).__init__(*args)
 
@@ -466,16 +482,19 @@ class Mosfet(Component_4T):
 
 
 class Numerical_device_gss(Default):
+    """ N - Numerical Device for GSS. """
     def __init__(self, *args):
         super(Numerical_device_gss, self).__init__(*args)
 
 
 class Lossy_transmission_line(Component_4T):
+    """ O - Lossy Transmission Line. """
     def __init__(self, *args):
         super(Lossy_transmission_line, self).__init__(*args)
 
 
 class Bjt(Component):
+    """ Q - Bipolar Transistor. """
     def __init__(self, *args):
         super(Bjt, self).__init__(*args)
 
@@ -517,6 +536,7 @@ class Bjt(Component):
 
 
 class Resistor(Component_2T):
+    """ R - Resistor. """
     def __init__(self, *args):
         super(Resistor, self).__init__(*args)
 
@@ -530,21 +550,25 @@ class Resistor(Component_2T):
 
 
 class Vcsw(Component_4T):
+    """ S - Voltage Controlled Switch. """
     def __init__(self, *args):
         super(Vcsw, self).__init__(*args)
 
 
 class Lossless_transmission_line(Component_4T):
+    """ T - Lossless Transmission Line. """
     def __init__(self, *args):
         super(Lossless_transmission_line, self).__init__(*args)
 
 
 class Uniformely_distributed_rc_line(Component_3T):
+    """ U - Uniformely Distributed RC Line. """
     def __init__(self, *args):
         super(Uniformely_distributed_rc_line, self).__init__(*args)
 
 
 class Vsource(Component_2T):
+    """ V - Voltage Source. """
     def __init__(self, *args):
         super(Vsource, self).__init__(*args)
 
@@ -558,21 +582,25 @@ class Vsource(Component_2T):
 
 
 class Icsw(Component_2T):
+    """ W - Current Controlled Switch. """
     def __init__(self, *args):
         super(Icsw, self).__init__(*args)
 
 
 class Subckt(Component):
+    """ X - Subcircuit. """
     def __init__(self, *args):
         super(Subckt, self).__init__(*args)
 
 
 class Single_lossy_transmission_line(Component_4T):
+    """ Y - Single Lossy Transmission Line. """
     def __init__(self, *args):
         super(Single_lossy_transmission_line, self).__init__(*args)
 
 
 class Mesfet(Component_3T):
+    """ Z - Mesfet Transistor. """
     def __init__(self, *args):
         super(Mesfet, self).__init__(*args)
 
@@ -633,23 +661,31 @@ ELEMENTMAP = {"*":          Comment,
 #----------------------------------------------------------------------
 
 class Circuit:
-    """ Circuit represents a SPICE netlist.
+    """ Circuit represents a abstract SPICE netlist.
 
     Required inputs:
     ----------------
-    netlist  (str):     spice netlist or path to a spice netlist.
+    netlist  (str, list):   SPICE netlist or path to a spice netlist.
 
 
     Optional inputs:
     ----------------
-    is_netlist (bool):  Indicator if netlist is a filepath or actual netlist.
-                        Default assumes a path.
+    is_netlist (bool):      Indicator if netlist is a filepath or actual 
+                            netlist. Default assumes a path.
+                            If this is set the input netlist needs to 
+                            be a netlist as a string or a list of strings.
 
     Description
     ----------------
-    Netlist is a high-level object of any ordinary spice netlist.
+    Circuit is a abstract netlist representation.
     It contains each circuit element as a parsed and understood element
-    with its specific configuration, parameters and ports..
+    with its specific configuration, parameters and ports etc.
+
+    Each individual Circuit element can be accessed using its 
+    unqiue id (uid).
+
+    To convert the Circuit back into the netlist format simply cast 
+    it into a string or access the netlist property of Circuit.
     """
     def __init__(self, netlist=None, is_filename=True):
         if netlist:
@@ -702,13 +738,13 @@ class Circuit:
 
     @property
     def netlist(self):
-        """ Simulation ready circuit netlist """
+        """ SPICE netlist representation of Circuit. """
         self._synthesize()
         return "".join(self._netlist)
 
 
     def reset(self):
-        """ Reset the circuit to the initially parsed circuit. """
+        """ Reset the Circuit to the initially parsed Circuit. """
         self.circuit = copy.deepcopy(self.parsed_circuit)
 
 
@@ -717,7 +753,7 @@ class Circuit:
 
         Required inputs:
         ----------------
-        netlist (str, list):    Spice netlist
+        netlist (str, list):    SPICE netlist.
 
 
         Returns
@@ -775,8 +811,9 @@ class Circuit:
 
         Description
         ----------------
-        Reverse of parse(). It generates a netlist from a list from
-        the circuit object.
+        Reverse of parse(). It generates a netlist from a the
+        internal Circuit representation.
+
         """
         netlist = [ "* {}\n\n".format(self.name) ]
         for uid in self.circuit:
@@ -789,7 +826,7 @@ class Circuit:
 
         Required inputs:
         ----------------
-        line (str):     spice netlist line
+        line (str):     SPICE netlist line.
         """
         parsed = self.parse(line)
         last = list(self.circuit.keys())[-1]
@@ -808,7 +845,7 @@ class Circuit:
 
         Optional inputs:
         ----------------
-        filename (str):     name of the output file
+        filename (str):     Name of the output file.
         """
         with open(filename, "w") as ofile:
             ofile.write("* Netlist written: {}\n".format(datetime.datetime.now()))
@@ -820,10 +857,11 @@ class Circuit:
 
         Required inputs:
         ----------------
-        key (str):          property to filter
-        val (str):          regex for filter
+        key (str):          Property to filter.
+        val (str):          Regex to match.
 
-        Required inputs:
+
+        Optional inputs:
         ----------------
         uids (list):        List of preselected circuit element
                             uids (unique id's).
@@ -832,24 +870,24 @@ class Circuit:
         ----------------
         uids (list):        List of uid's that matches the
                             criteria.
+
         """
         return filter(self.circuit, key, val, uids)
 
 
     def apply(self, func, uids, **kwargs):
-        """ Apply function to matching circuit elements.
+        """ Apply function to circuit elements.
 
         Required inputs:
         ----------------
-        func (func):         Function to apply.
-        uids (list):         List of circuit element.
+        func (func):    Function to apply.
+        uids (list):    List of circuit element.
 
 
         Description
         ----------------
         If func modifies the the object it will alter the internal
-        circuit representation also!
-        kwargs are passed along to func.
+        circuit representation also! kwargs are passed along to func.
         """
         for uid in uids:
             element = self.circuit[uid]
@@ -861,7 +899,8 @@ class Circuit:
 
         Required inputs:
         ----------------
-        expr (str):        net name expression to match
+        expr (str):        net name expression to match.
+
 
         Returns
         ----------------
@@ -877,7 +916,6 @@ class Circuit:
         Returns
         ----------------
         nets(dict): dictionary with net, count pairs.
-
         """
         return count_nets(self.circuit)
 
@@ -893,11 +931,12 @@ class Circuit:
 
 
 def dissect_param(line):
-    """ Seperate combined param lines into multiple.
+    """ Seperate combined .param lines into multiple.
 
     Required inputs:
     ----------------
     line (str):         parameter statement line.
+
 
     Returns
     ----------------
@@ -912,12 +951,12 @@ def dissect_param(line):
 
 
 def touches(circuit, expr):
-    """ Find circuit elements that touch a net.
+    """ Find circuit elements that touch a given net.
 
     Required inputs:
     ----------------
     circuit (Circuit): Circuit object to analyze.
-    expr (str):        net name expression to match
+    expr (str):        Net name expression to match.
 
 
     Returns
@@ -941,6 +980,7 @@ def count_nets(circuit):
     ----------------
     circuit (Circuit): Circuit object to analyze.
 
+
     Returns
     ----------------
     nets(dict): dictionary with net, count pairs.
@@ -960,13 +1000,15 @@ def count_nets(circuit):
 
 def element_types(circuit):
     """ Find which elements are contained in a circuit.
+
     Required inputs:
     ----------------
-    circuit (Circuit): Circuit object to analyze.
+    circuit (Circuit):  Circuit object to analyze.
+
 
     Returns
     ----------------
-    elements (set): set of element types in circuit.
+    elements (set):     Set of element types in circuit.
     """
     elements = set()
     for uid in circuit:
@@ -980,8 +1022,8 @@ def filter(circuit, key, val, uids=[]):
     Required inputs:
     ----------------
     circuit (Circuit):  Circuit object to filter.
-    key (str):          property to filter
-    val (str):          regex for filter
+    key (str):          property to filter.
+    val (str):          regex for filter.
 
 
     Required inputs:
@@ -1011,12 +1053,12 @@ def unpack_args(args):
 
     Required inputs:
     ----------------
-    args (list):        Circuit element arguments
+    args (list):        Circuit element arguments.
 
     Returns
     ----------------
     unpacked (dict):    Circuit element arguments as dictionary.
-                        if there is no assigment (=) then the value
+                        If there is no assigment (=) then the value
                         is simply None.
     """
     unpacked = dict()
@@ -1034,11 +1076,11 @@ def repack_args(args):
 
     Required inputs:
     ----------------
-    args (dict):        Circuit element arguments as dict
+    args (dict):        Circuit element arguments.
 
     Returns
     ----------------
-    repacked (list):    Circuit element arguments as list
+    repacked (list):    Circuit element arguments.
     """
     repacked = []
     for k in args:
@@ -1056,16 +1098,16 @@ def replace_argument(uid, cir, key, val):
     ----------------
     uid (str):              Unique identfier of the circuit
                             element.
-    cir (CircuitSection):   circuit section in which to replace
+    cir (CircuitSection):   Circuit section in which to replace
                             the argument.
-    key (str):              key to identify the argument that is
+    key (str):              Key to identify the argument that is
                             to be replaced.
     val (str):              The value that is inserted as a
                             replacement for the key.
 
     Returns
     ----------------
-    cir (CircuitSection):   circuit section where the argument
+    cir (CircuitSection):   Circuit section where the argument
                             has been replaced.
     """
     if cir[uid].args[key]:
@@ -1078,7 +1120,7 @@ def replace_argument(uid, cir, key, val):
 
 
 def read_netlist(filename):
-    """ Read a netlist from file.
+    """ Read a netlist from file and sanitize it.
 
     Required inputs:
     ----------------
@@ -1099,24 +1141,25 @@ def clean_netlist(netlist, keep_comments=False):
 
     Required inputs:
     ----------------
-    netlist (str, list):    Netlist as a single string or list of lines.
+    netlist (str, list):    Netlist as a single string or list 
+                            of lines.
 
     Optional inputs:
     ----------------
-    keep_comments (bool):   Dont remove spice comments during cleanup.
+    keep_comments (bool):   Dont remove SPICE comments during cleanup.
+
 
     Returns
     ----------------
     netlist (str):          The cleaned netlist
+
 
     Description
     ----------------
     This function will cleanup a netlist and unify it such that
     it can be processed in a reliable manner.
 
-    The order of the individual steps matters! Be careful
-    when changing something that the order is preserved and
-    makes sense.
+    The order of the individual steps matters! 
     """
     if keep_comments:
         regex_ignore    = re.compile(r"^\+\s*$|^\s{,}$")
@@ -1182,7 +1225,7 @@ def identify_linetype(line):
 
     Required inputs:
     ----------------
-    line (str):     spice netlist line
+    line (str):     SPICE netlist line.
 
     """
     line = line.lstrip()
@@ -1201,6 +1244,17 @@ def identify_linetype(line):
 
 
 def process_statement(line):
+    """ Indentify a SPICE statement.
+
+    Required inputs:
+    ----------------
+    line (str):     SPICE netlist line.
+
+
+    Returns
+    ----------------
+    type (str):     Type of SPICE statement.
+    """
     identifier = line.split(" ")[0]
     if identifier in   [".inc", ".include"]:
         return "include"
@@ -1221,17 +1275,18 @@ def process_statement(line):
 
 
 def remove_enclosed_space(string):
-    """ Remove whitespace enclosed in single quotes
+    """ Remove whitespace enclosed in single quotes.
 
     Required inputs:
     ----------------
-    string (str):   A string from which the whitespace is to be removed.
+    string (str):   A string from which the whitespace 
+                    is to be removed.
 
 
     Returns
     ----------------
-    string (str):   String with whitespace between single quotes removed.
-
+    string (str):   String with whitespace between 
+                    single quotes removed.
     """
     state = False
     parsed = []
@@ -1254,16 +1309,17 @@ def remove_enclosed_space(string):
 
 
 def get_uid(s, i):
-    """ Create a uid.
+    """ Create a uid (unique identifier).
 
     Required inputs:
     ----------------
     s (str):   A string.
     i (str):   A number.
 
+
     Returns
     ----------------
-    uid (str): uid (unique identifier)
+    uid (str): uid .
     """
     s = (str(i) + s).encode()
     return hashlib.md5(s).hexdigest()
