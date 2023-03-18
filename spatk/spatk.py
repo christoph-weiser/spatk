@@ -774,6 +774,10 @@ class Circuit:
         reqex_control_e   = re.compile(r"^.endc")
 
         n = 0
+
+        if isinstance(netlist, str):
+            netlist = [netlist]
+
         for line in netlist:
 
             if not re.match(regex_nreq, line):
