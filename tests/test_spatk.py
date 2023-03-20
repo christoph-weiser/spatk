@@ -114,7 +114,7 @@ CASES = {
     "value"     : None,
     "ports"     : dict()
 },
-"model":
+"include":
 {
     "line"      : ".include mylib.spice",
     "loc"       : "root",
@@ -348,6 +348,223 @@ CASES = {
 "mesfet":
 {
     "line"      : "Z1 neta netb netc mesmodel",
+    "loc"       : "root",
+    "n"         : 1,
+    "uid"       : "testuid",
+    "mod"       : sp.Mesfet,
+    "instance"  : "Z1",
+    "type"      : "mesfet",
+    "value"     : "mesmodel",
+    "ports"     : {"n0": "neta", "n1": "netb", "n2": "netc"},
+    "model"     : "mesmodel"
+},
+"component__args": 
+{
+    "line"      : "R1 neta netb 1e3 myarg=1",
+    "loc"       : "root",
+    "n"         : 1,
+    "uid"       : "testuid",
+    "mod"       : sp.Component,
+    "instance"  : "R1",
+    "type"      : "component",
+    "value"     : None,
+    "ports"     : dict(),
+},
+"component_2t__args": 
+{
+    "line"      : "R1 neta netb 1e3 myarg=1",
+    "loc"       : "root",
+    "n"         : 1,
+    "uid"       : "testuid",
+    "mod"       : sp.Component_2T,
+    "instance"  : "R1",
+    "type"      : "component_2t",
+    "value"     : "1e3",
+    "ports"     : {"n0": "neta", "n1": "netb"},
+},
+"component_3t__args": 
+{
+    "line"      : "X1 neta netb netc model_3t myarg=1",
+    "loc"       : "root",
+    "n"         : 1,
+    "uid"       : "testuid",
+    "mod"       : sp.Component_3T,
+    "instance"  : "X1",
+    "type"      : "component_3t",
+    "value"     : "model_3t",
+    "ports"     : {"n0": "neta", "n1": "netb", "n2": "netc"},
+},
+"component_4t__args":
+{
+    "line"      : "X1 neta netb netc netd model_4t myarg=1",
+    "loc"       : "root",
+    "n"         : 1,
+    "uid"       : "testuid",
+    "mod"       : sp.Component_4T,
+    "instance"  : "X1",
+    "type"      : "component_4t",
+    "value"     : "model_4t",
+    "ports"     : {"n0": "neta", "n1": "netb", "n2": "netc", "n3": "netd"},
+},
+"capacitor__args":
+{
+    "line"        : "C1 neta netb 10e-12 myarg=1",
+    "loc"         : "root",
+    "n"           : 1,
+    "uid"         : "testuid",
+    "mod"         : sp.Capacitor,
+    "instance"    : "C1",
+    "type"        : "capacitor",
+    "value"       : "10e-12",
+    "ports"       : {"n0": "neta", "n1": "netb"},
+    "capacitance" : "10e-12",
+},
+"diode__args":
+{
+    "line"      : "D1 neta netb dmod myarg=1",
+    "loc"       : "root",
+    "n"         : 1,
+    "uid"       : "testuid",
+    "mod"       : sp.Diode,
+    "instance"  : "D1",
+    "type"      : "diode",
+    "value"     : "dmod",
+    "ports"     : {"n0": "neta", "n1": "netb"},
+    "model"     : "dmod",
+},
+"cccs__args":
+{
+    "line"      : "F1 neta netb vname 1 myarg=1",
+    "loc"       : "root",
+    "n"         : 1,
+    "uid"       : "testuid",
+    "mod"       : sp.Cccs,
+    "instance"  : "F1",
+    "type"      : "cccs",
+    "value"     : "1",
+    "ports"     : {"n0": "neta", "n1": "netb"},
+    "vname"     : "vname",
+},
+"ccvs__args":
+{
+    "line"      : "H1 neta netb vname 1 myarg=1",
+    "loc"       : "root",
+    "n"         : 1,
+    "uid"       : "testuid",
+    "mod"       : sp.Ccvs,
+    "instance"  : "H1",
+    "type"      : "ccvs",
+    "value"     : "1",
+    "ports"     : {"n0": "neta", "n1": "netb"},
+    "vname"     : "vname",
+},
+"isource__args":
+{
+    "line"      : "I1 neta netb 1e-3 myarg=1",
+    "loc"       : "root",
+    "n"         : 1,
+    "uid"       : "testuid",
+    "mod"       : sp.Isource,
+    "instance"  : "I1",
+    "type"      : "isource",
+    "value"     : "1e-3",
+    "ports"     : {"n0": "neta", "n1": "netb"},
+    "current"   : "1e-3",
+},
+"jfet__args":
+{
+    "line"      : "J1 neta netb netc jmodel myarg=1",
+    "loc"       : "root",
+    "n"         : 1,
+    "uid"       : "testuid",
+    "mod"       : sp.Jfet,
+    "instance"  : "J1",
+    "type"      : "jfet",
+    "value"     : "jmodel",
+    "ports"     : {"n0": "neta", "n1": "netb", "n2": "netc"},
+    "model"     : "jmodel"
+},
+"inductor__args":
+{
+    "line"       : "L1 neta netb 1e-6 myarg=1",
+    "loc"        : "root",
+    "n"          : 1,
+    "uid"        : "testuid",
+    "mod"        : sp.Inductor,
+    "instance"   : "L1",
+    "type"       : "inductor",
+    "value"      : "1e-6",
+    "ports"      : {"n0": "neta", "n1": "netb"},
+    "inductance" : "1e-6"
+},
+"mosfet__args":
+{
+    "line"      : "M1 neta netb netc netd mosmodel myarg=1",
+    "loc"       : "root",
+    "n"         : 1,
+    "uid"       : "testuid",
+    "mod"       : sp.Mosfet,
+    "instance"  : "M1",
+    "type"      : "mosfet",
+    "value"     : "mosmodel",
+    "ports"     : {"n0": "neta", "n1": "netb", "n2": "netc", "n3": "netd"},
+    "model"     : "mosmodel"
+},
+"bjt_3t__args":
+{
+    "line"      : "Q1 neta netb netc bjtmodel myarg=1",
+    "loc"       : "root",
+    "n"         : 1,
+    "uid"       : "testuid",
+    "mod"       : sp.Bjt,
+    "instance"  : "Q1",
+    "type"      : "bjt",
+    "value"     : "bjtmodel",
+    "ports"     : {"n0": "neta", "n1": "netb", "n2": "netc"},
+    "model"     : "bjtmodel"
+},
+"bjt_4t__args":
+{
+    "line"      : "Q1 neta netb netc netd bjtmodel myarg=1",
+    "loc"       : "root",
+    "n"         : 1,
+    "uid"       : "testuid",
+    "mod"       : sp.Bjt,
+    "instance"  : "Q1",
+    "type"      : "bjt",
+    "value"     : "bjtmodel",
+    "ports"     : {"n0": "neta", "n1": "netb", "n2": "netc", "n3": "netd"},
+    "model"     : "bjtmodel"
+},
+"resistor__args":
+{
+    "line"       : "R1 neta netb 1e3 myarg=1",
+    "loc"        : "root",
+    "n"          : 1,
+    "uid"        : "testuid",
+    "mod"        : sp.Resistor,
+    "instance"   : "R1",
+    "type"       : "resistor",
+    "value"      : "1e3",
+    "ports"      : {"n0": "neta", "n1": "netb"},
+    "resistance" : "1e3"
+},
+"vsource__args":
+{
+    "line"      : "V1 neta netb 1 myarg=1",
+    "loc"       : "root",
+    "n"         : 1,
+    "uid"       : "testuid",
+    "mod"       : sp.Vsource,
+    "instance"  : "V1",
+    "type"      : "vsource",
+    "value"     : "1",
+    "ports"     : {"n0": "neta", "n1": "netb"},
+    "voltage"   : "1"
+},
+"mesfet__args":
+{
+    "line"      : "Z1 neta netb netc mesmodel myarg=1",
     "loc"       : "root",
     "n"         : 1,
     "uid"       : "testuid",

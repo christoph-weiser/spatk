@@ -520,11 +520,11 @@ class Bjt(Component):
         if self.subs_terminal:
             self.ports = self._assign_ports(elements[1:5])
             self.value = elements[5]
-            self.args  = elements[6:]
+            self.argsdata = Args(elements[6:])
         else:
             self.ports = self._assign_ports(elements[1:4])
             self.value = elements[4]
-            self.args  = elements[5:]
+            self.argsdata = Args(elements[5:])
 
     def __str__(self):
         l = [self.instance,
