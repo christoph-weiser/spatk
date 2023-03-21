@@ -14,4 +14,12 @@
 # You should have received a copy of the GNU General Public License
 # along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
-from .spatk import *
+import os
+
+try:
+    SYNTAX = os.environ["SPICE_SYNTAX"]
+except(KeyError):
+    SYNTAX = "ngspice"
+print(SYNTAX)
+
+from spatk.circuit import Circuit
