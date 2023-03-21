@@ -20,6 +20,5 @@ try:
     SYNTAX = os.environ["SPICE_SYNTAX"]
 except(KeyError):
     SYNTAX = "ngspice"
-print(SYNTAX)
 
 from spatk.circuit import Circuit
