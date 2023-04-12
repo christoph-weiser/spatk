@@ -260,6 +260,7 @@ def clean_netlist(netlist, keep_comments=False):
     regex_assign_space  = re.compile(r" {,}= {,}")
     regex_comma_space   = re.compile(r", {1,}")
     regex_include       = re.compile(r"^.include.*")
+    regex_curlybracket  = re.compile(r"[{}]")
 
     if isinstance(netlist, str):
         netlist = netlist.split("\n")
@@ -296,15 +297,18 @@ def clean_netlist(netlist, keep_comments=False):
     # Remove space after comma
     netlist_f = [re.sub(regex_comma_space, ",", line) for line in netlist_e]
 
-    # Lowercase all letters unless .include statement
-    netlist_g = []
-    for line in netlist_f:
-        if re.match(regex_include, line):
-            netlist_g.append(line)
-        else:
-            netlist_g.append(line.lower())
+    # substitue curly brackets with single quotes
+    netlist_g = [re.sub(regex_curlybracket, "'", line) for line in netlist_f]
 
-    return [x.strip() for x in netlist_g]
+    # Lowercase all letters unless .include statement
+    netlist_h = []
+    for line in netlist_g:
+        if re.match(regex_include, line):
+            netlist_h.append(line)
+        else:
+            netlist_h.append(line.lower())
+
+    return [x.strip() for x in netlist_h]
 
 
 
