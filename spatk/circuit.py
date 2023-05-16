@@ -25,6 +25,9 @@ from spatk.helpers import (read_netlist,
                            dissect_param,
                            clean_netlist,
                            filter,
+                           touches,
+                           count_nets,
+                           element_types,
                            get_uid)
 
 from spatk.elements import elementmap, identify_linetype
