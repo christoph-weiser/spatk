@@ -32,6 +32,22 @@ class Model(Statement):
     def __init__(self, *args):
         super(Model, self).__init__(*args)
 
+    @property
+    def name(self):
+        return self.elements[1]
+
+    @name.setter
+    def name(self, arg):
+        self.elements[1] = arg
+
+    @property
+    def device(self):
+        return self.elements[2]
+
+    @device.setter
+    def device(self, arg):
+        self.elements[2] = arg
+
 
 class Include(Statement):
     """ .include Statement. """
