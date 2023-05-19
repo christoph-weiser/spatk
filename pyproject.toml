@@ -1,0 +1,27 @@
+# pyproject.toml
+
+[build-system]
+requires      = ["setuptools>=61.0.0", "wheel"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "spatk"
+version = "1.0.0"
+description = "Module for handling and analyzing spice netlists"
+readme = "README.md"
+authors = [{ name = "Christoph Weiser"}]
+license = { file = "LICENSE" }
+classifiers = [
+    "License :: OSI Approved :: GNU General Public License v3",
+    "Programming Language :: Python",
+    "Programming Language :: Python :: 3",
+]
+keywords = ["spice", "analysis", "parsing"]
+dependencies = []
+requires-python = ">=3.9"
+
+[project.optional-dependencies]
+dev = ["pytest"]
+
+[project.urls]
+Homepage = "https://github.com/christoph-weiser/spatk"
