@@ -21,32 +21,12 @@ from spatk.genelems import (Args,
                             Component_3T, 
                             Component_4T, 
                             Statement, 
-                            Comment)
+                            Comment,
+                            Model)
 
 #----------------------------------------------------------------------
 # NGSpice element classes
 #----------------------------------------------------------------------
-
-class Model(Statement):
-    """ .model Statement. """
-    def __init__(self, *args):
-        super(Model, self).__init__(*args)
-
-    @property
-    def name(self):
-        return self.elements[1]
-
-    @name.setter
-    def name(self, arg):
-        self.elements[1] = arg
-
-    @property
-    def device(self):
-        return self.elements[2]
-
-    @device.setter
-    def device(self, arg):
-        self.elements[2] = arg
 
 
 class Include(Statement):

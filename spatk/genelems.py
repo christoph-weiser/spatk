@@ -190,3 +190,42 @@ class Comment(Default):
     """ Comment. """
     def __init__(self, *args):
         super(Comment, self).__init__(*args)
+
+
+class Model(Statement):
+    """ .model Statement. """
+    def __init__(self, *args):
+        super(Model, self).__init__(*args)
+        self.argsdata = Args(self.elements[3:])
+
+    def __str__(self):
+        l = [".model",
+             self.name,
+             self.type]
+        if self.args:
+            l.append(str(self.argsdata))
+        return " ".join(l)
+
+    @property
+    def args(self):
+        return self.argsdata
+
+    @args.setter
+    def args(self, arg):
+        self.argsdata = arg
+
+    @property
+    def name(self):
+        return self.elements[1]
+
+    @name.setter
+    def name(self, arg):
+        self.elements[1] = arg
+
+    @property
+    def type(self):
+        return self.elements[2]
+
+    @type.setter
+    def type(self, arg):
+        self.elements[2] = arg

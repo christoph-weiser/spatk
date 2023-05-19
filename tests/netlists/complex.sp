@@ -21,9 +21,9 @@ z1 1 2 3 zmod
 rs1 1 2 1e3
 .ends
 .param mypar=1
-.model dmod d(is=1e-9)
-.model qmod npn(is=1e-15 bf=1e3)
-.model jmod pjf(is=15e-12 beta=300e-6 vto=-1)
-.model mmod nmos(l=2e-6 w=10e-6 kp=200e-6 level=1)
-.model zmod nmf(level=1)
+.model dmod d is=1e-9
+.model qmod npn is=1e-15 bf=1e3
+.model jmod pjf is=15e-12 beta=300e-6 vto=-1
+.model mmod nmos l=2e-6 w=10e-6 kp=200e-6 level=1
+.model zmod nmf level=1
 .ends
