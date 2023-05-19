@@ -139,12 +139,15 @@ class Circuit:
         ctlsec = False
         hierarchy = collections.deque()
         hierarchy.append("root")
+        library = None
 
-        regex_nreq        = re.compile(r"^$|^\.end$")
-        reqex_subckt_s    = re.compile(r"^.subckt*")
-        reqex_subckt_e    = re.compile(r"^.ends.*")
-        reqex_control_s   = re.compile(r"^.control")
-        reqex_control_e   = re.compile(r"^.endc")
+        regex_nreq          = re.compile(r"^$|^\.end$")
+        reqex_subckt_s      = re.compile(r"^.subckt*")
+        reqex_subckt_e      = re.compile(r"^.ends.*")
+        reqex_control_s     = re.compile(r"^.control")
+        reqex_control_e     = re.compile(r"^.endc")
+        reqex_library_def_s = re.compile(r"^.lib [a-zA-Z0-9_.-]*$") 
+        reqex_library_def_e = re.compile(r"^.endl.*")
 
         n = 0
 
@@ -157,6 +160,9 @@ class Circuit:
 
                 if re.match(reqex_subckt_s, line):
                     hierarchy.append(line.split(" ")[1])
+
+                if re.match(reqex_library_def_s, line):
+                    library = line.split(" ")[1]
 
                 if re.match(reqex_control_s, line) or ctlsec:
                     ctlsec = True
@@ -172,13 +178,18 @@ class Circuit:
                         for line in lines:
                             uid = get_uid(line, n)
                             element = elementmap[elemtype]
-                            elements[uid] = element(line, location, n, uid)
+                            elements[uid] = element(line, location, library, n, uid)
                     else:
                         uid = get_uid(line, n)
                         element = elementmap[elemtype]
-                        elements[uid] = element(line, location, n, uid)
+                        elements[uid] = element(line, location, library, n, uid)
+
                 if re.match(reqex_subckt_e, line):
                     hierarchy.pop()
+
+                if re.match(reqex_library_def_e, line):
+                    library = None
+
             n = n + 1;
         return elements
 

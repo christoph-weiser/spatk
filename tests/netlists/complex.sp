@@ -27,3 +27,6 @@ rs1 1 2 1e3
 .model mmod nmos l=2e-6 w=10e-6 kp=200e-6 level=1
 .model zmod nmf level=1
 .ends
+.lib mylib
+.model libmod d is=1e-9
+.endl

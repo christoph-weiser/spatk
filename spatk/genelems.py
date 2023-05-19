@@ -68,9 +68,10 @@ class Default():
     n (int):        line number in the netlist.
     uid (str):      unique identifier for this element
     """
-    def __init__(self, line, location, n, uid):
+    def __init__(self, line, location, lib, n, uid):
         self.line = line
         self.location = location
+        self.lib = lib
         self.uid = uid
         self.n = n
         self.instance = None

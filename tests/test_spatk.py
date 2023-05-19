@@ -17,13 +17,14 @@
 import pytest
 import spatk as sp
 
-import spatk.elements as spe 
+import spatk.elements as spe
 
-CASES = { 
-"default": 
+CASES = {
+"default":
 {
     "line"      : "A Default Line",
     "loc"       : "root",
+    "lib"       : None,
     "n"         : 1,
     "uid"       : "testuid",
     "mod"       : spe.Default,
@@ -32,10 +33,11 @@ CASES = {
     "value"     : None,
     "ports"     : dict(),
 },
-"component": 
+"component":
 {
     "line"      : "R1 neta netb 1e3",
     "loc"       : "root",
+    "lib"       : None,
     "n"         : 1,
     "uid"       : "testuid",
     "mod"       : spe.Component,
@@ -44,10 +46,11 @@ CASES = {
     "value"     : None,
     "ports"     : dict(),
 },
-"component_2t": 
+"component_2t":
 {
     "line"      : "R1 neta netb 1e3",
     "loc"       : "root",
+    "lib"       : None,
     "n"         : 1,
     "uid"       : "testuid",
     "mod"       : spe.Component_2T,
@@ -56,10 +59,11 @@ CASES = {
     "value"     : "1e3",
     "ports"     : {"n0": "neta", "n1": "netb"},
 },
-"component_3t": 
+"component_3t":
 {
     "line"      : "X1 neta netb netc model_3t",
     "loc"       : "root",
+    "lib"       : None,
     "n"         : 1,
     "uid"       : "testuid",
     "mod"       : spe.Component_3T,
@@ -72,6 +76,7 @@ CASES = {
 {
     "line"      : "X1 neta netb netc netd model_4t",
     "loc"       : "root",
+    "lib"       : None,
     "n"         : 1,
     "uid"       : "testuid",
     "mod"       : spe.Component_4T,
@@ -84,6 +89,7 @@ CASES = {
 {
     "line"      : ".include mylib.spice",
     "loc"       : "root",
+    "lib"       : None,
     "n"         : 1,
     "uid"       : "testuid",
     "mod"       : spe.Statement,
@@ -96,6 +102,7 @@ CASES = {
 {
     "line"      : "* A test comment",
     "loc"       : "root",
+    "lib"       : None,
     "n"         : 1,
     "uid"       : "testuid",
     "mod"       : spe.Comment,
@@ -108,6 +115,7 @@ CASES = {
 {
     "line"      : ".model mymodel model",
     "loc"       : "root",
+    "lib"       : None,
     "n"         : 1,
     "uid"       : "testuid",
     "mod"       : spe.Model,
@@ -120,6 +128,7 @@ CASES = {
 {
     "line"      : ".include mylib.spice",
     "loc"       : "root",
+    "lib"       : None,
     "n"         : 1,
     "uid"       : "testuid",
     "mod"       : spe.Include,
@@ -132,6 +141,7 @@ CASES = {
 {
     "line"      : ".lib lib.spice module",
     "loc"       : "root",
+    "lib"       : None,
     "n"         : 1,
     "uid"       : "testuid",
     "mod"       : spe.Library,
@@ -146,6 +156,7 @@ CASES = {
 {
     "line"      : ".option setting=value",
     "loc"       : "root",
+    "lib"       : None,
     "n"         : 1,
     "uid"       : "testuid",
     "mod"       : spe.Option,
@@ -158,6 +169,7 @@ CASES = {
 {
     "line"      : ".func myfunc='expression'",
     "loc"       : "root",
+    "lib"       : None,
     "n"         : 1,
     "uid"       : "testuid",
     "mod"       : spe.Function,
@@ -170,6 +182,7 @@ CASES = {
 {
     "line"      : ".param mypar='value'",
     "loc"       : "root",
+    "lib"       : None,
     "n"         : 1,
     "uid"       : "testuid",
     "mod"       : spe.Param,
@@ -183,6 +196,7 @@ CASES = {
 {
     "line"      : ".global vss vdd",
     "loc"       : "root",
+    "lib"       : None,
     "n"         : 1,
     "uid"       : "testuid",
     "mod"       : spe.Global,
@@ -195,6 +209,7 @@ CASES = {
 {
     "line"        : "C1 neta netb 10e-12",
     "loc"         : "root",
+    "lib"         : None,
     "n"           : 1,
     "uid"         : "testuid",
     "mod"         : spe.Capacitor,
@@ -208,6 +223,7 @@ CASES = {
 {
     "line"      : "D1 neta netb dmod",
     "loc"       : "root",
+    "lib"       : None,
     "n"         : 1,
     "uid"       : "testuid",
     "mod"       : spe.Diode,
@@ -221,6 +237,7 @@ CASES = {
 {
     "line"      : "F1 neta netb vname 1",
     "loc"       : "root",
+    "lib"       : None,
     "n"         : 1,
     "uid"       : "testuid",
     "mod"       : spe.Cccs,
@@ -234,6 +251,7 @@ CASES = {
 {
     "line"      : "H1 neta netb vname 1",
     "loc"       : "root",
+    "lib"       : None,
     "n"         : 1,
     "uid"       : "testuid",
     "mod"       : spe.Ccvs,
@@ -247,6 +265,7 @@ CASES = {
 {
     "line"      : "I1 neta netb 1e-3",
     "loc"       : "root",
+    "lib"       : None,
     "n"         : 1,
     "uid"       : "testuid",
     "mod"       : spe.Isource,
@@ -260,6 +279,7 @@ CASES = {
 {
     "line"      : "J1 neta netb netc jmodel",
     "loc"       : "root",
+    "lib"       : None,
     "n"         : 1,
     "uid"       : "testuid",
     "mod"       : spe.Jfet,
@@ -273,6 +293,7 @@ CASES = {
 {
     "line"       : "L1 neta netb 1e-6",
     "loc"        : "root",
+    "lib"       : None,
     "n"          : 1,
     "uid"        : "testuid",
     "mod"        : spe.Inductor,
@@ -286,6 +307,7 @@ CASES = {
 {
     "line"      : "M1 neta netb netc netd mosmodel",
     "loc"       : "root",
+    "lib"       : None,
     "n"         : 1,
     "uid"       : "testuid",
     "mod"       : spe.Mosfet,
@@ -299,6 +321,7 @@ CASES = {
 {
     "line"      : "Q1 neta netb netc bjtmodel",
     "loc"       : "root",
+    "lib"       : None,
     "n"         : 1,
     "uid"       : "testuid",
     "mod"       : spe.Bjt,
@@ -312,6 +335,7 @@ CASES = {
 {
     "line"      : "Q1 neta netb netc netd bjtmodel",
     "loc"       : "root",
+    "lib"       : None,
     "n"         : 1,
     "uid"       : "testuid",
     "mod"       : spe.Bjt,
@@ -325,6 +349,7 @@ CASES = {
 {
     "line"       : "R1 neta netb 1e3",
     "loc"        : "root",
+    "lib"       : None,
     "n"          : 1,
     "uid"        : "testuid",
     "mod"        : spe.Resistor,
@@ -338,6 +363,7 @@ CASES = {
 {
     "line"      : "V1 neta netb 1",
     "loc"       : "root",
+    "lib"       : None,
     "n"         : 1,
     "uid"       : "testuid",
     "mod"       : spe.Vsource,
@@ -351,6 +377,7 @@ CASES = {
 {
     "line"      : "Z1 neta netb netc mesmodel",
     "loc"       : "root",
+    "lib"       : None,
     "n"         : 1,
     "uid"       : "testuid",
     "mod"       : spe.Mesfet,
@@ -360,10 +387,11 @@ CASES = {
     "ports"     : {"n0": "neta", "n1": "netb", "n2": "netc"},
     "model"     : "mesmodel"
 },
-"component__args": 
+"component__args":
 {
     "line"      : "R1 neta netb 1e3 myarg=1",
     "loc"       : "root",
+    "lib"       : None,
     "n"         : 1,
     "uid"       : "testuid",
     "mod"       : spe.Component,
@@ -372,10 +400,11 @@ CASES = {
     "value"     : None,
     "ports"     : dict(),
 },
-"component_2t__args": 
+"component_2t__args":
 {
     "line"      : "R1 neta netb 1e3 myarg=1",
     "loc"       : "root",
+    "lib"       : None,
     "n"         : 1,
     "uid"       : "testuid",
     "mod"       : spe.Component_2T,
@@ -384,10 +413,11 @@ CASES = {
     "value"     : "1e3",
     "ports"     : {"n0": "neta", "n1": "netb"},
 },
-"component_3t__args": 
+"component_3t__args":
 {
     "line"      : "X1 neta netb netc model_3t myarg=1",
     "loc"       : "root",
+    "lib"       : None,
     "n"         : 1,
     "uid"       : "testuid",
     "mod"       : spe.Component_3T,
@@ -400,6 +430,7 @@ CASES = {
 {
     "line"      : "X1 neta netb netc netd model_4t myarg=1",
     "loc"       : "root",
+    "lib"       : None,
     "n"         : 1,
     "uid"       : "testuid",
     "mod"       : spe.Component_4T,
@@ -412,6 +443,7 @@ CASES = {
 {
     "line"        : "C1 neta netb 10e-12 myarg=1",
     "loc"         : "root",
+    "lib"         : None,
     "n"           : 1,
     "uid"         : "testuid",
     "mod"         : spe.Capacitor,
@@ -425,6 +457,7 @@ CASES = {
 {
     "line"      : "D1 neta netb dmod myarg=1",
     "loc"       : "root",
+    "lib"       : None,
     "n"         : 1,
     "uid"       : "testuid",
     "mod"       : spe.Diode,
@@ -438,6 +471,7 @@ CASES = {
 {
     "line"      : "F1 neta netb vname 1 myarg=1",
     "loc"       : "root",
+    "lib"       : None,
     "n"         : 1,
     "uid"       : "testuid",
     "mod"       : spe.Cccs,
@@ -451,6 +485,7 @@ CASES = {
 {
     "line"      : "H1 neta netb vname 1 myarg=1",
     "loc"       : "root",
+    "lib"       : None,
     "n"         : 1,
     "uid"       : "testuid",
     "mod"       : spe.Ccvs,
@@ -464,6 +499,7 @@ CASES = {
 {
     "line"      : "I1 neta netb 1e-3 myarg=1",
     "loc"       : "root",
+    "lib"       : None,
     "n"         : 1,
     "uid"       : "testuid",
     "mod"       : spe.Isource,
@@ -477,6 +513,7 @@ CASES = {
 {
     "line"      : "J1 neta netb netc jmodel myarg=1",
     "loc"       : "root",
+    "lib"       : None,
     "n"         : 1,
     "uid"       : "testuid",
     "mod"       : spe.Jfet,
@@ -490,6 +527,7 @@ CASES = {
 {
     "line"       : "L1 neta netb 1e-6 myarg=1",
     "loc"        : "root",
+    "lib"        : None,
     "n"          : 1,
     "uid"        : "testuid",
     "mod"        : spe.Inductor,
@@ -503,6 +541,7 @@ CASES = {
 {
     "line"      : "M1 neta netb netc netd mosmodel myarg=1",
     "loc"       : "root",
+    "lib"       : None,
     "n"         : 1,
     "uid"       : "testuid",
     "mod"       : spe.Mosfet,
@@ -516,6 +555,7 @@ CASES = {
 {
     "line"      : "Q1 neta netb netc bjtmodel myarg=1",
     "loc"       : "root",
+    "lib"       : None,
     "n"         : 1,
     "uid"       : "testuid",
     "mod"       : spe.Bjt,
@@ -529,6 +569,7 @@ CASES = {
 {
     "line"      : "Q1 neta netb netc netd bjtmodel myarg=1",
     "loc"       : "root",
+    "lib"       : None,
     "n"         : 1,
     "uid"       : "testuid",
     "mod"       : spe.Bjt,
@@ -542,6 +583,7 @@ CASES = {
 {
     "line"       : "R1 neta netb 1e3 myarg=1",
     "loc"        : "root",
+    "lib"        : None,
     "n"          : 1,
     "uid"        : "testuid",
     "mod"        : spe.Resistor,
@@ -555,6 +597,7 @@ CASES = {
 {
     "line"      : "V1 neta netb 1 myarg=1",
     "loc"       : "root",
+    "lib"       : None,
     "n"         : 1,
     "uid"       : "testuid",
     "mod"       : spe.Vsource,
@@ -568,6 +611,7 @@ CASES = {
 {
     "line"      : "Z1 neta netb netc mesmodel myarg=1",
     "loc"       : "root",
+    "lib"       : None,
     "n"         : 1,
     "uid"       : "testuid",
     "mod"       : spe.Mesfet,
@@ -585,18 +629,19 @@ def create_module(case):
     module = case["mod"]
     line = case["line"]
     loc = case["loc"]
+    lib = case["lib"]
     n = case["n"]
     uid = case["uid"]
-    return module(line, loc, n, uid)
+    return module(line, loc, lib, n, uid)
 
 
 def test_modules_common():
-    """ Test common module properties. 
-    
+    """ Test common module properties.
+
     Module classes have common properties which
     are tested all in the same run.
 
-    These are all adressed in CASES dictionary 
+    These are all adressed in CASES dictionary
     defined above.
     """
     for k in CASES.keys():
@@ -614,6 +659,7 @@ def test_modules_common():
         assert(str(mod)     == case["line"])
         assert(mod.line     == case["line"])
         assert(mod.location == case["loc"])
+        assert(mod.lib      == case["lib"])
         assert(mod.uid      == case["uid"])
         assert(mod.n        == case["n"])
         assert(mod.instance == case["instance"])
@@ -839,7 +885,7 @@ def test_circuit_init_list():
     netlist = [ "* Netlist\n" ] + netlist + [""]
     net_in = "\n".join(netlist)
 
-    net_out = str(cir) 
+    net_out = str(cir)
     assert(net_in == net_out)
 
 
@@ -852,7 +898,7 @@ def test_circuit_init_str():
     net_in = "* Netlist\n\n" + netlist.lower() + "\n"
 
     cir  = sp.Circuit(netlist, is_filename=False)
-    net_out = str(cir) 
+    net_out = str(cir)
 
     assert(net_in == net_out)
 
@@ -868,7 +914,7 @@ def test_circuit_init_simple():
     netlist = "netlists/simple.sp"
     net_in = input_netlist(netlist)
     cir  = sp.Circuit(netlist)
-    net_out = str(cir) 
+    net_out = str(cir)
     assert(net_in == net_out)
 
 
@@ -876,7 +922,7 @@ def test_circuit_init_simple():
     netlist = "netlists/simple.sp"
     net_in = input_netlist(netlist)
     cir  = sp.Circuit(netlist)
-    net_out = str(cir) 
+    net_out = str(cir)
     assert(net_in == net_out)
 
 
@@ -884,7 +930,7 @@ def test_circuit_init_complex():
     netlist = "netlists/complex.sp"
     net_in = input_netlist(netlist)
     cir  = sp.Circuit(netlist)
-    net_out = str(cir) 
+    net_out = str(cir)
     assert(net_in == net_out)
 
 
@@ -895,6 +941,13 @@ def test_circuit_hierachy():
     assert(cir[uid].location == "root/module")
     uid = cir.filter("instance", "rs1")[0]
     assert(cir[uid].location == "root/module/submodule")
+
+
+def test_circuit_library():
+    netlist = "netlists/lib.sp"
+    cir = sp.Circuit(netlist)
+    uid = cir.filter("instance", "r1")[0]
+    assert(cir[uid].lib == "mylib")
 
 
 def test_circuit_get_args():
