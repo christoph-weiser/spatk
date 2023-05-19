@@ -37,5 +37,20 @@ if SYNTAX == "ngspice":
                                Vsource, Icsw, Subckt,
                                Single_lossy_transmission_line, Mesfet)
 
+elif SYNTAX == "hspice":
+    from spatk.helems import elementmap
+    from spatk.helems import process_statement, identify_linetype
+    from spatk.helems import (Model, Include, Library,
+                               Option, Function, Param,
+                               Global, Xspice, Behavioral_source,
+                               Capacitor, Diode, Vcvs, Cccs,
+                               Vccs, Ccvs, Isource, Jfet,
+                               Inductor, Mosfet, Numerical_device_gss,
+                               Lossy_transmission_line, Bjt,
+                               Resistor, Vcsw, Lossless_transmission_line,
+                               Uniformely_distributed_rc_line,
+                               Vsource, Icsw, Subckt,
+                               Single_lossy_transmission_line, Mesfet)
+
 else:
     raise Exception("The choosen syntax format is not supported!")
