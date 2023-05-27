@@ -75,7 +75,9 @@ class Circuit:
         self.parsed_circuit = self.parse(self._netlist)
         self.circuit = copy.deepcopy(self.parsed_circuit)
         self._synthesize()
+        self._asign_attributes()
 
+    def _asign_attributes(self):
         for elem in elementmap.values():
             if elem:
                 elemname = (elem.__name__).lower()
@@ -216,6 +218,7 @@ class Circuit:
         ----------------
         line (str):     SPICE netlist line.
         """
+        line = clean_netlist(line)
         parsed = self.parse(line)
         last = list(self.circuit.keys())[-1]
         if last:
@@ -223,9 +226,10 @@ class Circuit:
         else:
             n = 0
         for i, uid_parsed in enumerate(parsed):
-            uid = get_uid(line, i)
+            uid = get_uid(parsed[uid_parsed].line, i)
             parsed[uid_parsed].n = n + i
             self.circuit[uid] = parsed[uid_parsed]
+        self._asign_attributes()
 
 
     def write(self, filename):
