@@ -252,6 +252,23 @@ class Isource(Component_2T):
     def __init__(self, *args):
         super(Isource, self).__init__(*args)
 
+    def parse(self, elements):
+        if len(elements) == 4:
+            super(Isource, self).parse(elements)
+        else:
+            var_source = False
+            types = ["dc", "ac", "pulse", "exp", "pwl", 
+                     "sffm", "am", "trnoise", "trrandom"] 
+            for t in types:
+                if t in elements[3]:
+                    var_source = True
+            if var_source:
+                self.ports = self._assign_ports(elements[1:3])
+                self.value = " ".join(elements[3:])
+                self.argsdata = None
+            else:
+                super(Isource, self).parse(elements)
+
     @property
     def current(self):
         return self.value
@@ -394,6 +411,23 @@ class Vsource(Component_2T):
     """ V - Voltage Source. """
     def __init__(self, *args):
         super(Vsource, self).__init__(*args)
+
+    def parse(self, elements):
+        if len(elements) == 4:
+            super(Vsource, self).parse(elements)
+        else:
+            var_source = False
+            types = ["dc", "ac", "pulse", "exp", "pwl", 
+                     "sffm", "am", "trnoise", "trrandom"] 
+            for t in types:
+                if t in elements[3]:
+                    var_source = True
+            if var_source:
+                self.ports = self._assign_ports(elements[1:3])
+                self.value = " ".join(elements[3:])
+                self.argsdata = None
+            else:
+                super(Vsource, self).parse(elements)
 
     @property
     def voltage(self):

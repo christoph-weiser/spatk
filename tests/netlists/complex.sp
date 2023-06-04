@@ -8,6 +8,8 @@ f1 1 2 vsrc 1
 g1 1 2 3 4 1
 h1 1 2 vsrc 1
 i1 1 2 1
+ispec 1 2 sin(0 1 1e6)
+ispec 1 2 dc 0 sin(0 1 1e6)
 j1 1 2 3 jmod
 l1 1 2 1e-6
 m1 1 2 3 4 mmod
@@ -15,6 +17,8 @@ q1 1 2 3 qmod
 r1 1 2 1e3
 v1 1 2 1
 vsrc 1 2 1
+vspec 1 2 sin(0 1 1e6)
+vspec 1 2 dc 0 sin(0 1 1e6)
 x1 1 2 submodule
 z1 1 2 3 zmod
 .subckt submodule 1 2
