@@ -178,6 +178,19 @@ CASES = {
     "value"     : None,
     "ports"     : dict(),
 },
+"temp":
+{
+    "line"      : ".temp 20",
+    "loc"       : "root",
+    "lib"       : None,
+    "n"         : 1,
+    "uid"       : "testuid",
+    "mod"       : spe.Temp,
+    "instance"  : None,
+    "type"      : "temp",
+    "value"     : "20",
+    "ports"     : dict(),
+},
 "param":
 {
     "line"      : ".param mypar='value'",

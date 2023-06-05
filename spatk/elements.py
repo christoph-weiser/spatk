@@ -26,7 +26,7 @@ if SYNTAX == "ngspice":
     from spatk.ngelems import elementmap
     from spatk.ngelems import process_statement, identify_linetype
     from spatk.ngelems import (Model, Include, Library,
-                               Option, Function, Param,
+                               Option, Function, Temp, Param,
                                Global, Xspice, Behavioral_source,
                                Capacitor, Diode, Vcvs, Cccs,
                                Vccs, Ccvs, Isource, Jfet,

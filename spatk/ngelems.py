@@ -91,6 +91,19 @@ class Function(Statement):
         super(Function, self).__init__(*args)
 
 
+class Temp(Statement):
+    """ .temp Statement. """
+    def __init__(self, *args):
+        super(Temp, self).__init__(*args)
+
+    @property
+    def value(self):
+        return self.elements[1]
+
+    @value.setter
+    def value(self, arg):
+        self.elements[1] = str(arg)
+
 class Param(Statement):
     """ .param Statement. """
     def __init__(self, *args):
@@ -480,6 +493,7 @@ elementmap = {"*":          Comment,
               "library":    Library,
               "option":     Option,
               "function":   Function,
+              "temp":       Temp,
               "param":      Param,
               "global":     Global,
               "A":          Xspice,
@@ -541,6 +555,8 @@ def process_statement(line):
         return "function"
     elif identifier in [".global"]:
         return "global"
+    elif identifier in [".temp"]:
+        return "temp"
     elif identifier in [".par", ".param"]:
         return "param"
     else:

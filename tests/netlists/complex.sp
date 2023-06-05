@@ -24,6 +24,7 @@ z1 1 2 3 zmod
 .subckt submodule 1 2
 rs1 1 2 1e3
 .ends
+.temp 20
 .param mypar=1
 .model dmod d is=1e-9
 .model qmod npn is=1e-15 bf=1e3
