@@ -89,6 +89,11 @@ class Default():
         return (self.__class__.__name__).lower()
 
     @property
+    def parent(self):
+        if self.location != "root":
+            return self.location.split("/")[-1]
+
+    @property
     def value(self):
         return self._value
 

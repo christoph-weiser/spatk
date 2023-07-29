@@ -998,6 +998,17 @@ def test_circuit_hierachy():
     assert(cir[uid].location == "root/module/submodule")
 
 
+def test_circuit_hierachy_parent():
+    netlist = "netlists/complex.sp"
+    cir = sp.Circuit(netlist)
+    uid = cir.filter("instance", "xmod")[0]
+    assert(cir[uid].parent == None)
+    uid = cir.filter("instance", "r1")[0]
+    assert(cir[uid].parent == "module")
+    uid = cir.filter("instance", "rs1")[0]
+    assert(cir[uid].parent == "submodule")
+
+
 def test_circuit_library():
     netlist = "netlists/lib.sp"
     cir = sp.Circuit(netlist)
