@@ -19,7 +19,7 @@ from spatk import SYNTAX
 from spatk.genelems import (Args, Default, Component,
                             Component_2T, Component_3T,
                             Component_4T, Statement,
-                            Comment)
+                            Comment, Subckt, SubcktDef)
 
 if SYNTAX == "ngspice":
 
@@ -34,7 +34,7 @@ if SYNTAX == "ngspice":
                                Lossy_transmission_line, Bjt,
                                Resistor, Vcsw, Lossless_transmission_line,
                                Uniformely_distributed_rc_line,
-                               Vsource, Icsw, Subckt,
+                               Vsource, Icsw,
                                Single_lossy_transmission_line, Mesfet)
 
 elif SYNTAX == "hspice":
@@ -49,7 +49,7 @@ elif SYNTAX == "hspice":
                                Lossy_transmission_line, Bjt,
                                Resistor, Vcsw, Lossless_transmission_line,
                                Uniformely_distributed_rc_line,
-                               Vsource, Icsw, Subckt,
+                               Vsource, Icsw,
                                Single_lossy_transmission_line, Mesfet)
 
 else:

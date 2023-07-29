@@ -218,6 +218,32 @@ CASES = {
     "value"     : None,
     "ports"     : dict(),
 },
+"subckt":
+{
+    "line"        : "X1 neta netb netc mysubckt",
+    "loc"         : "root",
+    "lib"         : None,
+    "n"           : 1,
+    "uid"         : "testuid",
+    "mod"         : spe.Subckt,
+    "instance"    : "X1",
+    "type"        : "subckt",
+    "value"       : "mysubckt",
+    "ports"       : dict(),
+},
+"subcktdef":
+{
+    "line"        : ".subckt mysubckt neta netb ",
+    "loc"         : "root",
+    "lib"         : None,
+    "n"           : 1,
+    "uid"         : "testuid",
+    "mod"         : spe.SubcktDef,
+    "instance"    : None,
+    "type"        : "subcktdef",
+    "value"       : "mysubckt",
+    "ports"       : dict(),
+},
 "capacitor":
 {
     "line"        : "C1 neta netb 10e-12",
@@ -879,7 +905,23 @@ def test_module_icsw():
 
 
 def test_module_subckt():
-    pass
+    """ Test subckt module specific properties """
+    case = CASES["subckt"]
+    mod = create_module(case)
+
+    assert(mod.name == "mysubckt")
+    mod.name = "testsubckt"
+    assert(mod.name == "testsubckt")
+
+
+def test_module_subcktdef():
+    """ Test subcktdef module specific properties """
+    case = CASES["subcktdef"]
+    mod = create_module(case)
+
+    assert(mod.name == "mysubckt")
+    mod.name = "testsubckt"
+    assert(mod.name == "testsubckt")
 
 
 def test_module_single_lossy_transmission_line():

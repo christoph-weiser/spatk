@@ -21,7 +21,9 @@ from spatk.genelems import (Args,
                             Component_3T, 
                             Component_4T, 
                             Statement, 
-                            Comment)
+                            Comment,
+                            Subckt,
+                            SubcktDef)
 
 #----------------------------------------------------------------------
 # NGSpice element classes
@@ -414,12 +416,6 @@ class Icsw(Component_2T):
         super(Icsw, self).__init__(*args)
 
 
-class Subckt(Component):
-    """ X - Subcircuit. """
-    def __init__(self, *args):
-        super(Subckt, self).__init__(*args)
-
-
 class Single_lossy_transmission_line(Component_4T):
     """ Y - Single Lossy Transmission Line. """
     def __init__(self, *args):
@@ -452,6 +448,7 @@ elementmap = {"*":          Comment,
               "function":   Function,
               "param":      Param,
               "global":     Global,
+              "subckt":     SubcktDef,
               "A":          Xspice,
               "B":          Behavioral_source,
               "C":          Capacitor,
@@ -513,6 +510,8 @@ def process_statement(line):
         return "global"
     elif identifier in [".par", ".param"]:
         return "param"
+    elif identifier in [".subckt"]:
+        return "subckt"
     else:
         return "."
 

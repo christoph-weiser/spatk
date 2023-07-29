@@ -230,3 +230,47 @@ class Model(Statement):
     @type.setter
     def type(self, arg):
         self.elements[2] = arg
+
+
+class Subckt(Component):
+    """ X - Subcircuit. """
+    def __init__(self, *args):
+        super(Subckt, self).__init__(*args)
+
+    @property
+    def value(self):
+        return self.elements[-1]
+
+    @value.setter
+    def value(self, arg):
+        self.elements[-1] = arg
+
+    @property
+    def name(self):
+        return self.elements[-1]
+
+    @name.setter
+    def name(self, arg):
+        self.elements[-1] = arg
+
+
+class SubcktDef(Statement):
+    """ .subckt Statement. """
+    def __init__(self, *args):
+        super(SubcktDef, self).__init__(*args)
+
+    @property
+    def value(self):
+        return self.elements[1]
+
+    @value.setter
+    def value(self, arg):
+        self.elements[1] = arg
+
+    @property
+    def name(self):
+        return self.elements[1]
+
+    @name.setter
+    def name(self, arg):
+        self.elements[1] = arg
