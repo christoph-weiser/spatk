@@ -19,43 +19,27 @@ from spatk.helpers import unpack_args, repack_args
 #----------------------------------------------------------------------
 # Generic Element Classes
 #----------------------------------------------------------------------
+class Args(dict):
+    def __init__(self, data):
 
-class Args(object):
-    """ Object representing Circuit element arguments.
+        if isinstance(data, list):
+            _data = unpack_args(data)
 
-    Required inputs:
-    ----------------
-    args  (list, dict):     list/dict of arguments.
-    """
-    def __init__(self, args):
-        if isinstance(args, list):
-            data = unpack_args(args)
-        elif isinstance(args, dict):
-            data = args
-        for k in data.keys():
-            setattr(self, k, data[k])
+        super().__init__(_data)
+
+        for k in _data.keys():
+            setattr(self, k, _data[k])
 
     def __str__(self):
         return " ".join(repack_args(self.__dict__))
 
-    def __bool__(self):
-        return bool(self.__dict__)
+    def __setattr__(self, key, value):
+        super().__setattr__(key, value)
+        super().__setitem__(key, value)
 
-    def __getattribute__(self, name):
-        return object.__getattribute__(self, name)
-
-    def __setattr__(self, name, value):
-        self.__dict__[name] = value
-
-    def __setitem__(self, key, item):
-        self.__dict__[key] = item
-
-    def __getitem__(self, key):
-        return self.__dict__[key]
-
-    @property
-    def content(self):
-        return self.__dict__
+    def __setitem__(self, key, value):
+        super().__setitem__(key, value)
+        super().__setattr__(key, value)
 
 
 class Default():

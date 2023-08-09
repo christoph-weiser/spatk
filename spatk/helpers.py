@@ -197,12 +197,7 @@ def replace_argument(uid, cir, key, val):
     cir (CircuitSection):   Circuit section where the argument
                             has been replaced.
     """
-    if cir[uid].args[key]:
-        cir[uid].args[key] = val
-    else:
-        content = cir[uid].args.content
-        content[val] = content.pop(key)
-        cir[uid].args = Args(content)
+    cir[uid].args[key] = val
     return cir
 
 
