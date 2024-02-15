@@ -201,7 +201,7 @@ def replace_argument(uid, cir, key, val):
     return cir
 
 
-def read_netlist(filename):
+def read_netlist(filename, keep_comments=False):
     """ Read a netlist from file and sanitize it.
 
     Required inputs:
@@ -215,7 +215,7 @@ def read_netlist(filename):
     """
     with open(filename, "r") as ifile:
         netlist = ifile.read()
-    return clean_netlist(netlist)
+    return clean_netlist(netlist, keep_comments)
 
 
 def clean_netlist(netlist, keep_comments=False):

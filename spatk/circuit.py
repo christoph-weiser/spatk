@@ -60,14 +60,14 @@ class Circuit:
     To convert the Circuit back into the netlist format simply cast 
     it into a string or access the netlist property of Circuit.
     """
-    def __init__(self, netlist=None, is_filename=True):
+    def __init__(self, netlist=None, is_filename=True, keep_comments=False):
         if netlist:
             if is_filename:
                 self.name = netlist
-                self._netlist = read_netlist(netlist)
+                self._netlist = read_netlist(netlist, keep_comments)
             else:
                 self.name = "Netlist"
-                self._netlist = clean_netlist(netlist)
+                self._netlist = clean_netlist(netlist, keep_comments)
         else:
             self.name = "Netlist"
             self._netlist = []

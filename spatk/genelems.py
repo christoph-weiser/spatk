@@ -181,6 +181,9 @@ class Comment(Default):
     def __init__(self, *args):
         super(Comment, self).__init__(*args)
 
+    def __str__(self):
+        return self.line
+
 
 class Model(Statement):
     """ .model Statement. """

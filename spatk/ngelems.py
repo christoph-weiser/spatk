@@ -572,7 +572,9 @@ def identify_linetype(line):
     """
     line = line.lstrip()
     letter_1 = line[0].upper()
-    letter_2 = line[1].upper()
+    if letter_1 != "*":
+        letter_2 = line[1].upper()
+
     if (letter_1 == "X" and letter_2 in ["M", "C"]):
         elemtype = letter_1 + letter_2
     elif (letter_1 == "."):
