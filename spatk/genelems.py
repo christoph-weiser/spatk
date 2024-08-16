@@ -187,16 +187,21 @@ class Comment(Default):
 
 class Model(Statement):
     """ .model Statement. """
-    def __init__(self, *args):
+    def __init__(self, *args, expanded=False):
         super(Model, self).__init__(*args)
         self.argsdata = Args(self.elements[3:])
+        self.expanded = expanded
 
     def __str__(self):
         l = [".model",
              self.name,
              self.model_type]
         if self.args:
-            l.append(str(self.argsdata))
+            if self.expanded:
+                l.append("\n+")
+                l.append("\n+ ".join(repack_args(self.args.__dict__)))
+            else:
+                l.append(str(self.argsdata))
         return " ".join(l)
 
     @property
