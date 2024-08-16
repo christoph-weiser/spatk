@@ -194,7 +194,7 @@ class Model(Statement):
     def __str__(self):
         l = [".model",
              self.name,
-             self.type]
+             self.model_type]
         if self.args:
             l.append(str(self.argsdata))
         return " ".join(l)
@@ -216,11 +216,11 @@ class Model(Statement):
         self.elements[1] = arg
 
     @property
-    def type(self):
+    def model_type(self):
         return self.elements[2]
 
-    @type.setter
-    def type(self, arg):
+    @model_type.setter
+    def model_type(self, arg):
         self.elements[2] = arg
 
 

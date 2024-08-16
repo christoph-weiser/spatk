@@ -113,16 +113,17 @@ CASES = {
 },
 "model":
 {
-    "line"      : ".model mymodel model",
-    "loc"       : "root",
-    "lib"       : None,
-    "n"         : 1,
-    "uid"       : "testuid",
-    "mod"       : spe.Model,
-    "instance"  : None,
-    "type"      : "model",
-    "value"     : None,
-    "ports"     : dict()
+    "line"          : ".model mymodel spice_model",
+    "loc"           : "root",
+    "lib"           : None,
+    "n"             : 1,
+    "uid"           : "testuid",
+    "mod"           : spe.Model,
+    "instance"      : None,
+    "type"          : "model",
+    "model_type"    : "spice_model",
+    "value"         : None,
+    "ports"         : dict()
 },
 "include":
 {
