@@ -23,20 +23,20 @@ from spatk.genelems import (Args,
                             Comment,
                             Function, 
                             Global, 
-                            Include, 
+                            Include,
                             Library, 
                             Model,
-                            Option,
                             Param,
                             Statement, 
                             Behavioral_source,
                             Bjt,
                             Capacitor,
                             Cccs,
-                            Ccvs, 
+                            Ccvs,
                             Diode, 
                             Icsw,
                             Inductor,
+                            Isource,
                             Jfet,
                             Lossless_transmission_line,
                             Lossy_transmission_line,
@@ -44,118 +44,42 @@ from spatk.genelems import (Args,
                             Mosfet,
                             Resistor, 
                             Subckt,
-                            SubcktDef, 
+                            SubcktDef,
                             Vccs,
                             Vcsw,
-                            Vcvs, 
+                            Vcvs,
                             Vsource)
 
 #----------------------------------------------------------------------
-# NGSpice element classes
+# Xyce element classes
 #----------------------------------------------------------------------
 
-class Temp(Statement):
-    """ .temp Statement. """
+class Option(Statement):
+    """ .option Statement. """
     def __init__(self, *args):
-        super(Temp, self).__init__(*args)
+        super(Option, self).__init__(*args)
 
     @property
-    def value(self):
+    def pkg(self):
         return self.elements[1]
 
-    @value.setter
-    def value(self, arg):
-        self.elements[1] = str(arg)
+    @pkg.setter
+    def pkg(self, arg):
+        self.elements[1] = arg
 
-
-class Xspice(Default):
-    """ A - Xspice Element. """
-    def __init__(self, *args):
-        super(Xspice, self).__init__(*args)
-
-
-class Isource(Component_2T):
-    """ I - Current Source. """
-    def __init__(self, *args):
-        super(Isource, self).__init__(*args)
-
-    def parse(self, elements):
-        if len(elements) == 4:
-            super(Isource, self).parse(elements)
-        else:
-            var_source = False
-            types = ["dc", "ac", "pulse", "exp", "pwl", 
-                     "sffm", "am", "trnoise", "trrandom"] 
-            for t in types:
-                if t in elements[3]:
-                    var_source = True
-            if var_source:
-                self.ports = self._assign_ports(elements[1:3])
-                self.value = " ".join(elements[3:])
-                self.argsdata = None
-            else:
-                super(Isource, self).parse(elements)
 
     @property
-    def current(self):
-        return self.value
+    def setting(self):
+        return self.elements[2].split("=")[0]
 
-    @current.setter
-    def current(self, arg):
-        self.value = arg
-
-
-class Numerical_device_gss(Default):
-    """ N - Numerical Device for GSS. """
-    def __init__(self, *args):
-        super(Numerical_device_gss, self).__init__(*args)
-
-
-class Uniformely_distributed_rc_line(Component_3T):
-    """ U - Uniformely Distributed RC Line. """
-    def __init__(self, *args):
-        super(Uniformely_distributed_rc_line, self).__init__(*args)
-
-
-class Vsource(Component_2T):
-    """ V - Voltage Source. """
-    def __init__(self, *args):
-        super(Vsource, self).__init__(*args)
-
-    def parse(self, elements):
-        if len(elements) == 4:
-            super(Vsource, self).parse(elements)
-        else:
-            var_source = False
-            types = ["dc", "ac", "pulse", "exp", "pwl", 
-                     "sffm", "am", "trnoise", "trrandom"] 
-            for t in types:
-                if t in elements[3]:
-                    var_source = True
-            if var_source:
-                self.ports = self._assign_ports(elements[1:3])
-                self.value = " ".join(elements[3:])
-                self.argsdata = None
-            else:
-                super(Vsource, self).parse(elements)
-
-    @property
-    def voltage(self):
-        return self.value
-
-    @voltage.setter
-    def voltage(self, arg):
-        self.value = arg
-
-
-class Single_lossy_transmission_line(Component_4T):
-    """ Y - Single Lossy Transmission Line. """
-    def __init__(self, *args):
-        super(Single_lossy_transmission_line, self).__init__(*args)
+    @pkg.setter
+    def pkg(self, arg):
+        s = self.elements[2].split("=", 1)[0]
+        self.elements[2] = "{}={}".format(arg,s[1])
 
 
 #----------------------------------------------------------------------
-# NGSpice Element Mapping
+# Xyce Element Mapping
 #----------------------------------------------------------------------
 
 elementmap = {"*":          Comment,
@@ -165,11 +89,10 @@ elementmap = {"*":          Comment,
               "library":    Library,
               "option":     Option,
               "function":   Function,
-              "temp":       Temp,
               "param":      Param,
               "global":     Global,
               "subckt":     SubcktDef,
-              "A":          Xspice,
+              "A":          None,
               "B":          Behavioral_source,
               "C":          Capacitor,
               "D":          Diode,
@@ -182,20 +105,24 @@ elementmap = {"*":          Comment,
               "K":          None,
               "L":          Inductor,
               "M":          Mosfet,
-              "N":          Numerical_device_gss,
+              "N":          None,
               "O":          Lossy_transmission_line,
               "P":          None,
               "Q":          Bjt,
               "R":          Resistor,
               "S":          Vcsw,
               "T":          Lossless_transmission_line,
-              "U":          Uniformely_distributed_rc_line,
+              "U":          None,
               "V":          Vsource,
               "W":          Icsw,
               "X":          Subckt,
               "XC":         Capacitor,
               "XM":         Mosfet,
-              "Y":          Single_lossy_transmission_line,
+              "YPDE":       None,
+              "YACC":       None,
+              "YLIN":       None,
+              "YMEMRISTOR": None,
+              "Y":          None,
               "Z":          Mesfet}
 
 
@@ -228,8 +155,6 @@ def process_statement(line):
         return "function"
     elif identifier in [".global"]:
         return "global"
-    elif identifier in [".temp"]:
-        return "temp"
     elif identifier in [".par", ".param"]:
         return "param"
     elif identifier in [".subckt"]:

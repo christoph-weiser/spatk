@@ -14,10 +14,13 @@
 # You should have received a copy of the GNU General Public License
 # along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
+import os
+os.environ["SPICE_SYNTAX"] = "xyce"
+
 import pytest
 import spatk as sp
-
 import spatk.elements as spe
+
 
 CASES = {
 "default":
@@ -177,19 +180,6 @@ CASES = {
     "instance"  : None,
     "type"      : "function",
     "value"     : None,
-    "ports"     : dict(),
-},
-"temp":
-{
-    "line"      : ".temp 20",
-    "loc"       : "root",
-    "lib"       : None,
-    "n"         : 1,
-    "uid"       : "testuid",
-    "mod"       : spe.Temp,
-    "instance"  : None,
-    "type"      : "temp",
-    "value"     : "20",
     "ports"     : dict(),
 },
 "param":

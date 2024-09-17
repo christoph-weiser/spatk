@@ -19,14 +19,14 @@ from spatk import SYNTAX
 from spatk.genelems import (Args, Default, Component,
                             Component_2T, Component_3T,
                             Component_4T, Statement,
-                            Comment, Subckt, SubcktDef)
+                            Comment, Subckt, SubcktDef, 
+                            Include, Library)
 
 if SYNTAX == "ngspice":
 
     from spatk.ngelems import elementmap
     from spatk.ngelems import process_statement, identify_linetype
-    from spatk.ngelems import (Model, Include, Library,
-                               Option, Function, Temp, Param,
+    from spatk.ngelems import (Model, Option, Function, Temp, Param,
                                Global, Xspice, Behavioral_source,
                                Capacitor, Diode, Vcvs, Cccs,
                                Vccs, Ccvs, Isource, Jfet,
@@ -40,17 +40,23 @@ if SYNTAX == "ngspice":
 elif SYNTAX == "hspice":
     from spatk.helems import elementmap
     from spatk.helems import process_statement, identify_linetype
-    from spatk.helems import (Model, Include, Library,
-                               Option, Function, Param,
-                               Global, Xspice, Behavioral_source,
+    from spatk.helems import (Model, Option, Temp, Param, Global,
                                Capacitor, Diode, Vcvs, Cccs,
                                Vccs, Ccvs, Isource, Jfet,
-                               Inductor, Mosfet, Numerical_device_gss,
+                               Inductor, Mosfet, Bjt,
+                               Resistor, Vsource )
+
+elif SYNTAX == "xyce":
+    from spatk.xyelems import elementmap
+    from spatk.xyelems import process_statement, identify_linetype
+    from spatk.xyelems import (Model, Option, Function, Param,
+                               Global, Behavioral_source,
+                               Capacitor, Diode, Vcvs, Cccs,
+                               Vccs, Ccvs, Isource, Jfet,
+                               Inductor, Mosfet,
                                Lossy_transmission_line, Bjt,
                                Resistor, Vcsw, Lossless_transmission_line,
-                               Uniformely_distributed_rc_line,
-                               Vsource, Icsw,
-                               Single_lossy_transmission_line, Mesfet)
+                               Vsource, Icsw, Mesfet)
 
 else:
     raise Exception("The choosen syntax format is not supported!")
