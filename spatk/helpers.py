@@ -1,5 +1,5 @@
 # SPATK - Spice Analysis ToolKit
-# Copyright (C) 2023 Christoph Weiser
+# Copyright (C) 2024 Christoph Weiser
 #
 # This program is free software: you can redistribute it and/or modify
 # it under the terms of the GNU General Public License as published by
@@ -16,6 +16,30 @@
 
 import re
 import hashlib
+
+
+def map_linetype(line, elementmap):
+    """ map the type of line.
+
+    Required inputs:
+    ----------------
+    line (str):     SPICE netlist line.
+    mapping(dict):  SPICE elementmap.
+
+    """
+
+    line = (line.lstrip()).upper()
+    element = line.split(" ")[0] 
+    k = elementmap.keys()
+    l = 0; t = None
+    for elem in k:
+        if element.startswith(elem):
+            lm = len(elem)
+            if lm > l:
+                l = lm
+                t = elem
+    return t
+
 
 def dissect_param(line):
     """ Seperate combined .param lines into multiple.

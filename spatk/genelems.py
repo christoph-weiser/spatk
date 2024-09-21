@@ -1,5 +1,5 @@
 # SPATK - Spice Analysis ToolKit
-# Copyright (C) 2023 Christoph Weiser
+# Copyright (C) 2024 Christoph Weiser
 #
 # This program is free software: you can redistribute it and/or modify
 # it under the terms of the GNU General Public License as published by
@@ -625,6 +625,11 @@ class Lossless_transmission_line(Component_4T):
     def __init__(self, *args):
         super(Lossless_transmission_line, self).__init__(*args)
 
+
+class Uniformely_distributed_rc_line(Component_3T):
+    """ U - Uniformely Distributed RC Line. """
+    def __init__(self, *args):
+        super(Uniformely_distributed_rc_line, self).__init__(*args)
 
 
 class Vsource(Component_2T):

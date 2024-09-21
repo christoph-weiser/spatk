@@ -1,5 +1,5 @@
 # SPATK - Spice Analysis ToolKit
-# Copyright (C) 2023 Christoph Weiser
+# Copyright (C) 2024 Christoph Weiser
 #
 # This program is free software: you can redistribute it and/or modify
 # it under the terms of the GNU General Public License as published by
@@ -28,9 +28,10 @@ from spatk.helpers import (read_netlist,
                            touches,
                            count_nets,
                            element_types,
-                           get_uid)
+                           get_uid,
+                           map_linetype)
 
-from spatk.elements import elementmap, identify_linetype
+from spatk.elements import elementmap
 
 
 class Circuit:
@@ -172,7 +173,7 @@ class Circuit:
                         ctlsec = False
 
                 else:
-                    elemtype = identify_linetype(line)
+                    elemtype = map_linetype(line, elementmap)
                     location = "/".join(hierarchy)
 
                     if elemtype == "param":

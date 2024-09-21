@@ -1,5 +1,5 @@
 # SPATK - Spice Analysis ToolKit
-# Copyright (C) 2024 Christoph Weiser
+# Copyright (C) 2023 Christoph Weiser
 #
 # This program is free software: you can redistribute it and/or modify
 # it under the terms of the GNU General Public License as published by
@@ -14,11 +14,13 @@
 # You should have received a copy of the GNU General Public License
 # along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
-import os
+def create_module(case):
+    """ Helper function for create modules. """
+    module = case["mod"]
+    line = case["line"]
+    loc = case["loc"]
+    lib = case["lib"]
+    n = case["n"]
+    uid = case["uid"]
+    return module(line, loc, lib, n, uid)
 
-try:
-    SYNTAX = os.environ["SPICE_SYNTAX"]
-except(KeyError):
-    SYNTAX = "generic"
-
-from spatk.circuit import Circuit

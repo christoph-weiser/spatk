@@ -1,5 +1,5 @@
 # SPATK - Spice Analysis ToolKit
-# Copyright (C) 2023 Christoph Weiser
+# Copyright (C) 2024 Christoph Weiser
 #
 # This program is free software: you can redistribute it and/or modify
 # it under the terms of the GNU General Public License as published by
@@ -22,41 +22,50 @@ from spatk.genelems import (Args, Default, Component,
                             Comment, Subckt, SubcktDef, 
                             Include, Library)
 
-if SYNTAX == "ngspice":
 
-    from spatk.ngelems import elementmap
-    from spatk.ngelems import process_statement, identify_linetype
-    from spatk.ngelems import (Model, Option, Function, Temp, Param,
-                               Global, Xspice, Behavioral_source,
-                               Capacitor, Diode, Vcvs, Cccs,
-                               Vccs, Ccvs, Isource, Jfet,
-                               Inductor, Mosfet, Numerical_device_gss,
-                               Lossy_transmission_line, Bjt,
-                               Resistor, Vcsw, Lossless_transmission_line,
-                               Uniformely_distributed_rc_line,
-                               Vsource, Icsw,
-                               Single_lossy_transmission_line, Mesfet)
+if SYNTAX == "generic":
+    from spatk.flavours.generic import elementmap
+    from spatk.flavours.generic import (Model, Option, Param,
+                                        Global, Behavioral_source,
+                                        Capacitor, Diode, Vcvs, Cccs,
+                                        Vccs, Ccvs, Isource, Jfet,
+                                        Inductor, Mosfet,
+                                        Lossy_transmission_line, Bjt,
+                                        Resistor, Vcsw, Lossless_transmission_line,
+                                        Uniformely_distributed_rc_line,
+                                        Vsource, Icsw, Mesfet)
+
+elif SYNTAX == "ngspice":
+    from spatk.flavours.ngspice import elementmap
+    from spatk.flavours.ngspice import (Model, Option, Function, Temp, Param,
+                                        Global, Xspice, Behavioral_source,
+                                        Capacitor, Diode, Vcvs, Cccs,
+                                        Vccs, Ccvs, Isource, Jfet,
+                                        Inductor, Mosfet, Numerical_device_gss,
+                                        Lossy_transmission_line, Bjt,
+                                        Resistor, Vcsw, Lossless_transmission_line,
+                                        Uniformely_distributed_rc_line,
+                                        Vsource, Icsw,
+                                        Single_lossy_transmission_line, Mesfet)
 
 elif SYNTAX == "hspice":
-    from spatk.helems import elementmap
-    from spatk.helems import process_statement, identify_linetype
-    from spatk.helems import (Model, Option, Temp, Param, Global,
-                               Capacitor, Diode, Vcvs, Cccs,
-                               Vccs, Ccvs, Isource, Jfet,
-                               Inductor, Mosfet, Bjt,
-                               Resistor, Vsource )
+    from spatk.flavours.hspice import elementmap
+    from spatk.flavours.hspice import (Model, Option, Temp, Param, Global,
+                                       Capacitor, Diode, Vcvs, Cccs,
+                                       Vccs, Ccvs, Isource, Jfet,
+                                       Inductor, Mosfet, Bjt,
+                                       Resistor, Vsource )
 
 elif SYNTAX == "xyce":
-    from spatk.xyelems import elementmap
-    from spatk.xyelems import process_statement, identify_linetype
-    from spatk.xyelems import (Model, Option, Function, Param,
-                               Global, Behavioral_source,
-                               Capacitor, Diode, Vcvs, Cccs,
-                               Vccs, Ccvs, Isource, Jfet,
-                               Inductor, Mosfet,
-                               Lossy_transmission_line, Bjt,
-                               Resistor, Vcsw, Lossless_transmission_line,
-                               Vsource, Icsw, Mesfet)
+    from spatk.flavours.xyce import elementmap
+    from spatk.flavours.xyce import (Model, Option, Function, Param,
+                                     Global, Behavioral_source,
+                                     Capacitor, Diode, Vcvs, Cccs,
+                                     Vccs, Ccvs, Isource, Jfet,
+                                     Inductor, Mosfet,
+                                     Lossy_transmission_line, Bjt,
+                                     Resistor, Vcsw, Lossless_transmission_line,
+                                     Vsource, Icsw, Mesfet)
 
 else:
     raise Exception("The choosen syntax format is not supported!")

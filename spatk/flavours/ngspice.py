@@ -1,5 +1,5 @@
 # SPATK - Spice Analysis ToolKit
-# Copyright (C) 2023 Christoph Weiser
+# Copyright (C) 2024 Christoph Weiser
 #
 # This program is free software: you can redistribute it and/or modify
 # it under the terms of the GNU General Public License as published by
@@ -45,13 +45,14 @@ from spatk.genelems import (Args,
                             Resistor, 
                             Subckt,
                             SubcktDef, 
+                            Uniformely_distributed_rc_line,
                             Vccs,
                             Vcsw,
                             Vcvs, 
                             Vsource)
 
 #----------------------------------------------------------------------
-# NGSpice element classes
+# NGSpice specific element classes
 #----------------------------------------------------------------------
 
 class Temp(Statement):
@@ -111,11 +112,6 @@ class Numerical_device_gss(Default):
         super(Numerical_device_gss, self).__init__(*args)
 
 
-class Uniformely_distributed_rc_line(Component_3T):
-    """ U - Uniformely Distributed RC Line. """
-    def __init__(self, *args):
-        super(Uniformely_distributed_rc_line, self).__init__(*args)
-
 
 class Vsource(Component_2T):
     """ V - Voltage Source. """
@@ -160,15 +156,17 @@ class Single_lossy_transmission_line(Component_4T):
 
 elementmap = {"*":          Comment,
               ".":          Statement,
-              "model":      Model,
-              "include":    Include,
-              "library":    Library,
-              "option":     Option,
-              "function":   Function,
-              "temp":       Temp,
-              "param":      Param,
-              "global":     Global,
-              "subckt":     SubcktDef,
+              ".MODEL":     Model,
+              ".INC":       Include,
+              ".INCLUDE":   Include,
+              ".LIB":       Library,
+              ".LIBRARY":   Library,
+              ".OPTION":    Option,
+              ".FUNC":      Function,
+              ".TEMP":      Temp,
+              ".PARAM":     Param,
+              ".GLOBAL":    Global,
+              ".SUBCKT":    SubcktDef,
               "A":          Xspice,
               "B":          Behavioral_source,
               "C":          Capacitor,
@@ -197,67 +195,3 @@ elementmap = {"*":          Comment,
               "XM":         Mosfet,
               "Y":          Single_lossy_transmission_line,
               "Z":          Mesfet}
-
-
-#----------------------------------------------------------------------
-# Generic Functions
-#----------------------------------------------------------------------
-
-def process_statement(line):
-    """ Indentify a SPICE statement.
-
-    Required inputs:
-    ----------------
-    line (str):     SPICE netlist line.
-
-
-    Returns
-    ----------------
-    type (str):     Type of SPICE statement.
-    """
-    identifier = line.split(" ")[0]
-    if identifier in   [".inc", ".include"]:
-        return "include"
-    elif identifier in [".lib", ".library"]:
-        return "library"
-    elif identifier in [".model"]:
-        return "model"
-    elif identifier in [".option"]:
-        return "option"
-    elif identifier in [".func", ".function"]:
-        return "function"
-    elif identifier in [".global"]:
-        return "global"
-    elif identifier in [".temp"]:
-        return "temp"
-    elif identifier in [".par", ".param"]:
-        return "param"
-    elif identifier in [".subckt"]:
-        return "subckt"
-    else:
-        return "."
-
-
-def identify_linetype(line):
-    """ Identify the type of line.
-
-    Required inputs:
-    ----------------
-    line (str):     SPICE netlist line.
-
-    """
-    line = line.lstrip()
-    letter_1 = line[0].upper()
-    if letter_1 != "*":
-        letter_2 = line[1].upper()
-
-    if (letter_1 == "X" and letter_2 in ["M", "C"]):
-        elemtype = letter_1 + letter_2
-    elif (letter_1 == "."):
-        elemtype = process_statement(line)
-    else:
-        elemtype = letter_1
-    if not elemtype in elementmap.keys():
-        raise Exception("Linetype not understood by parser")
-    else:
-        return elemtype
