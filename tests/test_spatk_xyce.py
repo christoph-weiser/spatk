@@ -73,3 +73,24 @@ def test_modules_common():
         assert(mod.type     == case["type"])
         assert(mod.value    == case["value"])
         assert(mod.ports    == case["ports"])
+
+
+
+def test_module_option():
+    """ Test option module specific properties """
+    case = CASES["option"]
+    mod = create_module(case)
+
+    assert(mod.pkg == "pkg")
+    mod.pkg = "mypkg"
+    assert(mod.pkg == "mypkg")
+
+    assert(mod.name == "setting")
+    mod.pkg = "mysetting"
+    assert(mod.pkg == "mysetting")
+
+    assert(mod.value == "value")
+    mod.value = "myvalue"
+    assert(mod.value == "myvalue")
+
+
