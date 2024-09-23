@@ -176,7 +176,7 @@ class Circuit:
                     elemtype = map_linetype(line, elementmap)
                     location = "/".join(hierarchy)
 
-                    if elemtype == "param":
+                    if elemtype ==  ".PARAM":
                         lines = dissect_param(line)
                         for line in lines:
                             uid = get_uid(line, n)
