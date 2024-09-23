@@ -21,7 +21,7 @@ import pytest
 import spatk as sp
 import spatk.elements as spe
 
-from helpers import create_module
+from helpers import create_module, input_netlist
 
 element_default = {
     "line"      : "A Default Line",
@@ -1034,12 +1034,6 @@ def test_circuit_init_str():
     assert(net_in == net_out)
 
 
-def input_netlist(filename):
-    """ helper function to create equivalent input netlist """
-    with open(filename, "r") as ifile:
-        net_in = "* {}\n\n".format(filename) + (ifile.read()).lower()
-    return net_in
-
 
 def test_circuit_init_simple():
     netlist = "netlists/generic/simple.sp"
@@ -1119,3 +1113,15 @@ def test_circuit_set_args_dict():
         cir[uid].args["w"] = "2u"
     net_in = net_in.replace("w=1u", "w=2u")
     assert( str(cir) == net_in )
+
+
+def test_circuit_params():
+    netlist_inp  = "netlists/generic/param/input_param.sp"
+    netlist_cmp =  "netlists/generic/param/compare_param.sp"
+    cir = sp.Circuit(netlist_inp, is_filename=True)
+    net_out = str(cir)
+    net_cmp = input_netlist(netlist_cmp, netlist_inp)
+    print(net_out)
+    print(net_cmp)
+    assert(net_out == net_cmp)
+

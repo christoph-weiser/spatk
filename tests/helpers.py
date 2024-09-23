@@ -24,3 +24,12 @@ def create_module(case):
     uid = case["uid"]
     return module(line, loc, lib, n, uid)
 
+
+def input_netlist(filename, name=None):
+    """ helper function to create equivalent input netlist """
+    with open(filename, "r") as ifile:
+        if name:
+            net_in = "* {}\n\n".format(name) + (ifile.read()).lower()
+        else:
+            net_in = "* {}\n\n".format(filename) + (ifile.read()).lower()
+    return net_in
