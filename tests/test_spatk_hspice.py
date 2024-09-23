@@ -1,5 +1,5 @@
 # SPATK - Spice Analysis ToolKit
-# Copyright (C) 2023 Christoph Weiser
+# Copyright (C) 2024 Christoph Weiser
 #
 # This program is free software: you can redistribute it and/or modify
 # it under the terms of the GNU General Public License as published by
@@ -22,39 +22,3 @@ import spatk as sp
 import spatk.elements as spe
 
 from helpers import create_module
-
-CASES = {
-}
-
-
-def test_modules_common():
-    """ Test common module properties.
-
-    Module classes have common properties which
-    are tested all in the same run.
-
-    These are all adressed in CASES dictionary
-    defined above.
-    """
-    for k in CASES.keys():
-
-        case = CASES[k]
-
-        mod = create_module(case)
-
-        assert(isinstance(mod.line,     str))
-        assert(isinstance(mod.location, str))
-        assert(isinstance(mod.uid,      str))
-        assert(isinstance(mod.ports,    dict))
-        assert(isinstance(mod.n,        int))
-
-        assert(str(mod)     == case["line"])
-        assert(mod.line     == case["line"])
-        assert(mod.location == case["loc"])
-        assert(mod.lib      == case["lib"])
-        assert(mod.uid      == case["uid"])
-        assert(mod.n        == case["n"])
-        assert(mod.instance == case["instance"])
-        assert(mod.type     == case["type"])
-        assert(mod.value    == case["value"])
-        assert(mod.ports    == case["ports"])
