@@ -619,10 +619,25 @@ element_vsource__args = {
     "mod"       : spe.Vsource,
     "instance"  : "V1",
     "type"      : "vsource",
-    "value"     : "1",
+    "value"     : ["1", "myarg=1"],
     "ports"     : {"n0": "neta", "n1": "netb"},
-    "voltage"   : "1"
+    "voltage"   : ["1", "myarg=1"]
     }
+
+element_vsource__pulse = {
+    "line"      : "V1 neta netb DC 0 PULSE(0 1 1u 1n 1n 10u 20u)",
+    "loc"       : "root",
+    "lib"       : None,
+    "n"         : 1,
+    "uid"       : "testuid",
+    "mod"       : spe.Vsource,
+    "instance"  : "V1",
+    "type"      : "vsource",
+    "value"     : ["DC", "0", "PULSE(0", "1", "1u", "1n", "1n", "10u", "20u)"],
+    "ports"     : {"n0": "neta", "n1": "netb"},
+    "voltage"   : "DC 0 PULSE(0 1 1u 1n 1n 10u 20u)"
+    }
+
 
 element_mesfet__args = {
     "line"      : "Z1 neta netb netc mesmodel myarg=1",
@@ -654,7 +669,7 @@ element_mesfet__args = {
                         element_cccs__args, element_ccvs__args, element_isource__args,
                         element_jfet__args, element_inductor__args, element_mosfet__args,
                         element_bjt_3t__args, element_bjt_4t__args, element_resistor__args,
-                        element_vsource__args, element_mesfet__args ])
+                        element_vsource__args, element_vsource__pulse,  element_mesfet__args ])
 def case(request):
     return request.param
 

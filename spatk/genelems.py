@@ -637,6 +637,13 @@ class Vsource(Component_2T):
     def __init__(self, *args):
         super(Vsource, self).__init__(*args)
 
+    def parse(self, elements):
+        self.ports = self._assign_ports(elements[1:3])
+        if (len(elements) == 4):
+            self.value = elements[3]
+        else:
+            self.value = elements[3:]
+
     @property
     def voltage(self):
         return self.value
@@ -644,6 +651,18 @@ class Vsource(Component_2T):
     @voltage.setter
     def voltage(self, arg):
         self.value = arg
+
+    def __str__(self):
+        if (len(self.elements) == 4):
+            l = [self.instance,
+                 *self.ports.values(),
+                 self.value]
+            return " ".join(l)
+        else:
+            l = [self.instance,
+                 *self.ports.values(),
+                 " ".join(self.value)]
+            return " ".join(l)
 
 
 class Icsw(Component_2T):
