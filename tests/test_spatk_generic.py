@@ -101,7 +101,7 @@ element_statement = {
     "ports"     : dict()
     }
 
-element_commment = {
+element_comment = {
     "line"      : "* A test comment",
     "loc"       : "root",
     "lib"       : None,
@@ -656,7 +656,7 @@ element_mesfet__args = {
 
 @pytest.fixture(params=[element_default, element_component, element_component_2t,
                         element_component_3t, element_component_4t, element_statement,
-                        element_commment, element_model, element_include,
+                        element_comment, element_model, element_include,
                         element_library, element_option, element_param,
                         element_global, element_subckt, element_subcktdef,
                         element_capacitor, element_diode, element_cccs,
@@ -1139,4 +1139,38 @@ def test_circuit_params():
     print(net_out)
     print(net_cmp)
     assert(net_out == net_cmp)
+
+
+def test_comment_characters():
+    netlist = ["* This  is a comment with double space.",
+               "* This is a comment * containing an astrisk.",
+               "* This is a comment + containing a plus.",
+               "*This is a starting right after asterisk" ]
+    cir  = sp.Circuit(netlist, is_filename=False, keep_comments=True)
+    netlist = [ "* Netlist\n" ] + netlist + [""]
+    net_in = "\n".join(netlist)
+    net_out = str(cir)
+    assert(net_in == net_out)
+
+
+def test_comment_inbetween():
+    netlist = [".subckt testsubckt neta netb para=1 parb=2",
+               "* Commment 1.",
+               "* Commment 2.",
+                "+ parc=3",
+               "* Commment 3.",
+                "+ pard=4",
+               "* Commment 4.",
+                ]
+    netlist_target = [".subckt testsubckt neta netb para=1 parb=2 parc=3 pard=4",
+               "* Commment 1.",
+               "* Commment 2.",
+               "* Commment 3.",
+               "* Commment 4.",
+                ]
+    cir  = sp.Circuit(netlist, is_filename=False, keep_comments=True)
+    netlist_target = [ "* Netlist\n" ] + netlist_target + [""]
+    net_target = "\n".join(netlist_target)
+    net_out = str(cir)
+    assert(net_target == net_out)
 

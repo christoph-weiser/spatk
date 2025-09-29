@@ -272,6 +272,7 @@ def clean_netlist(netlist, keep_comments=False):
     else:
         regex_ignore    = re.compile(r"^\+\s*$|^\s{,}$|^\*.*$")
 
+    regex_comment       = re.compile(r"^\*.*|^\s*\*")
     regex_eolcomment    = re.compile(r"\$.*")
     regex_contline      = re.compile(r"^\+")
     regex_contlin_ws    = re.compile(r"^\+\s{,}")
@@ -287,7 +288,7 @@ def clean_netlist(netlist, keep_comments=False):
     netlist = [line.lstrip() for line in netlist]
 
     # Remove emtpy continued (+) lines, emtpy lines
-    # and comments.
+    # and comments if selected.
     netlist_a0 = []
     for line in netlist:
         if not re.match(regex_ignore, line):
@@ -298,14 +299,27 @@ def clean_netlist(netlist, keep_comments=False):
 
     # Combine split lines back to one
     netlist_b = []
+
+    i = -1
     for line in netlist_a:
         if re.match(regex_contline, line):
-            netlist_b[-1] = netlist_b[-1] + re.sub(regex_contlin_ws, " ", line)
+            while True:
+                if re.match(regex_comment, netlist_b[i]):
+                    i = i - 1
+                else:
+                    netlist_b[i] = netlist_b[i] + re.sub(regex_contlin_ws, " ", line)
+                    i = -1
+                    break
         else:
             netlist_b.append(line)
 
     # Unify Whitespace
-    netlist_c = [re.sub(regex_space, " ", line) for line in netlist_b]
+    netlist_c = []
+    for line in netlist_b:
+        if re.match(regex_comment, line):
+            netlist_c.append(line)
+        else:
+            netlist_c.append(re.sub(regex_space, " ", line))
 
     # Remove whitespace inside expression
     netlist_d = [remove_enclosed_space(line) for line in netlist_c]
@@ -323,6 +337,8 @@ def clean_netlist(netlist, keep_comments=False):
     netlist_h = []
     for line in netlist_g:
         if re.match(regex_include, line):
+            netlist_h.append(line)
+        elif re.match(regex_comment, line):
             netlist_h.append(line)
         else:
             netlist_h.append(line.lower())
