@@ -23,8 +23,8 @@ r1  vdd n1  1k
 r2  n1  vss 2k
 x1  vdd vss sr
 
-.subckt sr n1 n2
-r3  n1  n2  3k
+.subckt subres n1 n2
+r1  n1  n2  3k
 .ends
 ```
 
@@ -40,5 +40,5 @@ for res in cir.resistors:
 ```
 r1 1k /
 r2 2k /
-r3 3k /sr
+r1 3k /subres
 ```
