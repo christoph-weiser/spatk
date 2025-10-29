@@ -1,4 +1,5 @@
 xmod 1 2 3 4 module
+rt 1 2 1e3
 .subckt module 1 2 3 4
 b1 1 2 i=1
 c1 1 2 1e-12
@@ -23,6 +24,12 @@ x1 1 2 submodule
 z1 1 2 3 zmod
 .subckt submodule 1 2
 rs1 1 2 1e3
+cs1 1 2 1e-12
+ds1 1 2 dmod
+.subckt subsubmodule 1 2
+rss1 1 2 1e3
+css1 1 2 1e-12
+.ends
 .ends
 .temp 20
 .param mypar=1

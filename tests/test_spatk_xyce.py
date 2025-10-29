@@ -25,7 +25,7 @@ from helpers import create_module
 
 element_option = {
     "line"      : ".option pkg setting=value",
-    "loc"       : "root",
+    "loc"       : "/",
     "lib"       : None,
     "n"         : 1,
     "uid"       : "testuid",

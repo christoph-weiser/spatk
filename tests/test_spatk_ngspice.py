@@ -26,7 +26,7 @@ from helpers import create_module
 
 element_function = {
     "line"      : ".func myfunc='expression'",
-    "loc"       : "root",
+    "loc"       : "/",
     "lib"       : None,
     "n"         : 1,
     "uid"       : "testuid",
@@ -39,7 +39,7 @@ element_function = {
 
 element_temp = {
     "line"      : ".temp 20",
-    "loc"       : "root",
+    "loc"       : "/",
     "lib"       : None,
     "n"         : 1,
     "uid"       : "testuid",

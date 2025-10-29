@@ -74,7 +74,7 @@ class Default():
 
     @property
     def parent(self):
-        if self.location != "root":
+        if self.location != "/":
             return self.location.split("/")[-1]
 
     @property

@@ -141,7 +141,7 @@ class Circuit:
         elements = dict()
         ctlsec = False
         hierarchy = collections.deque()
-        hierarchy.append("root")
+        hierarchy.append("/")
         library = None
 
         regex_nreq          = re.compile(r"^$|^\.end$")
@@ -171,10 +171,12 @@ class Circuit:
                     ctlsec = True
                     if re.match(reqex_control_e, line):
                         ctlsec = False
-
                 else:
                     elemtype = map_linetype(line, elementmap)
-                    location = "/".join(hierarchy)
+                    if len(hierarchy) == 1:
+                        location = hierarchy[0]
+                    else:
+                        location = "/".join(hierarchy)[1:]
 
                     if elemtype ==  ".PARAM":
                         lines = dissect_param(line)

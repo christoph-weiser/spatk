@@ -25,7 +25,7 @@ from helpers import create_module, input_netlist
 
 element_default = {
     "line"      : "A Default Line",
-    "loc"       : "root",
+    "loc"       : "/",
     "lib"       : None,
     "n"         : 1,
     "uid"       : "testuid",
@@ -38,7 +38,7 @@ element_default = {
 
 element_component = {
     "line"      : "R1 neta netb 1e3",
-    "loc"       : "root",
+    "loc"       : "/",
     "lib"       : None,
     "n"         : 1,
     "uid"       : "testuid",
@@ -51,7 +51,7 @@ element_component = {
 
 element_component_2t = {
     "line"      : "R1 neta netb 1e3",
-    "loc"       : "root",
+    "loc"       : "/",
     "lib"       : None,
     "n"         : 1,
     "uid"       : "testuid",
@@ -64,7 +64,7 @@ element_component_2t = {
 
 element_component_3t = {
     "line"      : "X1 neta netb netc model_3t",
-    "loc"       : "root",
+    "loc"       : "/",
     "lib"       : None,
     "n"         : 1,
     "uid"       : "testuid",
@@ -77,7 +77,7 @@ element_component_3t = {
 
 element_component_4t = {
     "line"      : "X1 neta netb netc netd model_4t",
-    "loc"       : "root",
+    "loc"       : "/",
     "lib"       : None,
     "n"         : 1,
     "uid"       : "testuid",
@@ -90,7 +90,7 @@ element_component_4t = {
 
 element_statement = {
     "line"      : ".include mylib.spice",
-    "loc"       : "root",
+    "loc"       : "/",
     "lib"       : None,
     "n"         : 1,
     "uid"       : "testuid",
@@ -103,7 +103,7 @@ element_statement = {
 
 element_comment = {
     "line"      : "* A test comment",
-    "loc"       : "root",
+    "loc"       : "/",
     "lib"       : None,
     "n"         : 1,
     "uid"       : "testuid",
@@ -116,7 +116,7 @@ element_comment = {
 
 element_model = {
     "line"          : ".model mymodel spice_model",
-    "loc"           : "root",
+    "loc"           : "/",
     "lib"           : None,
     "n"             : 1,
     "uid"           : "testuid",
@@ -130,7 +130,7 @@ element_model = {
 
 element_include = {
     "line"      : ".include mylib.spice",
-    "loc"       : "root",
+    "loc"       : "/",
     "lib"       : None,
     "n"         : 1,
     "uid"       : "testuid",
@@ -143,7 +143,7 @@ element_include = {
 
 element_library = {
     "line"      : ".lib lib.spice module",
-    "loc"       : "root",
+    "loc"       : "/",
     "lib"       : None,
     "n"         : 1,
     "uid"       : "testuid",
@@ -158,7 +158,7 @@ element_library = {
 
 element_option = {
     "line"      : ".option setting=value",
-    "loc"       : "root",
+    "loc"       : "/",
     "lib"       : None,
     "n"         : 1,
     "uid"       : "testuid",
@@ -171,7 +171,7 @@ element_option = {
 
 element_param = {
     "line"      : ".param mypar='value'",
-    "loc"       : "root",
+    "loc"       : "/",
     "lib"       : None,
     "n"         : 1,
     "uid"       : "testuid",
@@ -185,7 +185,7 @@ element_param = {
 
 element_global = {
     "line"      : ".global vss vdd",
-    "loc"       : "root",
+    "loc"       : "/",
     "lib"       : None,
     "n"         : 1,
     "uid"       : "testuid",
@@ -198,7 +198,7 @@ element_global = {
 
 element_subckt = {
     "line"        : "X1 neta netb netc mysubckt",
-    "loc"         : "root",
+    "loc"         : "/",
     "lib"         : None,
     "n"           : 1,
     "uid"         : "testuid",
@@ -211,7 +211,7 @@ element_subckt = {
 
 element_subcktdef = {
     "line"        : ".subckt mysubckt neta netb ",
-    "loc"         : "root",
+    "loc"         : "/",
     "lib"         : None,
     "n"           : 1,
     "uid"         : "testuid",
@@ -224,7 +224,7 @@ element_subcktdef = {
 
 element_capacitor = {
     "line"        : "C1 neta netb 10e-12",
-    "loc"         : "root",
+    "loc"         : "/",
     "lib"         : None,
     "n"           : 1,
     "uid"         : "testuid",
@@ -238,7 +238,7 @@ element_capacitor = {
 
 element_diode = {
     "line"      : "D1 neta netb dmod",
-    "loc"       : "root",
+    "loc"       : "/",
     "lib"       : None,
     "n"         : 1,
     "uid"       : "testuid",
@@ -252,7 +252,7 @@ element_diode = {
 
 element_cccs = {
     "line"      : "F1 neta netb vname 1",
-    "loc"       : "root",
+    "loc"       : "/",
     "lib"       : None,
     "n"         : 1,
     "uid"       : "testuid",
@@ -266,7 +266,7 @@ element_cccs = {
 
 element_ccvs = {
     "line"      : "H1 neta netb vname 1",
-    "loc"       : "root",
+    "loc"       : "/",
     "lib"       : None,
     "n"         : 1,
     "uid"       : "testuid",
@@ -280,7 +280,7 @@ element_ccvs = {
 
 element_isource = {
     "line"      : "I1 neta netb 1e-3",
-    "loc"       : "root",
+    "loc"       : "/",
     "lib"       : None,
     "n"         : 1,
     "uid"       : "testuid",
@@ -294,7 +294,7 @@ element_isource = {
 
 element_jfet = {
     "line"      : "J1 neta netb netc jmodel",
-    "loc"       : "root",
+    "loc"       : "/",
     "lib"       : None,
     "n"         : 1,
     "uid"       : "testuid",
@@ -308,7 +308,7 @@ element_jfet = {
 
 element_inductor = {
     "line"       : "L1 neta netb 1e-6",
-    "loc"        : "root",
+    "loc"        : "/",
     "lib"       : None,
     "n"          : 1,
     "uid"        : "testuid",
@@ -322,7 +322,7 @@ element_inductor = {
 
 element_mosfet = {
     "line"      : "M1 neta netb netc netd mosmodel",
-    "loc"       : "root",
+    "loc"       : "/",
     "lib"       : None,
     "n"         : 1,
     "uid"       : "testuid",
@@ -336,7 +336,7 @@ element_mosfet = {
 
 element_bjt_3t = {
     "line"      : "Q1 neta netb netc bjtmodel",
-    "loc"       : "root",
+    "loc"       : "/",
     "lib"       : None,
     "n"         : 1,
     "uid"       : "testuid",
@@ -350,7 +350,7 @@ element_bjt_3t = {
 
 element_bjt_4t = {
     "line"      : "Q1 neta netb netc netd bjtmodel",
-    "loc"       : "root",
+    "loc"       : "/",
     "lib"       : None,
     "n"         : 1,
     "uid"       : "testuid",
@@ -364,7 +364,7 @@ element_bjt_4t = {
 
 element_resistor = {
     "line"       : "R1 neta netb 1e3",
-    "loc"        : "root",
+    "loc"        : "/",
     "lib"       : None,
     "n"          : 1,
     "uid"        : "testuid",
@@ -378,7 +378,7 @@ element_resistor = {
 
 element_vsource = {
     "line"      : "V1 neta netb 1",
-    "loc"       : "root",
+    "loc"       : "/",
     "lib"       : None,
     "n"         : 1,
     "uid"       : "testuid",
@@ -392,7 +392,7 @@ element_vsource = {
 
 element_mesfet = {
     "line"      : "Z1 neta netb netc mesmodel",
-    "loc"       : "root",
+    "loc"       : "/",
     "lib"       : None,
     "n"         : 1,
     "uid"       : "testuid",
@@ -406,7 +406,7 @@ element_mesfet = {
 
 element_component__args = {
     "line"      : "R1 neta netb 1e3 myarg=1",
-    "loc"       : "root",
+    "loc"       : "/",
     "lib"       : None,
     "n"         : 1,
     "uid"       : "testuid",
@@ -419,7 +419,7 @@ element_component__args = {
 
 element_component_2t__args = {
     "line"      : "R1 neta netb 1e3 myarg=1",
-    "loc"       : "root",
+    "loc"       : "/",
     "lib"       : None,
     "n"         : 1,
     "uid"       : "testuid",
@@ -432,7 +432,7 @@ element_component_2t__args = {
 
 element_component_3t__args = {
     "line"      : "X1 neta netb netc model_3t myarg=1",
-    "loc"       : "root",
+    "loc"       : "/",
     "lib"       : None,
     "n"         : 1,
     "uid"       : "testuid",
@@ -445,7 +445,7 @@ element_component_3t__args = {
 
 element_component_4t__args = {
     "line"      : "X1 neta netb netc netd model_4t myarg=1",
-    "loc"       : "root",
+    "loc"       : "/",
     "lib"       : None,
     "n"         : 1,
     "uid"       : "testuid",
@@ -458,7 +458,7 @@ element_component_4t__args = {
 
 element_capacitor__args = {
     "line"        : "C1 neta netb 10e-12 myarg=1",
-    "loc"         : "root",
+    "loc"         : "/",
     "lib"         : None,
     "n"           : 1,
     "uid"         : "testuid",
@@ -472,7 +472,7 @@ element_capacitor__args = {
 
 element_diode__args = {
     "line"      : "D1 neta netb dmod myarg=1",
-    "loc"       : "root",
+    "loc"       : "/",
     "lib"       : None,
     "n"         : 1,
     "uid"       : "testuid",
@@ -486,7 +486,7 @@ element_diode__args = {
 
 element_cccs__args = {
     "line"      : "F1 neta netb vname 1 myarg=1",
-    "loc"       : "root",
+    "loc"       : "/",
     "lib"       : None,
     "n"         : 1,
     "uid"       : "testuid",
@@ -500,7 +500,7 @@ element_cccs__args = {
 
 element_ccvs__args = {
     "line"      : "H1 neta netb vname 1 myarg=1",
-    "loc"       : "root",
+    "loc"       : "/",
     "lib"       : None,
     "n"         : 1,
     "uid"       : "testuid",
@@ -514,7 +514,7 @@ element_ccvs__args = {
 
 element_isource__args = {
     "line"      : "I1 neta netb 1e-3 myarg=1",
-    "loc"       : "root",
+    "loc"       : "/",
     "lib"       : None,
     "n"         : 1,
     "uid"       : "testuid",
@@ -528,7 +528,7 @@ element_isource__args = {
 
 element_jfet__args = {
     "line"      : "J1 neta netb netc jmodel myarg=1",
-    "loc"       : "root",
+    "loc"       : "/",
     "lib"       : None,
     "n"         : 1,
     "uid"       : "testuid",
@@ -542,7 +542,7 @@ element_jfet__args = {
 
 element_inductor__args = {
     "line"       : "L1 neta netb 1e-6 myarg=1",
-    "loc"        : "root",
+    "loc"        : "/",
     "lib"        : None,
     "n"          : 1,
     "uid"        : "testuid",
@@ -556,7 +556,7 @@ element_inductor__args = {
 
 element_mosfet__args = {
     "line"      : "M1 neta netb netc netd mosmodel myarg=1",
-    "loc"       : "root",
+    "loc"       : "/",
     "lib"       : None,
     "n"         : 1,
     "uid"       : "testuid",
@@ -570,7 +570,7 @@ element_mosfet__args = {
 
 element_bjt_3t__args = {
     "line"      : "Q1 neta netb netc bjtmodel myarg=1",
-    "loc"       : "root",
+    "loc"       : "/",
     "lib"       : None,
     "n"         : 1,
     "uid"       : "testuid",
@@ -584,7 +584,7 @@ element_bjt_3t__args = {
 
 element_bjt_4t__args = {
     "line"      : "Q1 neta netb netc netd bjtmodel myarg=1",
-    "loc"       : "root",
+    "loc"       : "/",
     "lib"       : None,
     "n"         : 1,
     "uid"       : "testuid",
@@ -598,7 +598,7 @@ element_bjt_4t__args = {
 
 element_resistor__args = {
     "line"       : "R1 neta netb 1e3 myarg=1",
-    "loc"        : "root",
+    "loc"        : "/",
     "lib"        : None,
     "n"          : 1,
     "uid"        : "testuid",
@@ -612,7 +612,7 @@ element_resistor__args = {
 
 element_vsource__args = {
     "line"      : "V1 neta netb 1 myarg=1",
-    "loc"       : "root",
+    "loc"       : "/",
     "lib"       : None,
     "n"         : 1,
     "uid"       : "testuid",
@@ -626,7 +626,7 @@ element_vsource__args = {
 
 element_vsource__pulse = {
     "line"      : "V1 neta netb DC 0 PULSE(0 1 1u 1n 1n 10u 20u)",
-    "loc"       : "root",
+    "loc"       : "/",
     "lib"       : None,
     "n"         : 1,
     "uid"       : "testuid",
@@ -641,7 +641,7 @@ element_vsource__pulse = {
 
 element_mesfet__args = {
     "line"      : "Z1 neta netb netc mesmodel myarg=1",
-    "loc"       : "root",
+    "loc"       : "/",
     "lib"       : None,
     "n"         : 1,
     "uid"       : "testuid",
@@ -1077,10 +1077,14 @@ def test_circuit_init_complex():
 def test_circuit_hierachy():
     netlist = "netlists/generic/complex.sp"
     cir = sp.Circuit(netlist)
+    uid = cir.filter("instance", "rt")[0]
+    assert(cir[uid].location == "/")
     uid = cir.filter("instance", "r1")[0]
-    assert(cir[uid].location == "root/module")
+    assert(cir[uid].location == "/module")
     uid = cir.filter("instance", "rs1")[0]
-    assert(cir[uid].location == "root/module/submodule")
+    assert(cir[uid].location == "/module/submodule")
+    uid = cir.filter("instance", "rss1")[0]
+    assert(cir[uid].location == "/module/submodule/subsubmodule")
 
 
 def test_circuit_hierachy_parent():
