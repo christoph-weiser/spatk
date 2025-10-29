@@ -1,4 +1,4 @@
-j# SPATK - Spice Analysis ToolKit
+# SPATK - Spice Analysis ToolKit
 
 Tools for handling and analyzing Spice netlists
 
@@ -10,14 +10,15 @@ Tools for handling and analyzing Spice netlists
 
 ```spice
 * mynetlist.spice
-VDD vdd vss 1
-VSS vss 0   0
-R1  vdd n1  1k
-R2  n1  vss 2k
-X1  vdd vss sr
+
+vdd vdd vss 1
+vss vss 0   0
+r1  vdd n1  1k
+r2  n1  vss 2k
+x1  vdd vss sr
 
 .subckt sr n1 n2
-R3  n1  n2  3k
+r3  n1  n2  3k
 .ends
 ```
 
