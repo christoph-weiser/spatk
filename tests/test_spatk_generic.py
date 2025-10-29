@@ -1090,12 +1090,12 @@ def test_circuit_hierachy():
 def test_circuit_hierachy_parent():
     netlist = "netlists/generic/complex.sp"
     cir = sp.Circuit(netlist)
-    uid = cir.filter("instance", "xmod")[0]
+    uid = cir.filter("instance", "rt")[0]
     assert(cir[uid].parent == None)
     uid = cir.filter("instance", "r1")[0]
-    assert(cir[uid].parent == "module")
+    assert(cir[uid].parent == "/")
     uid = cir.filter("instance", "rs1")[0]
-    assert(cir[uid].parent == "submodule")
+    assert(cir[uid].parent == "module")
 
 
 def test_circuit_library():

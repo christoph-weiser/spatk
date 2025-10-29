@@ -75,7 +75,11 @@ class Default():
     @property
     def parent(self):
         if self.location != "/":
-            return self.location.split("/")[-1]
+            parent = self.location.split("/")[-2]
+            if parent == "":
+                return "/"
+            else:
+                return parent
 
     @property
     def value(self):
