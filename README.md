@@ -4,7 +4,13 @@ Tools for handling and analyzing Spice netlists
 
 * Provides an easy interface to netlist manipulation.
 * Uses Python standard library only.
-* Easy to extend. 
+* Easy to extend.
+
+### Installation
+
+```shell
+pip intall spatk
+```
 
 ### Example 
 
@@ -35,10 +41,4 @@ for res in cir.resistors:
 r1 1k /
 r2 2k /
 r3 3k /sr
-```
-
-### Installation
-
-```shell
-pip intall spatk
 ```
