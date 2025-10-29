@@ -2,7 +2,7 @@
 
 Tools for handling and analyzing Spice netlists
 
-* Provides an easy interface to netlist manipulation.
+* Provides an easy interface for netlist manipulation.
 * Uses Python standard library only.
 * Easy to extend.
 
