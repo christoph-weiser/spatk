@@ -294,13 +294,13 @@ class Circuit:
 
         Required inputs:
         ----------------
-        expr (str):        net name expression to match.
+        expr (str):     net name expression to match.
 
 
         Returns
         ----------------
-        uids (list):        List of uid's that matches the
-                            criteria.
+        uids (list):    List of uid's that matches the
+                        criteria.
         """
         return touches(self.circuit, expr)
 
@@ -340,7 +340,7 @@ class Circuit:
 
         Returns
         ----------------
-        uid (str): uid of the instance.
+        uid (str):       uid of the instance.
         """
         for uid in self.circuit:
             if (self.circuit[uid].instance == instance and 
