@@ -323,3 +323,26 @@ class Circuit:
         elements (set): set of element types in circuit.
         """
         return element_types(self.circuit)
+
+
+    def instance_uid(self, instance, loc="/"):
+        """ Get uid of an instance.
+
+        Required inputs:
+        ----------------
+        instance (str):  name of the instance.
+
+
+        Optional inputs:
+        ----------------
+        loc (str):       location where the instance is located
+                         in the hierachy.
+
+        Returns
+        ----------------
+        uid (str): uid of the instance.
+        """
+        for uid in self.circuit:
+            if (self.circuit[uid].instance == instance and 
+                self.circuit[uid].location == loc ):
+                return uid
