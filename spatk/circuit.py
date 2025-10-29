@@ -346,3 +346,27 @@ class Circuit:
             if (self.circuit[uid].instance == instance and 
                 self.circuit[uid].location == loc ):
                 return uid
+
+
+    def param_uid(self, param, loc="/"):
+        """ Get uid of a parameter (.param).
+
+        Required inputs:
+        ----------------
+        param (str):  name of the parameter.
+
+
+        Optional inputs:
+        ----------------
+        loc (str):    location where the parameter is located
+                      in the hierachy.
+
+        Returns
+        ----------------
+        uid (str):    uid of the parameter.
+        """
+        for uid in self.circuit:
+            if self.circuit[uid].type == "param":
+                if (self.circuit[uid].name ==  param and 
+                    self.circuit[uid].location == loc ):
+                    return uid
