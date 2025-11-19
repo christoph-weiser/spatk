@@ -1178,3 +1178,30 @@ def test_comment_inbetween():
     net_out = str(cir)
     assert(net_target == net_out)
 
+
+def test_circuit_delete_str():
+    net_in  = [ "c1 neta netb 1e-12",
+                "r1 neta netb 1e3",
+                "r2 neta netc 10e3" ]
+    net_out = [ "c1 neta netb 1e-12",
+                "r2 neta netc 10e3" ]
+    cir_in   = sp.Circuit(net_in,  is_filename=False)
+    cir_out  = sp.Circuit(net_out, is_filename=False)
+    uid_r1   = cir_in.instance_uid("r1")
+    cir_in.delete(uid_r1)
+    assert(str(cir_in) == str(cir_out))
+
+
+def test_circuit_delete_list():
+    net_in  = [ "c1 neta netb 1e-12",
+                "r1 neta netb 1e3",
+                "r2 neta netc 10e3" ]
+    net_out = [ "c1 neta netb 1e-12" ]
+    cir_in   = sp.Circuit(net_in,  is_filename=False)
+    cir_out  = sp.Circuit(net_out, is_filename=False)
+    uid_r1   = cir_in.instance_uid("r1")
+    uid_r2   = cir_in.instance_uid("r2")
+    uids     = [uid_r1, uid_r2]
+    cir_in.delete(uids)
+    assert(str(cir_in) == str(cir_out))
+
