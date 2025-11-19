@@ -370,3 +370,17 @@ class Circuit:
                 if (self.circuit[uid].name ==  param and 
                     self.circuit[uid].location == loc ):
                     return uid
+
+
+    def delete(self, uids):
+        """ Delete elements from the netlist.
+
+        Required inputs:
+        ----------------
+        uid (str, list):  uid(s) of the element(s) to delete.
+        """
+        if isinstance(uids, str):
+            uids = [uids]
+        for uid in uids:
+            if uid in self.circuit.keys():
+                del self.circuit[uid]
