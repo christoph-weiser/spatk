@@ -88,6 +88,53 @@ class Option(Statement):
         self.elements[2] = "{}={}".format(s, arg)
 
 
+class Print(Statement):
+    """ .print Statement. """
+    def __init__(self, *args):
+        super(Print, self).__init__(*args)
+        self.kwargidx = 2
+        self.parse()
+
+    def __str__(self):
+        l = self.elements[0:2]
+        if self.args:
+            l.append(str(self.argsdata))
+        l = l + self.elements[self.kwargidx+1:]
+        return " ".join(l)
+
+    def parse(self):
+        for i, elem in enumerate(self.elements):
+            if "=" in elem:
+                self.kwargidx = i
+        self.argsdata = Args(self.elements[2:self.kwargidx+1])
+
+    @property
+    def simtype(self):
+        return self.elements[1]
+
+    @simtype.setter
+    def simtype(self, arg):
+        self.elements[1] = arg
+
+    @property
+    def args(self):
+        return self.argsdata
+
+    @args.setter
+    def args(self, arg):
+        self.argsdata = arg
+
+    @property
+    def value(self):
+        return " ".join(self.elements[self.kwargidx+1:])
+
+    @value.setter
+    def value(self, arg):
+        if isinstance(arg, str):
+            self.elements[self.kwargidx+1:] = arg.split(" ")
+        elif isinstance(arg, list): 
+            self.elements[self.kwargidx+1:] = arg
+
 
 #----------------------------------------------------------------------
 # Xyce Element Mapping
@@ -104,6 +151,7 @@ elementmap = {"*":          Comment,
               ".FUNC":      Function,
               ".PARAM":     Param,
               ".GLOBAL":    Global,
+              ".PRINT":     Print,
               ".SUBCKT":    SubcktDef,
               "A":          None,
               "B":          Behavioral_source,

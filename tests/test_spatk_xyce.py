@@ -31,14 +31,26 @@ element_option = {
     "uid"       : "testuid",
     "mod"       : spe.Option,
     "instance"  : None,
-    "pkg"       : "bla",
     "type"      : "option",
-    "name"      : "setting",
     "value"     : "value",
     "ports"     : dict(),
     }
 
-@pytest.fixture(params=[element_option])
+element_print = {
+    "line"      : '.print tran format="csv" file="file.csv" v(n1) v(n2) v(n3)',
+    "loc"       : "/",
+    "lib"       : None,
+    "n"         : 1,
+    "uid"       : "testuid",
+    "mod"       : spe.Print,
+    "instance"  : None,
+    "type"      : "print",
+    "value"     : "v(n1) v(n2) v(n3)",
+    "ports"     : dict(),
+    }
+
+
+@pytest.fixture(params=[element_option, element_print])
 def case(request):
     return request.param
 
@@ -127,3 +139,31 @@ def test_module_option_value_set():
     mod = create_module(case)
     mod.value = "myvalue"
     assert(mod.value == "myvalue")
+
+
+def test_module_print_value_set():
+    case = element_print
+    mod = create_module(case)
+    mod.value = "myvalue"
+    assert(mod.value == "myvalue")
+
+
+def test_module_print_value_set_list():
+    case = element_print
+    mod = create_module(case)
+    mod.value = ["1", "2", "3"]
+    assert(mod.value == "1 2 3")
+
+
+def test_module_print_args():
+    case = element_print
+    mod = create_module(case)
+    assert(mod.args == {"format": '"csv"', "file": '"file.csv"'} )
+
+
+def test_module_print_args_set():
+    case = element_print
+    mod = create_module(case)
+    mod.args["format"] = "test"
+    assert(mod.args["format"] == "test")
+    assert(mod.args["file"] == '"file.csv"')

@@ -59,7 +59,7 @@ elif SYNTAX == "hspice":
 elif SYNTAX == "xyce":
     from spatk.flavours.xyce import elementmap
     from spatk.flavours.xyce import (Model, Option, Function, Param,
-                                     Global, Behavioral_source,
+                                     Global, Print, Behavioral_source,
                                      Capacitor, Diode, Vcvs, Cccs,
                                      Vccs, Ccvs, Isource, Jfet,
                                      Inductor, Mosfet,
