@@ -79,7 +79,6 @@ class Option(Statement):
 
     @property
     def value(self):
-        print(self.elements[2])
         return self.elements[2].split("=")[1]
 
     @value.setter
