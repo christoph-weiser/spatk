@@ -6,7 +6,7 @@ netlist = [ "* mynetlist.spice",
             "XM1 out in vdd vdd pmos_3p3 L=1u W=1u nf=1",
             "XM2 out in vss vss nmos_3p3 L=1u W=1u nf=1"]
 
-cir = spatk.Circuit(netlist, is_filename=False)
+cir = spatk.Circuit(netlist, syntax="ngspice", is_filename=False)
 
 # Looping through all netlist elements by 
 # uid (unique identifier)

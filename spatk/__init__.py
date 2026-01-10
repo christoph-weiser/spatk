@@ -16,9 +16,11 @@
 
 import os
 
-try:
-    SYNTAX = os.environ["SPICE_SYNTAX"]
-except(KeyError):
-    SYNTAX = "generic"
-
 from spatk.circuit import Circuit
+
+from .flavours import ngspice
+from .flavours import xyce
+from .flavours import generic
+from .flavours import hspice
+
+

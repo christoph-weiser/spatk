@@ -5,7 +5,7 @@ netlist = [ "* mynetlist.spice",
             "R1 net1 net2 1k",
             "XM1 out in vdd vdd pmos_3p3 L=1u W=1u nf=1"]
 
-cir = spatk.Circuit(netlist, is_filename=False)
+cir = spatk.Circuit(netlist, syntax="ngspice", is_filename=False)
 
 uids = cir.filter("type", "mosfet")
 

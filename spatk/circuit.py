@@ -31,8 +31,10 @@ from spatk.helpers import (read_netlist,
                            get_uid,
                            map_linetype)
 
-from spatk.elements import elementmap
-
+from spatk.flavours.generic import elementmap as generic_map
+from spatk.flavours.xyce    import elementmap as xyce_map
+from spatk.flavours.ngspice import elementmap as ngspice_map
+from spatk.flavours.hspice  import elementmap as hspice_map
 
 class Circuit:
     """ Circuit represents a abstract SPICE netlist.
@@ -61,7 +63,12 @@ class Circuit:
     To convert the Circuit back into the netlist format simply cast 
     it into a string or access the netlist property of Circuit.
     """
-    def __init__(self, netlist=None, is_filename=True, keep_comments=False):
+    def __init__(self, 
+                netlist=None, 
+                elementmap=None,
+                syntax="generic",
+                is_filename=True, 
+                keep_comments=False):
         if netlist:
             if is_filename:
                 self.name = netlist
@@ -73,13 +80,24 @@ class Circuit:
             self.name = "Netlist"
             self._netlist = []
 
+        if elementmap:
+            self.elementmap = elementmap
+        else:
+            if syntax == "ngspice":
+                self.elementmap = ngspice_map
+            elif syntax == "xyce":
+                self.elementmap = xyce_map
+            elif syntax == "hspice":
+                self.elementmap = hspice_map
+            else:
+                self.elementmap = generic_map
         self.parsed_circuit = self.parse(self._netlist)
         self.circuit = copy.deepcopy(self.parsed_circuit)
         self._synthesize()
         self._asign_attributes()
 
     def _asign_attributes(self):
-        for elem in elementmap.values():
+        for elem in self.elementmap.values():
             if elem:
                 elemname = (elem.__name__).lower()
                 setattr(self, "{}s".format(elemname), self._attr(elem))
@@ -172,7 +190,7 @@ class Circuit:
                     if re.match(reqex_control_e, line):
                         ctlsec = False
                 else:
-                    elemtype = map_linetype(line, elementmap)
+                    elemtype = map_linetype(line, self.elementmap)
                     if len(hierarchy) == 1:
                         location = hierarchy[0]
                     else:
@@ -182,11 +200,11 @@ class Circuit:
                         lines = dissect_param(line)
                         for line in lines:
                             uid = get_uid(line, n)
-                            element = elementmap[elemtype]
+                            element = self.elementmap[elemtype]
                             elements[uid] = element(line, location, library, n, uid)
                     else:
                         uid = get_uid(line, n)
-                        element = elementmap[elemtype]
+                        element = self.elementmap[elemtype]
                         elements[uid] = element(line, location, library, n, uid)
 
                 if re.match(reqex_subckt_e, line):

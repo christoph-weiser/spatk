@@ -14,12 +14,10 @@
 # You should have received a copy of the GNU General Public License
 # along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
-import os
-os.environ["SPICE_SYNTAX"] = "xyce"
 
 import pytest
 import spatk as sp
-import spatk.elements as spe
+import spatk.flavours.xyce as spe
 
 from helpers import create_module
 
