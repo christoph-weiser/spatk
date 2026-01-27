@@ -182,18 +182,26 @@ def unpack_args(args):
     return unpacked
 
 
-def repack_args(args):
+def repack_args(args, sort=False):
     """ Repackage circuit element arguments.
 
     Required inputs:
     ----------------
     args (dict):        Circuit element arguments.
 
+    Optional inputs:
+    ----------------
+    sort (bool):        Sort arguments before repacking.
+
     Returns
     ----------------
     repacked (list):    Circuit element arguments.
     """
     repacked = []
+    if sort:
+        keys = sorted(args.keys())
+    else:
+        keys = args.keys()
     for k in args:
         if args[k]:
             repacked.append("{}={}".format(k, args[k]))
