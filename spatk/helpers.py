@@ -200,9 +200,10 @@ def repack_args(args, sort=False):
     repacked = []
     if sort:
         keys = sorted(args.keys())
+        print(keys)
     else:
         keys = args.keys()
-    for k in args:
+    for k in keys:
         if args[k]:
             repacked.append("{}={}".format(k, args[k]))
         else:
