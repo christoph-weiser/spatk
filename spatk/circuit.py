@@ -66,6 +66,7 @@ class Circuit:
     def __init__(self, 
                 netlist=None, 
                 elementmap=None,
+                element_settings=[],
                 syntax="generic",
                 is_filename=True, 
                 keep_comments=False):
@@ -91,6 +92,7 @@ class Circuit:
                 self.elementmap = hspice_map
             else:
                 self.elementmap = generic_map
+        self.element_settings = element_settings
         self.parsed_circuit = self.parse(self._netlist)
         self.circuit = copy.deepcopy(self.parsed_circuit)
         self._synthesize()
@@ -195,17 +197,21 @@ class Circuit:
                         location = hierarchy[0]
                     else:
                         location = "/".join(hierarchy)[1:]
-
+                    cls = self.elementmap[elemtype].__name__
+                    if cls in self.element_settings:
+                        settings = self.element_settings[cls]
+                    else:
+                        settings = []
                     if elemtype ==  ".PARAM":
                         lines = dissect_param(line)
                         for line in lines:
                             uid = get_uid(line, n)
                             element = self.elementmap[elemtype]
-                            elements[uid] = element(line, location, library, n, uid)
+                            elements[uid] = element(line, location, library, n, uid, settings)
                     else:
                         uid = get_uid(line, n)
                         element = self.elementmap[elemtype]
-                        elements[uid] = element(line, location, library, n, uid)
+                        elements[uid] = element(line, location, library, n, uid, settings)
 
                 if re.match(reqex_subckt_e, line):
                     hierarchy.pop()

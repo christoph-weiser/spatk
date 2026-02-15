@@ -47,12 +47,13 @@ class Default():
 
     Required inputs:
     ----------------
-    line (str):     spice netlist line.
-    location (str): location in the netlist hierachy
-    n (int):        line number in the netlist.
-    uid (str):      unique identifier for this element
+    line (str):      spice netlist line.
+    location (str):  location in the netlist hierachy.
+    n (int):         line number in the netlist.
+    uid (str):       unique identifier for this element.
+    settings (dict): element specific settings.
     """
-    def __init__(self, line, location, lib, n, uid):
+    def __init__(self, line, location, lib, n, uid, settings):
         self.line = line
         self.location = location
         self.lib = lib
@@ -61,6 +62,7 @@ class Default():
         self.instance = None
         self.ports = dict()
         self._value = None
+        self.settings = settings
 
     def __str__(self):
         return self.line
@@ -191,10 +193,17 @@ class Comment(Default):
 
 class Model(Statement):
     """ .model Statement. """
-    def __init__(self, *args, expanded=False):
+    def __init__(self, *args):
         super(Model, self).__init__(*args)
         self.argsdata = Args(self.elements[3:])
-        self.expanded = expanded
+        if "expanded" in self.settings:
+            self.expanded = self.settings["expanded"]
+        else:
+            self.expanded = False
+        if "sorted" in self.settings:
+            self.sorted = self.settings["sorted"]
+        else:
+            self.sorted = False
 
     def __str__(self):
         l = [".model",
@@ -203,9 +212,9 @@ class Model(Statement):
         if self.args:
             if self.expanded:
                 l.append("\n+")
-                l.append("\n+ ".join(repack_args(self.args.__dict__)))
+                l.append("\n+ ".join(repack_args(self.args.__dict__, self.sorted)))
             else:
-                l.append(str(self.argsdata))
+                l.append(" ".join(repack_args(self.args.__dict__, self.sorted)))
         return " ".join(l)
 
     @property

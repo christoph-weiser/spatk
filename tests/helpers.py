@@ -22,7 +22,8 @@ def create_module(case):
     lib = case["lib"]
     n = case["n"]
     uid = case["uid"]
-    return module(line, loc, lib, n, uid)
+    settings = []
+    return module(line, loc, lib, n, uid, settings)
 
 
 def input_netlist(filename, name=None):
