@@ -1240,9 +1240,6 @@ def test_circuit_model_unsorted():
     cir = sp.Circuit(net_in,  
                      is_filename=False, 
                      element_settings={"Model": { "sorted": False}})
-    print(str(cir))
-    print("-------------")
-    print(net_out)
     assert(str(cir) == net_out)
 
 
@@ -1254,9 +1251,6 @@ def test_circuit_model_sorted():
     cir = sp.Circuit(net_in,  
                      is_filename=False, 
                      element_settings={"Model": { "sorted": True}})
-    print(str(cir))
-    print("-------------")
-    print(net_out)
     assert(str(cir) == net_out)
 
 
@@ -1268,9 +1262,6 @@ def test_circuit_model_unsorted_expanded():
     cir = sp.Circuit(net_in,  
                      is_filename=False, 
                      element_settings={"Model": { "sorted": False, "expanded": True}})
-    print(str(cir))
-    print("-------------")
-    print(net_out)
     assert(str(cir) == net_out)
 
 
@@ -1282,9 +1273,6 @@ def test_circuit_model_sorted_expanded():
     cir = sp.Circuit(net_in,  
                      is_filename=False, 
                      element_settings={"Model": { "sorted": True, "expanded": True}})
-    print(str(cir))
-    print("-------------")
-    print(net_out)
     assert(str(cir) == net_out)
 
 
@@ -1298,9 +1286,6 @@ def test_circuit_model_ordered_all():
     cir = sp.Circuit(net_in,  
                      is_filename=False, 
                      element_settings={"Model": { "order": order}})
-    print(str(cir))
-    print("-------------")
-    print(net_out)
     assert(str(cir) == net_out)
 
 
@@ -1314,9 +1299,6 @@ def test_circuit_model_ordered_partial():
     cir = sp.Circuit(net_in,  
                      is_filename=False, 
                      element_settings={"Model": { "order": order}})
-    print(str(cir))
-    print("-------------")
-    print(net_out)
     assert(str(cir) == net_out)
 
 
@@ -1330,9 +1312,6 @@ def test_circuit_model_ordered_expanded_all():
     cir = sp.Circuit(net_in,  
                      is_filename=False, 
                      element_settings={"Model": { "order": order, "expanded": True}})
-    print(str(cir))
-    print("-------------")
-    print(net_out)
     assert(str(cir) == net_out)
 
 
@@ -1346,7 +1325,24 @@ def test_circuit_model_ordered_expanded_partial():
     cir = sp.Circuit(net_in,  
                      is_filename=False, 
                      element_settings={"Model": { "order": order, "expanded": True}})
-    print(str(cir))
-    print("-------------")
-    print(net_out)
+    assert(str(cir) == net_out)
+
+
+
+def test_circuit_libraryend_newline():
+    netlist = "netlists/generic/args.sp"
+    net_in  = [".endl mylib"]
+    net_out = "* Netlist\n\n.endl mylib\n\n"
+
+    cir = sp.Circuit(net_in, is_filename=False, 
+                     element_settings={"LibraryEnd": { "newline": True} })
+    assert(str(cir) == net_out)
+
+def test_circuit_libraryend_noname():
+    netlist = "netlists/generic/args.sp"
+    net_in  = [".endl mylib"]
+    net_out = "* Netlist\n\n.endl\n"
+
+    cir = sp.Circuit(net_in, is_filename=False, 
+                     element_settings={"LibraryEnd": { "noname": True} })
     assert(str(cir) == net_out)

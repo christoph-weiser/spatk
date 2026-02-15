@@ -362,6 +362,28 @@ class LibraryEnd(Statement):
             self._haslibname = False
         else:
             self._haslibname = True
+        self.apply_settings(self.settings)
+
+    def apply_settings(self, settings):
+        self.settings = settings
+        if "newline" in self.settings:
+            self.newline = self.settings["newline"]
+        else:
+            self.newline = False
+        if "noname" in self.settings:
+            self.noname = True
+        else:
+            self.noname = False
+
+    def __str__(self):
+        if self.newline:
+            n = "\n"
+        else:
+            n = ""
+        if self.noname:
+            return ".endl" + n
+        else:
+            return " ".join(self.elements) + n
 
     @property
     def libname(self):
