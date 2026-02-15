@@ -154,6 +154,21 @@ element_library = {
     "libname"    : "module",
     }
 
+element_libraryend = {
+    "line"      : ".endl mylib",
+    "loc"       : "/",
+    "lib"       : None,
+    "n"         : 1,
+    "uid"       : "testuid",
+    "mod"       : spe.LibraryEnd,
+    "instance"  : None,
+    "type"      : "libraryend",
+    "value"     : None,
+    "ports"     : dict(),
+    "libname"  : "mylib",
+    }
+
+
 element_option = {
     "line"      : ".option setting=value",
     "loc"       : "/",
@@ -655,7 +670,7 @@ element_mesfet__args = {
 @pytest.fixture(params=[element_default, element_component, element_component_2t,
                         element_component_3t, element_component_4t, element_statement,
                         element_comment, element_model, element_include,
-                        element_library, element_option, element_param,
+                        element_library, element_libraryend, element_option, element_param,
                         element_global, element_subckt, element_subcktdef,
                         element_capacitor, element_diode, element_cccs,
                         element_ccvs, element_isource, element_jfet,
@@ -743,6 +758,19 @@ def test_module_library_filename_set():
     module = create_module(case)
     module.filename = "myfile"
     assert(module.filename == "myfile")
+
+
+def test_module_libraryend_libname():
+    case = element_libraryend
+    module = create_module(case)
+    assert(module.libname  == case["libname"])
+    
+
+def test_module_libraryend_libname_set():
+    case = element_libraryend
+    module = create_module(case)
+    module.libname = "myname"
+    assert(module.libname  == "myname")
 
 
 def test_module_param_name():

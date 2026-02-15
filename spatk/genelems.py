@@ -354,6 +354,28 @@ class Library(Statement):
             self.elements[1] = arg
 
 
+class LibraryEnd(Statement):
+    """ .endl Statement. """
+    def __init__(self, *args):
+        super(LibraryEnd, self).__init__(*args)
+        if len(self.elements) == 1:
+            self._haslibname = False
+        else:
+            self._haslibname = True
+
+    @property
+    def libname(self):
+        if self._haslibname:
+            return self.elements[1]
+        else:
+            return None
+
+    @libname.setter
+    def libname(self, arg):
+        if self._haslibname:
+            self.elements[1] = arg
+
+
 class Param(Statement):
     """ .param Statement. """
     def __init__(self, *args):
