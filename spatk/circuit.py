@@ -21,7 +21,6 @@ import collections
 
 
 from spatk.helpers import (read_netlist, 
-                           repack_args, 
                            dissect_param,
                            clean_netlist,
                            filter,
