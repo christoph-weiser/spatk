@@ -70,6 +70,9 @@ class Default():
     def parse(self, line):
         pass
 
+    def apply_settings(self, settings):
+        pass
+
     @property
     def type(self):
         return (self.__class__.__name__).lower()
@@ -196,6 +199,10 @@ class Model(Statement):
     def __init__(self, *args):
         super(Model, self).__init__(*args)
         self.argsdata = Args(self.elements[3:])
+        self.apply_settings(self.settings)
+
+    def apply_settings(self, settings):
+        self.settings = settings
         if "expanded" in self.settings:
             self.expanded = self.settings["expanded"]
         else:
@@ -204,17 +211,28 @@ class Model(Statement):
             self.sorted = self.settings["sorted"]
         else:
             self.sorted = False
+        if "order" in self.settings:
+            self.order = {item: i for i, item in enumerate(self.settings["order"])}
+            self.sorted=False
+        else:
+            self.order=False
 
     def __str__(self):
         l = [".model",
              self.name,
              self.model_type]
         if self.args:
+            if self.order:    
+                d = dict(sorted(
+                    self.args.__dict__.items(), 
+                    key=lambda item: self.order.get(item[0], len(self.settings["order"]))))
+            else:
+                d = self.args.__dict__
             if self.expanded:
                 l.append("\n+")
-                l.append("\n+ ".join(repack_args(self.args.__dict__, self.sorted)))
+                l.append("\n+ ".join(repack_args(d, self.sorted)))
             else:
-                l.append(" ".join(repack_args(self.args.__dict__, self.sorted)))
+                l.append(" ".join(repack_args(d, self.sorted)))
         return " ".join(l)
 
     @property

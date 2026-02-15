@@ -1259,3 +1259,66 @@ def test_circuit_model_sorted_expanded():
     print(net_out)
     assert(str(cir) == net_out)
 
+
+def test_circuit_model_ordered_all():
+    netlist = "netlists/generic/args.sp"
+    net_in  = [".model mmod nmos l=2e-6 w=10e-6 kp=200e-6 level=1"]
+    net_out = "* Netlist\n\n.model mmod nmos level=1 w=10e-6 l=2e-6 kp=200e-6\n"
+
+    order = ["level", "w", "l", "kp"]
+
+    cir = sp.Circuit(net_in,  
+                     is_filename=False, 
+                     element_settings={"Model": { "order": order}})
+    print(str(cir))
+    print("-------------")
+    print(net_out)
+    assert(str(cir) == net_out)
+
+
+def test_circuit_model_ordered_partial():
+    netlist = "netlists/generic/args.sp"
+    net_in  = [".model mmod nmos l=2e-6 w=10e-6 kp=200e-6 level=1"]
+    net_out = "* Netlist\n\n.model mmod nmos w=10e-6 l=2e-6 kp=200e-6 level=1\n"
+
+    order = ["w", "l"]
+
+    cir = sp.Circuit(net_in,  
+                     is_filename=False, 
+                     element_settings={"Model": { "order": order}})
+    print(str(cir))
+    print("-------------")
+    print(net_out)
+    assert(str(cir) == net_out)
+
+
+def test_circuit_model_ordered_expanded_all():
+    netlist = "netlists/generic/args.sp"
+    net_in  = [".model mmod nmos l=2e-6 w=10e-6 kp=200e-6 level=1"]
+    net_out = "* Netlist\n\n.model mmod nmos \n+ level=1\n+ w=10e-6\n+ l=2e-6\n+ kp=200e-6\n"
+
+    order = ["level", "w", "l", "kp"]
+
+    cir = sp.Circuit(net_in,  
+                     is_filename=False, 
+                     element_settings={"Model": { "order": order, "expanded": True}})
+    print(str(cir))
+    print("-------------")
+    print(net_out)
+    assert(str(cir) == net_out)
+
+
+def test_circuit_model_ordered_expanded_partial():
+    netlist = "netlists/generic/args.sp"
+    net_in  = [".model mmod nmos l=2e-6 w=10e-6 kp=200e-6 level=1"]
+    net_out = "* Netlist\n\n.model mmod nmos \n+ w=10e-6\n+ l=2e-6\n+ kp=200e-6\n+ level=1\n"
+
+    order = ["w", "l"]
+
+    cir = sp.Circuit(net_in,  
+                     is_filename=False, 
+                     element_settings={"Model": { "order": order, "expanded": True}})
+    print(str(cir))
+    print("-------------")
+    print(net_out)
+    assert(str(cir) == net_out)
