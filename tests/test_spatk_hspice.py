@@ -16,7 +16,6 @@
 
 import pytest
 import spatk as sp
-import spatk.elements as spe
 import spatk.flavours.hspice as spe
 
 from helpers import create_module
